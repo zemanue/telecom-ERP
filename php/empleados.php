@@ -11,6 +11,7 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
     <link rel="stylesheet" type="text/css" href="../assets/css/estilos_menu.css">
 </head>
 <body>
+    <a href="../index.php" class="logout-btn">Cerrar Sesión</a>
     <a href="home.php" class="menu-item">Volver al Menú</a>
 
     <?php
@@ -45,7 +46,10 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
             <input type="text" name="telefono" placeholder="Teléfono">
             <button type="submit">Agregar</button>
         </form>
-
+        <div class="volver-a" style="text-align: center; margin-top: 10px;">
+            <a href="empleados.php" class="menu-item">Volver a Empleados</a>
+        </div>
+        
         <?php
     } elseif ($accion == 'editar') {
         $codigo = isset($_GET['codigo']) ? $_GET['codigo'] : null;

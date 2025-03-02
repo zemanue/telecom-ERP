@@ -7,6 +7,8 @@
     <link rel="stylesheet" type="text/css" href="../assets/css/estilos_menu.css">
 </head>
 <body>
+    <a href="../index.php" class="logout-btn">Cerrar Sesión</a>
+
     <h1>Bienvenido al ERP</h1>
     <div class="menu-container">
         <a href="clientes.php" class="menu-item">Clientes</a>

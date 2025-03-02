@@ -57,22 +57,35 @@ if (mysqli_num_rows($verificar_usuario) > 0) {
 }
 
 // Insertar el nuevo usuario
-$query = "INSERT INTO usuarios(usuario, contrasena, nombre_completo, correo)
+$query_usuario = "INSERT INTO usuarios(usuario, contrasena, nombre_completo, correo)
     VALUES('$usuario', '$contrasena', '$nombre_completo', '$correo')";
 
-$ejecutar = mysqli_query($conexion, $query);
+$ejecutar_usuario = mysqli_query($conexion, $query_usuario);
 
-if ($ejecutar) {
-    echo '
-    <script>
-        alert("Usuario almacenado correctamente.")
-        window.location = "../index.php";
-    </script>
-    ';
+if ($ejecutar_usuario) {
+    // Insertar nombre y correo en la tabla empleados
+    $query_empleado = "INSERT INTO empleados(nombre, email) VALUES('$nombre_completo', '$correo')";
+    $ejecutar_empleado = mysqli_query($conexion, $query_empleado);
+
+    if ($ejecutar_empleado) {
+        echo '
+        <script>
+            alert("Usuario y empleado almacenados correctamente.");
+            window.location = "../index.php";
+        </script>
+        ';
+    } else {
+        echo '
+        <script>
+            alert("Usuario almacenado, pero error al registrar en empleados.");
+            window.location = "../index.php";
+        </script>
+        ';
+    }
 } else {
     echo '
     <script>
-        alert("Usuario no almacenado, intentelo de nuevo.")
+        alert("Error al registrar el usuario, intentelo de nuevo.");
         window.location = "../index.php";
     </script>
     ';

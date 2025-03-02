@@ -6,6 +6,21 @@ body {
     padding: 0;
 }
 
+.logout-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 14px;
+    padding: 8px 15px;
+    background-color: #007BFF;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+}
+.logout-btn:hover {
+    background-color: #007BFF;
+}
+
 h1, h2 {
     color: #004080;
     text-align: center;
