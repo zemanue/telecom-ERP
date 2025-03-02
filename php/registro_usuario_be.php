@@ -26,7 +26,6 @@ if (!$verificar_correo) {
     exit('Error en la consulta: ' . mysqli_error($conexion));
 }
 
-
 // Si el correo ya está registrado (si hay al menos una fila que cumple con la condición)
 if (mysqli_num_rows($verificar_correo) > 0) {
     echo '
