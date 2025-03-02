@@ -1,50 +1,67 @@
-*{
+/* Variables para los colores */
+:root {
+    --azul-primario: #3880C9;
+    --azul-secundario: #1761A0;
+    --azul-terciario: #E6F2FF;
+}
+
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     text-decoration: none;
     font-family: sans-serif;
 }
-body{
-    background-color: grey;
 
-
+body {
+    background-image: url(../img/laptop-fondo.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
 }
-main{
+
+main {
     width: 100%;
     padding: 20px;
     margin: auto;
     margin-top: 100px;
 }
-.contenedor_todo{
+
+.contenedor_todo {
     width: 100%;
     max-width: 800px;
     margin: auto;
     position: relative;
 }
-.caja_trasera{
+
+.caja_trasera {
     width: 100%;
     padding: 10px 20px;
     display: flex;
     justify-content: center;
     backdrop-filter: blur(10px);
-    background-color: rgba(0, 128, 255, 0.5);
+    background-color: var(--azul-primario);
 }
-.caja_trasera div{
+
+.caja_trasera div {
     margin: 100px 40px;
     color: white;
     transition: all 500ms;
 }
+
 .caja_trasera div p,
-.caja_trasera div button{
+.caja_trasera div button {
     margin-top: 30px;
 }
-.caja_trasera div h3{
+
+.caja_trasera div h3 {
     font-weight: 400;
     font-size: 26px;
 
 }
-.caja_trasera button{
+
+.caja_trasera button {
     padding: 10px 40px;
     border: 2px solid #fff;
     background: transparent;
@@ -55,11 +72,13 @@ main{
     outline: none;
     transition: all 300ms;
 }
-.caja_trasera button:hover{
+
+.caja_trasera button:hover {
     background: #fff;
-    color: #46A2FD;
+    color: var(--azul-primario);
 }
-.contenedor_login-register{
+
+.contenedor_login-register {
     display: flex;
     align-items: center;
     width: 100%;
@@ -67,9 +86,10 @@ main{
     position: relative;
     top: -185px;
     left: 10px;
-    transition: left 500ms cubic-bezier(0.175,0.885, 0.320, 1.275);
+    transition: left 500ms cubic-bezier(0.175, 0.885, 0.320, 1.275);
 }
-.contenedor_login-register form{
+
+.contenedor_login-register form {
     width: 100%;
     padding: 80px 20px;
     background: white;
@@ -77,13 +97,14 @@ main{
     border-radius: 20px;
 }
 
-.contenedor_login-register form h2{
+.contenedor_login-register form h2 {
     font-size: 30px;
     text-align: center;
     margin-bottom: 20px;
-    color: #46A2FD;
+    color: var(--azul-primario);
 }
-.contenedor_login-register form input{
+
+.contenedor_login-register form input {
     width: 100%;
     margin-top: 20px;
     padding: 10px;
@@ -92,42 +113,55 @@ main{
     font-size: 16px;
     outline: none;
 }
-.contenedor_login-register form button{
+
+.contenedor_login-register form button {
     padding: 10px 40px;
     margin-top: 40px;
     border: none;
     font-size: 14px;
-    background: #46A2FD;
+    background: var(--azul-primario);
     color: white;
     cursor: pointer;
     outline: none;
+    transition: all 300ms;
 }
-.formulario_login{
+
+.contenedor_login-register form button:hover {
+    background: var(--azul-secundario);
+}
+
+.formulario_login {
     opacity: 1;
     display: block;
 }
-.formulario_register{
+
+.formulario_register {
     display: none;
 }
-@media screen and (max-width: 850px){
-    main{
+
+@media screen and (max-width: 850px) {
+    main {
         margin-top: 50px;
     }
-    .caja_trasera{
+
+    .caja_trasera {
         max-width: 350px;
         height: 300px;
         flex-direction: column;
         margin: auto;
     }
-    .caja_trasera div{
+
+    .caja_trasera div {
         margin: 0px;
         position: absolute;
     }
-    .contenedor_login-register{
+
+    .contenedor_login-register {
         top: -10px;
         left: -5px;
         margin: auto;
     }
+
     .contenedor_login-register form {
         position: relative;
     }

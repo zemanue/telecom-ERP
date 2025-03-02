@@ -1,7 +1,12 @@
+/* Variables para los colores */
+:root {
+    --azul-primario: #3880C9;
+    --azul-secundario: #1761A0;
+    --azul-terciario: #E6F2FF;
+}
+
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f8ff;
-    color: #333;
     margin: 2%;
     padding: 0;
 }
@@ -12,35 +17,41 @@ body {
     right: 20px;
     font-size: 14px;
     padding: 8px 15px;
-    background-color: #007BFF;
+    background-color: var(--azul-primario);
     color: white;
     border-radius: 5px;
     text-decoration: none;
 }
-.logout-btn:hover {
-    background-color: #007BFF;
-}
 
-h1, h2 {
-    color: #004080;
+h1,
+h2 {
+    color: var(--azul-primario);
     text-align: center;
     margin-top: 20px;
 }
 
-a, .menu-item, button {
+a,
+.menu-item,
+button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #007BFF;
+    background-color: var(--azul-primario);
     color: white;
     text-decoration: none;
     border-radius: 5px;
     font-weight: bold;
     text-align: center;
     transition: background-color 0.3s;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
 }
 
-a:hover, .menu-item:hover, button:hover {
-    background-color: #0056b3;
+a:hover,
+.menu-item:hover,
+button:hover {
+    background-color: var(--azul-secundario);
 }
 
 .menu-container {
@@ -64,12 +75,14 @@ table {
     border-collapse: collapse;
 }
 
-table, th, td {
+table,
+th,
+td {
     border: 1px solid #ccc;
 }
 
 th {
-    background-color: #007BFF;
+    background-color: var(--azul-primario);
     color: white;
     padding: 10px;
 }
@@ -79,16 +92,21 @@ td {
     text-align: center;
 }
 
+td:last-child {
+    white-space: nowrap;
+}
+
 form {
     width: 50%;
     margin: 20px auto;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 10px;
-    background-color: #e6f2ff;
+    background-color: var(--azul-terciario);
 }
 
-input, button {
+input,
+button {
     width: 90%;
     margin: 10px auto;
     padding: 10px;
