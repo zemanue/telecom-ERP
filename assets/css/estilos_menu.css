@@ -1,0 +1,89 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f8ff;
+    color: #333;
+    margin: 2%;
+    padding: 0;
+}
+
+h1, h2 {
+    color: #004080;
+    text-align: center;
+    margin-top: 20px;
+}
+
+a, .menu-item, button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+a:hover, .menu-item:hover, button:hover {
+    background-color: #0056b3;
+}
+
+.menu-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.menu-item {
+    padding: 15px 30px;
+    border-radius: 10px;
+    font-size: 18px;
+}
+
+table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px;
+}
+
+td {
+    padding: 10px;
+    text-align: center;
+}
+
+form {
+    width: 50%;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #e6f2ff;
+}
+
+input, button {
+    width: 90%;
+    margin: 10px auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+footer {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 14px;
+    color: #777;
+}
