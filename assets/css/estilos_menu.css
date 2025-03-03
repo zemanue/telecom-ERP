@@ -106,6 +106,7 @@ form {
 }
 
 input,
+select,
 button {
     width: 90%;
     margin: 10px auto;

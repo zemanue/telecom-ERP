@@ -39,6 +39,9 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
                 echo "Error: " . $stmt->error;
             }
         }
+
+        // Obtener los códigos de los proveedores existentes
+        $proveedores = $conexion->query("SELECT codigo, nombre FROM proveedor");
         ?>
 
         <h2>Agregar Producto</h2>
@@ -47,7 +50,12 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
             <input type="number" step="0.01" name="precio_compra" placeholder="Precio de Compra" required>
             <input type="number" step="0.01" name="precio_venta" placeholder="Precio de Venta" required>
             <input type="number" step="0.01" name="IVA" placeholder="IVA" required>
-            <input type="number" name="codigo_proveedor" placeholder="Código de Proveedor" required>
+            <select name="codigo_proveedor" required>
+                <option value="">Seleccione un proveedor</option>
+                <?php while ($proveedor = $proveedores->fetch_assoc()) { ?>
+                    <option value="<?php echo $proveedor['codigo']; ?>"><?php echo $proveedor['codigo'] . " - " . $proveedor['nombre']; ?></option>
+                <?php } ?>
+            </select>
             <button type="submit">Agregar</button>
         </form>
         <div class="volver-a" style="text-align: center; margin-top: 10px;">
@@ -84,6 +92,9 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
         $stmt->execute();
         $result = $stmt->get_result();
         $producto = $result->fetch_assoc();
+
+        // Obtener los códigos de los proveedores existentes
+        $proveedores = $conexion->query("SELECT codigo, nombre FROM proveedor");
         ?>
 
         <h2>Editar Producto</h2>
@@ -92,7 +103,14 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
             <input type="number" step="0.01" name="precio_compra" placeholder="Precio de Compra" value="<?php echo $producto['precio_compra']; ?>" required>
             <input type="number" step="0.01" name="precio_venta" placeholder="Precio de Venta" value="<?php echo $producto['precio_venta']; ?>" required>
             <input type="number" step="0.01" name="IVA" placeholder="IVA" value="<?php echo $producto['IVA']; ?>" required>
-            <input type="number" name="codigo_proveedor" placeholder="Código de Proveedor" value="<?php echo $producto['codigo_proveedor']; ?>" required>
+            <select name="codigo_proveedor" required>
+                <option value="">Seleccione un proveedor</option>
+                <?php while ($proveedor = $proveedores->fetch_assoc()) { ?>
+                    <option value="<?php echo $proveedor['codigo']; ?>" <?php if ($proveedor['codigo'] == $producto['codigo_proveedor']) echo 'selected'; ?>>
+                        <?php echo $proveedor['codigo'] . " - " . $proveedor['nombre']; ?>
+                    </option>
+                <?php } ?>
+            </select>
             <button type="submit">Actualizar</button>
         </form>
 
