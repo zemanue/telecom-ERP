@@ -1,5 +1,5 @@
 <?php
-
+    session_start();
     include 'conexion_be.php';
 
     $usuario = $_POST['usuario'];
@@ -19,7 +19,7 @@
     
         // Verificar si la contraseña ingresada coincide con la encriptada
         if (password_verify($contrasena, $datos_usuario['contrasena'])) {
-            $_SESSION['usuario'] = $usuario;
+            $_SESSION['usuario'] = $datos_usuario['usuario']; // Guardar usuario
             $_SESSION['nombre_completo'] = $datos_usuario['nombre_completo']; // Guardar nombre
     
             header("Location: home.php");

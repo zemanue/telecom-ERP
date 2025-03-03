@@ -1,5 +1,17 @@
 <?php
+session_start(); // Iniciar sesión
 include('conexion_be.php'); // Incluye la conexión a la base de datos
+
+if (!isset($_SESSION['usuario'])) {
+    echo '<script>
+        alert("Debes iniciar sesión primero.");
+        window.location="../index.php";
+    </script>';
+    exit();
+}
+
+$nombre_completo = $_SESSION['nombre_completo']; // Obtener el nombre completo
+
 
 // Verificar si hay proveedores registrados
 $proveedores = $conexion->query("SELECT COUNT(*) as total FROM proveedor");
@@ -29,7 +41,7 @@ $proveedores_count = $proveedores->fetch_assoc()['total'];
 <body>
     <a href="../index.php" class="logout-btn">Cerrar Sesión</a>
 
-    <h1>Bienvenido a TELECOM</h1>
+    <h1>Bienvenido, <?php echo htmlspecialchars($nombre_completo); ?> </h1>
     <div class="menu-container">
         <a href="clientes.php" class="menu-item">Clientes</a>
         <a href="proveedores.php" class="menu-item">Proveedores</a>
