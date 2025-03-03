@@ -24,16 +24,16 @@
             <div class="contenedor_login_register">
                 <form action="php/login_usuario_be.php" method="POST" class="formulario_login">
                     <h2>Inicia Sesión</h2>
-                    <input type="text" placeholder="Usuario" name="usuario">
-                    <input type="password" placeholder="contraseña" name="contrasena">
+                    <input type="text" placeholder="Usuario" name="usuario" required>
+                    <input type="password" placeholder="Contraseña" name="contrasena" required>
                     <button>Entrar</button>
                 </form>
                 <form action="php/registro_usuario_be.php" method="POST" class="formulario_register">
                     <h2>Registrarse</h2>
-                    <input type="text" placeholder="Nombre completo" name="nombre_completo">
-                    <input type="text" placeholder="Correo electronico" name="correo">
-                    <input type="text" placeholder="Usuario" name="usuario">
-                    <input type="password" placeholder="Contraseña" name="contrasena">
+                    <input type="text" placeholder="Nombre completo" name="nombre_completo" required>
+                    <input type="text" placeholder="Correo electrónico" name="correo" required>
+                    <input type="text" placeholder="Usuario" name="usuario" required>
+                    <input type="password" placeholder="Contraseña" name="contrasena" required>
                     <button>Registrarse</button>
                 </form>
             </div>

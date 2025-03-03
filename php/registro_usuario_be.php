@@ -7,17 +7,6 @@ $correo = $_POST['correo'];
 $usuario = $_POST['usuario'];
 $contrasena = $_POST['contrasena'];
 
-// Para verificar que se han rellenado todos los campos
-if (empty($nombre_completo) || empty($correo) || empty($usuario) || empty($contrasena)) {
-    echo '
-    <script>
-        alert("Asegúrate de rellenar todos los campos");
-        window.location="../index.php";
-    </script>
-    ';
-    exit();
-}
-
 // La variable para verificar que el correo introducido no coincida con uno ya registrado
 $verificar_correo = mysqli_query($conexion, "SELECT * FROM usuarios WHERE correo = '$correo'");
 

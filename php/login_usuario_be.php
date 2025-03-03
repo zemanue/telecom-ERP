@@ -5,17 +5,6 @@
     $usuario = $_POST['usuario'];
     $contrasena = $_POST['contrasena'];
 
-    // Para verificar que se han rellenado todos los campos
-    if (empty($usuario) || empty($contrasena)) {
-        echo '
-        <script>
-            alert("Asegúrate de rellenar todos los campos");
-            window.location="../index.php";
-        </script>
-        ';
-        exit();
-    }
-
     // La variable para verificar que el usuario introducido existe en la base de datos
     $validar_login = mysqli_query ($conexion, "SELECT * FROM usuarios WHERE usuario = '$usuario' and contrasena = '$contrasena'");
 
