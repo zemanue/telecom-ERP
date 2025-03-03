@@ -9,6 +9,21 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Productos - ERP</title>
     <link rel="stylesheet" type="text/css" href="../assets/css/estilos_menu.css">
+    <script>
+        function verificarProveedores() {
+            var proveedoresCount = <?php
+                $proveedores = $conexion->query("SELECT COUNT(*) as total FROM proveedor");
+                echo $proveedores->fetch_assoc()['total'];
+            ?>;
+            if (proveedoresCount == 0) {
+                if (confirm("No hay proveedores registrados. Por favor, registre al menos un proveedor antes de agregar productos. ¿Desea ir a la página de proveedores?")) {
+                    window.location.href = 'proveedores.php?accion=crear';
+                }
+                return false;
+            }
+            return true;
+        }
+    </script>
 </head>
 <body>
     <a href="../index.php" class="logout-btn">Cerrar Sesión</a>
@@ -19,6 +34,9 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
     $accion = isset($_GET['accion']) ? $_GET['accion'] : 'listar';
 
     if ($accion == 'crear') {
+        // Obtener los códigos de los proveedores existentes
+        $proveedores = $conexion->query("SELECT codigo, nombre FROM proveedor");
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Procesar datos del formulario
             $nombre = $_POST['nombre'];
@@ -26,11 +44,9 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
             $precio_venta = $_POST['precio_venta'];
             $iva = $_POST['IVA'];
             $codigo_proveedor = $_POST['codigo_proveedor'];
-
             // Usar prepared statements para prevenir SQL injection
             $stmt = $conexion->prepare("INSERT INTO productos (nombre, precio_compra, precio_venta, IVA, codigo_proveedor) VALUES (?, ?, ?, ?, ?)");
             $stmt->bind_param("sddii", $nombre, $precio_compra, $precio_venta, $iva, $codigo_proveedor);
-
             // Ejecutar la consulta y verificar si fue exitosa
             if ($stmt->execute()) {
                 header("Location: productos.php"); // Redirigir al listado
@@ -39,11 +55,7 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
                 echo "Error: " . $stmt->error;
             }
         }
-
-        // Obtener los códigos de los proveedores existentes
-        $proveedores = $conexion->query("SELECT codigo, nombre FROM proveedor");
         ?>
-
         <h2>Agregar Producto</h2>
         <form method="POST" action="productos.php?accion=crear">
             <input type="text" name="nombre" placeholder="Nombre" required>
@@ -61,7 +73,6 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
         <div class="volver-a" style="text-align: center; margin-top: 10px;">
             <a href="productos.php" class="menu-item">Volver a Productos</a>
         </div>
-
         <?php
     } elseif ($accion == 'editar') {
         $codigo = isset($_GET['codigo']) ? $_GET['codigo'] : null;
@@ -137,7 +148,7 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
         ?>
 
         <h1>Lista de Productos</h1>
-        <a href="productos.php?accion=crear" class="menu-item">Agregar Producto</a>
+        <a href="productos.php?accion=crear" class="menu-item" onclick="return verificarProveedores();">Agregar Producto</a>
         <table>
             <thead>
                 <tr>
