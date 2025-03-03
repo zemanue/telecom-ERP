@@ -5,7 +5,7 @@ include 'conexion_be.php';
 $nombre_completo = $_POST['nombre_completo'];
 $correo = $_POST['correo'];
 $usuario = $_POST['usuario'];
-$contrasena = $_POST['contrasena'];
+$contrasena = password_hash($_POST['contrasena'], PASSWORD_BCRYPT); // 🔒 Encriptar la contraseña
 
 // La variable para verificar que el correo introducido no coincida con uno ya registrado
 $verificar_correo = mysqli_query($conexion, "SELECT * FROM usuarios WHERE correo = '$correo'");
@@ -19,7 +19,7 @@ if (!$verificar_correo) {
 if (mysqli_num_rows($verificar_correo) > 0) {
     echo '
     <script>
-        alert("Correo ya registrado anteriormente , prueba con otro.");
+        alert("Correo ya registrado anteriormente , intente introducir otro.");
         window.location="../index.php";
     </script>
     ';

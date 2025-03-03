@@ -29,7 +29,7 @@ $proveedores_count = $proveedores->fetch_assoc()['total'];
 <body>
     <a href="../index.php" class="logout-btn">Cerrar Sesión</a>
 
-    <h1>Bienvenido al ERP</h1>
+    <h1>Bienvenido a TELECOM</h1>
     <div class="menu-container">
         <a href="clientes.php" class="menu-item">Clientes</a>
         <a href="proveedores.php" class="menu-item">Proveedores</a>
