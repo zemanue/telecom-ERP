@@ -174,7 +174,7 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
                     echo "<td>";
                     echo "<a href='productos.php?accion=editar&codigo=" . $producto['codigo'] . "'>Editar</a>";
                     echo " | ";
-                    echo "<a href='productos.php?accion=eliminar&codigo=" . $producto['codigo'] . "'>Eliminar</a>";
+                    echo "<a href='productos.php?accion=eliminar&codigo=" . $producto['codigo'] . "' onclick='return confirm(\"¿Estás seguro de eliminar este producto?\");'>Eliminar</a>";
                     echo "</td>";
                     echo "</tr>";
                 }
