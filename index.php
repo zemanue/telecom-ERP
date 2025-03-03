@@ -21,7 +21,7 @@
                     <button id="btn_registrarse">Registrarse</button>
                 </div>
             </div>
-            <div class="contenedor_login-register">
+            <div class="contenedor_login_register">
                 <form action="php/login_usuario_be.php" method="POST" class="formulario_login">
                     <h2>Inicia Sesión</h2>
                     <input type="text" placeholder="Usuario" name="usuario">
