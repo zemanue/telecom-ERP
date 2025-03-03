@@ -130,7 +130,7 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
                 <td>
                     <a href='empleados.php?accion=editar&codigo={$fila['codigo']}'>Editar</a> |
                     <a href='empleados.php?accion=eliminar&codigo={$fila['codigo']}' 
-                       onclick='return confirm(\"¿Estás seguro de eliminar este empleado?\");'>Eliminar</a>
+                        onclick='return confirm(\"¿Estás seguro de eliminar este empleado?\");'>Eliminar</a>
                 </td>
             </tr>";
         }

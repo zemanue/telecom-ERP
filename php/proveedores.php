@@ -154,7 +154,7 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
                 <td>
                     <a href='proveedores.php?accion=editar&codigo={$fila['codigo']}'>Editar</a> |
                     <a href='proveedores.php?accion=eliminar&codigo={$fila['codigo']}' 
-                       onclick='return confirm(\"¿Estás seguro de eliminar este proveedor?\");'>Eliminar</a>
+                        onclick='return confirm(\"¿Estás seguro de eliminar este proveedor?\");'>Eliminar</a>
                 </td>
             </tr>";
         }
