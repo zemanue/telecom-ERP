@@ -35,7 +35,8 @@ CREATE TABLE 'productos' (
   'codigo_proveedor' INT(11) NOT NULL,
   'codigo_almacen' INT(11) NOT NULL,
   PRIMARY KEY ('codigo'),
-  FOREIGN KEY ('codigo_proveedor') REFERENCES 'proveedor'('codigo') ON DELETE CASCADE
+  FOREIGN KEY ('codigo_proveedor') REFERENCES 'proveedor'('codigo') ON DELETE CASCADE,
+  FOREIGN KEY ('codigo_almacen') REFERENCES 'almacen'('codigo') ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE 'empleados' (
@@ -80,4 +81,11 @@ CREATE TABLE 'usuarios' (
   'correo' VARCHAR(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY ('usuario'),
   UNIQUE ('correo')
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE 'almacenes' (
+  'codigo' INT(11) NOT NULL AUTO_INCREMENT,
+  'nombre_almacen' VARCHAR(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  'ubicacion' VARCHAR(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY ('codigo')
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
