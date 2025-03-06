@@ -25,7 +25,7 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
             $ubicacion = $_POST['ubicacion'];
 
             // Usar prepared statements para prevenir SQL injection
-            $stmt = $conexion->prepare("INSERT INTO almacenes (nombre_almacen, ubicacion) VALUES (?, ?)");
+            $stmt = $conexion->prepare("INSERT INTO almacen (nombre_almacen, ubicacion) VALUES (?, ?)");
             if ($stmt) {
                 $stmt->bind_param("ss", $nombre_almacen, $ubicacion);
 
@@ -60,7 +60,7 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
             $ubicacion = $_POST['ubicacion'];
 
             // Usar prepared statements para prevenir SQL injection
-            $stmt = $conexion->prepare("UPDATE almacenes SET nombre_almacen = ?, ubicacion = ? WHERE codigo = ?");
+            $stmt = $conexion->prepare("UPDATE almacen SET nombre_almacen = ?, ubicacion = ? WHERE codigo = ?");
             $stmt->bind_param("ssi", $nombre_almacen, $ubicacion, $codigo);
 
             // Ejecutar la consulta y verificar si fue exitosa
@@ -88,7 +88,7 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
         $codigo = isset($_GET['codigo']) ? $_GET['codigo'] : null;
         if ($codigo) {
             // Usar prepared statements para prevenir SQL injection
-            $stmt = $conexion->prepare("DELETE FROM almacenes WHERE codigo = ?");
+            $stmt = $conexion->prepare("DELETE FROM almacen WHERE codigo = ?");
             $stmt->bind_param("i", $codigo);
 
             // Ejecutar la consulta y verificar si fue exitosa
@@ -101,7 +101,7 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
         }
     } else {
         // Listar almacenes (acción predeterminada)
-        $sql = "SELECT * FROM almacenes";
+        $sql = "SELECT * FROM almacen";
         $resultado = mysqli_query($conexion, $sql);
 
         echo "<h1>Lista de Almacenes</h1>";
