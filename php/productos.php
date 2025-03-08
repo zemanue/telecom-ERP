@@ -10,6 +10,9 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
     <title>Productos - ERP</title>
     <link rel="stylesheet" type="text/css" href="../assets/css/estilos_menu.css">
     <script>
+        function verificarProveedoresYAlmacenes() {
+            return verificarProveedores() && verificarAlmacenes();
+        }
         function verificarProveedores() {
             var proveedoresCount = <?php
                 $proveedores = $conexion->query("SELECT COUNT(*) as total FROM proveedor");
@@ -23,7 +26,7 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
             }
             return true;
         }
-        function confirmarAlmacenes() {
+        function verificarAlmacenes() {
             var almacenesCount = <?php
                 $almacenes = $conexion->query("SELECT COUNT(*) as total FROM almacen");
                 echo $almacenes->fetch_assoc()['total'];
@@ -180,7 +183,7 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
         ?>
 
         <h1>Lista de Productos</h1>
-        <a href="productos.php?accion=crear" class="menu-item" onclick="return verificarProveedores();">Agregar Producto</a>
+        <a href="productos.php?accion=crear" class="menu-item" onclick="return verificarProveedoresYAlmacenes();">Agregar Producto</a>
         <table>
             <thead>
                 <tr>

@@ -36,6 +36,19 @@ $proveedores_count = $proveedores->fetch_assoc()['total'];
             }
             return true;
         }
+        function verificarAlmacenes() {
+            var almacenesCount = <?php
+                $almacenes = $conexion->query("SELECT COUNT(*) as total FROM almacen");
+                echo $almacenes->fetch_assoc()['total'];
+            ?>;
+            if (almacenesCount == 0) {
+                if (confirm("No hay almacenes registrados. Por favor, registre al menos un almacén antes de agregar productos. ¿Desea ir a la página de almacenes?")) {
+                    window.location.href = 'almacenes.php?accion=crear';
+                }
+                return false;
+            }
+            return true;
+        }
     </script>
 </head>
 <body>
@@ -47,7 +60,7 @@ $proveedores_count = $proveedores->fetch_assoc()['total'];
         <a href="proveedores.php" class="menu-item">Proveedores</a>
         <a href="empleados.php" class="menu-item">Empleados</a>
         <a href="productos.php" class="menu-item" onclick="return verificarProveedores();">Productos</a>
-        <a href="almacenes.php" class="menu-item">Almacenes</a>
+        <a href="almacenes.php" class="menu-item" onclick="return verificarAlmacenes();">Almacenes</a>
         <a href="factura_compra.php" class="menu-item">Factura de Compra</a>
         <a href="factura_venta.php" class="menu-item">Factura de Venta</a>
     </div>
