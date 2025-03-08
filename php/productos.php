@@ -23,6 +23,19 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
             }
             return true;
         }
+        function confirmarAlmacenes() {
+            var almacenesCount = <?php
+                $almacenes = $conexion->query("SELECT COUNT(*) as total FROM almacen");
+                echo $almacenes->fetch_assoc()['total'];
+            ?>;
+            if (almacenesCount == 0) {
+                if (confirm("No hay almacenes registrados. Por favor, registre al menos un almacén antes de agregar productos. ¿Desea ir a la página de almacenes?")) {
+                    window.location.href = 'almacenes.php?accion=crear';
+                }
+                return false;
+            }
+            return true;
+        }
     </script>
 </head>
 <body>
@@ -34,8 +47,9 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
     $accion = isset($_GET['accion']) ? $_GET['accion'] : 'listar';
 
     if ($accion == 'crear') {
-        // Obtener los códigos de los proveedores existentes
+        // Obtener los códigos de los proveedores y almacenes existentes
         $proveedores = $conexion->query("SELECT codigo, nombre FROM proveedor");
+        $almacenes = $conexion->query("SELECT codigo, nombre_almacen FROM almacen");
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Procesar datos del formulario
@@ -44,9 +58,12 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
             $precio_venta = $_POST['precio_venta'];
             $iva = $_POST['IVA'];
             $codigo_proveedor = $_POST['codigo_proveedor'];
+            $codigo_almacen = $_POST['codigo_almacen'];
+
             // Usar prepared statements para prevenir SQL injection
-            $stmt = $conexion->prepare("INSERT INTO productos (nombre, precio_compra, precio_venta, IVA, codigo_proveedor) VALUES (?, ?, ?, ?, ?)");
-            $stmt->bind_param("sddii", $nombre, $precio_compra, $precio_venta, $iva, $codigo_proveedor);
+            $stmt = $conexion->prepare("INSERT INTO productos (nombre, precio_compra, precio_venta, IVA, codigo_proveedor, codigo_almacen) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("sddii", $nombre, $precio_compra, $precio_venta, $iva, $codigo_proveedor, $codigo_almacen);
+
             // Ejecutar la consulta y verificar si fue exitosa
             if ($stmt->execute()) {
                 header("Location: productos.php"); // Redirigir al listado
@@ -68,6 +85,12 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
                     <option value="<?php echo $proveedor['codigo']; ?>"><?php echo $proveedor['codigo'] . " - " . $proveedor['nombre']; ?></option>
                 <?php } ?>
             </select>
+            <select name="codigo_almacen" required>
+                <option value="">Seleccione un almacén</option>
+                <?php while ($almacen = $almacenes->fetch_assoc()) { ?>
+                    <option value="<?php echo $almacen['codigo']; ?>"><?php echo $almacen['codigo'] . " - " . $almacen['nombre_almacen']; ?></option>
+                <?php } ?>
+            </select>
             <button type="submit">Agregar</button>
         </form>
         <div class="volver-a" style="text-align: center; margin-top: 10px;">
@@ -83,10 +106,11 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
             $precio_venta = $_POST['precio_venta'];
             $iva = $_POST['IVA'];
             $codigo_proveedor = $_POST['codigo_proveedor'];
+            $codigo_almacen = $_POST['codigo_almacen'];
 
             // Usar prepared statements para prevenir SQL injection
-            $stmt = $conexion->prepare("UPDATE productos SET nombre = ?, precio_compra = ?, precio_venta = ?, IVA = ?, codigo_proveedor = ? WHERE codigo = ?");
-            $stmt->bind_param("sddiii", $nombre, $precio_compra, $precio_venta, $iva, $codigo_proveedor, $codigo);
+            $stmt = $conexion->prepare("UPDATE productos SET nombre = ?, precio_compra = ?, precio_venta = ?, IVA = ?, codigo_proveedor = ?, codigo_almacen = ? WHERE codigo = ?");
+            $stmt->bind_param("sddiiii", $nombre, $precio_compra, $precio_venta, $iva, $codigo_proveedor, $codigo_almacen, $codigo);
 
             // Ejecutar la consulta y verificar si fue exitosa
             if ($stmt->execute()) {
@@ -122,6 +146,14 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
                     </option>
                 <?php } ?>
             </select>
+            <select name="codigo_almacen" required>
+                <option value="">Seleccione un almacén</option>
+                <?php
+                $almacenes = $conexion->query("SELECT codigo, nombre FROM almacen");
+                while ($almacen = $almacenes->fetch_assoc()) {
+                    echo "<option value='" . $almacen['codigo'] . "' " . ($almacen['codigo'] == $producto['codigo_almacen'] ? 'selected' : '') . ">" . $almacen['codigo'] . " - " . $almacen['nombre'] . "</option>";
+                }
+                ?>
             <button type="submit">Actualizar</button>
         </form>
 
@@ -158,6 +190,7 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
                     <th>Precio de Venta</th>
                     <th>IVA</th>
                     <th>Código de Proveedor</th>
+                    <th>Código de Almacén</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -171,6 +204,7 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
                     echo "<td>" . $producto['precio_venta'] . "</td>";
                     echo "<td>" . $producto['IVA'] . "</td>";
                     echo "<td>" . $producto['codigo_proveedor'] . "</td>";
+                    echo "<td>" . $producto['codigo_almacen'] . "</td>";
                     echo "<td>";
                     echo "<a href='productos.php?accion=editar&codigo=" . $producto['codigo'] . "'>Editar</a>";
                     echo " | ";
