@@ -4,14 +4,16 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clientes - ERP</title>
     <link rel="stylesheet" type="text/css" href="../assets/css/estilos_menu.css">
 </head>
+
 <body>
-    <a href="../index.php" class="logout-btn">Cerrar Sesión</a>
+    <a href="../index.html" class="logout-btn">Cerrar Sesión</a>
     <a href="home.php" class="menu-item">Volver al Menú</a>
 
     <?php
@@ -166,12 +168,5 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
     $conexion->close();
     ?>
 </body>
+
 </html>
-
-
-
-
-
-
-
-

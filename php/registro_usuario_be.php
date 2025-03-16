@@ -20,7 +20,7 @@ if (mysqli_num_rows($verificar_correo) > 0) {
     echo '
     <script>
         alert("Correo ya registrado anteriormente , intente introducir otro.");
-        window.location="../index.php";
+        window.location="../index.html";
     </script>
     ';
     exit();
@@ -39,7 +39,7 @@ if (mysqli_num_rows($verificar_usuario) > 0) {
     echo '
     <script>
         alert("Usuario ya registrado anteriormente , prueba con otro.");
-        window.location="../index.php";
+        window.location="../index.html";
     </script>
     ';
     exit();
@@ -60,14 +60,14 @@ if ($ejecutar_usuario) {
         echo '
         <script>
             alert("Usuario y empleado almacenados correctamente.");
-            window.location = "../index.php";
+            window.location = "../index.html";
         </script>
         ';
     } else {
         echo '
         <script>
             alert("Usuario almacenado, pero error al registrar en empleados.");
-            window.location = "../index.php";
+            window.location = "../index.html";
         </script>
         ';
     }
@@ -75,10 +75,9 @@ if ($ejecutar_usuario) {
     echo '
     <script>
         alert("Error al registrar el usuario, intentelo de nuevo.");
-        window.location = "../index.php";
+        window.location = "../index.html";
     </script>
     ';
 }
 
 mysqli_close($conexion);
-?>

@@ -5,7 +5,7 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
 if (!isset($_SESSION['usuario'])) {
     echo '<script>
         alert("Debes iniciar sesión primero.");
-        window.location="../index.php";
+        window.location="../index.html";
     </script>';
     exit();
 }
@@ -20,6 +20,7 @@ $proveedores_count = $proveedores->fetch_assoc()['total'];
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,8 +39,8 @@ $proveedores_count = $proveedores->fetch_assoc()['total'];
         }
         function verificarAlmacenes() {
             var almacenesCount = <?php
-                $almacenes = $conexion->query("SELECT COUNT(*) as total FROM almacen");
-                echo $almacenes->fetch_assoc()['total'];
+            $almacenes = $conexion->query("SELECT COUNT(*) as total FROM almacen");
+            echo $almacenes->fetch_assoc()['total'];
             ?>;
             if (almacenesCount == 0) {
                 if (confirm("No hay almacenes registrados. Por favor, registre al menos un almacén antes de agregar productos. ¿Desea ir a la página de almacenes?")) {
@@ -51,8 +52,9 @@ $proveedores_count = $proveedores->fetch_assoc()['total'];
         }
     </script>
 </head>
+
 <body>
-    <a href="../index.php" class="logout-btn">Cerrar Sesión</a>
+    <a href="../index.html" class="logout-btn">Cerrar Sesión</a>
 
     <h1>Bienvenido, <?php echo htmlspecialchars($nombre_completo); ?> </h1>
     <div class="menu-container">
@@ -68,4 +70,5 @@ $proveedores_count = $proveedores->fetch_assoc()['total'];
         &copy; <?php echo date("Y"); ?> ERP System. Todos los derechos reservados.
     </footer>
 </body>
+
 </html>

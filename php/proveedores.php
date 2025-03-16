@@ -4,14 +4,16 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proveedores - ERP</title>
     <link rel="stylesheet" type="text/css" href="../assets/css/estilos_menu.css">
 </head>
+
 <body>
-    <a href="../index.php" class="logout-btn">Cerrar Sesión</a>
+    <a href="../index.html" class="logout-btn">Cerrar Sesión</a>
     <a href="home.php" class="menu-item">Volver al Menú</a>
 
     <?php
@@ -57,7 +59,7 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
         <div class="volver-a" style="text-align: center; margin-top: 10px;">
             <a href="empleados.php" class="menu-item">Volver a Proveedores</a>
         </div>
-        
+
         <?php
     } elseif ($accion == 'editar') {
         $codigo = isset($_GET['codigo']) ? $_GET['codigo'] : null;
@@ -166,4 +168,5 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
     $conexion->close();
     ?>
 </body>
+
 </html>

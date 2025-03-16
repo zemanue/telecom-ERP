@@ -4,6 +4,7 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,8 +16,8 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
         }
         function verificarProveedores() {
             var proveedoresCount = <?php
-                $proveedores = $conexion->query("SELECT COUNT(*) as total FROM proveedor");
-                echo $proveedores->fetch_assoc()['total'];
+            $proveedores = $conexion->query("SELECT COUNT(*) as total FROM proveedor");
+            echo $proveedores->fetch_assoc()['total'];
             ?>;
             if (proveedoresCount == 0) {
                 if (confirm("No hay proveedores registrados. Por favor, registre al menos un proveedor antes de agregar productos. ¿Desea ir a la página de proveedores?")) {
@@ -28,8 +29,8 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
         }
         function verificarAlmacenes() {
             var almacenesCount = <?php
-                $almacenes = $conexion->query("SELECT COUNT(*) as total FROM almacen");
-                echo $almacenes->fetch_assoc()['total'];
+            $almacenes = $conexion->query("SELECT COUNT(*) as total FROM almacen");
+            echo $almacenes->fetch_assoc()['total'];
             ?>;
             if (almacenesCount == 0) {
                 if (confirm("No hay almacenes registrados. Por favor, registre al menos un almacén antes de agregar productos. ¿Desea ir a la página de almacenes?")) {
@@ -41,8 +42,9 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
         }
     </script>
 </head>
+
 <body>
-    <a href="../index.php" class="logout-btn">Cerrar Sesión</a>
+    <a href="../index.html" class="logout-btn">Cerrar Sesión</a>
     <a href="home.php" class="menu-item">Volver al Menú</a>
 
     <?php
@@ -85,13 +87,15 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
             <select name="codigo_proveedor" required>
                 <option value="">Seleccione un proveedor</option>
                 <?php while ($proveedor = $proveedores->fetch_assoc()) { ?>
-                    <option value="<?php echo $proveedor['codigo']; ?>"><?php echo $proveedor['codigo'] . " - " . $proveedor['nombre']; ?></option>
+                    <option value="<?php echo $proveedor['codigo']; ?>">
+                        <?php echo $proveedor['codigo'] . " - " . $proveedor['nombre']; ?></option>
                 <?php } ?>
             </select>
             <select name="codigo_almacen" required>
                 <option value="">Seleccione un almacén</option>
                 <?php while ($almacen = $almacenes->fetch_assoc()) { ?>
-                    <option value="<?php echo $almacen['codigo']; ?>"><?php echo $almacen['codigo'] . " - " . $almacen['nombre_almacen']; ?></option>
+                    <option value="<?php echo $almacen['codigo']; ?>">
+                        <?php echo $almacen['codigo'] . " - " . $almacen['nombre_almacen']; ?></option>
                 <?php } ?>
             </select>
             <button type="submit">Agregar</button>
@@ -138,13 +142,16 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
         <h2>Editar Producto</h2>
         <form method="POST" action="productos.php?accion=editar&codigo=<?php echo $codigo; ?>">
             <input type="text" name="nombre" placeholder="Nombre" value="<?php echo $producto['nombre']; ?>" required>
-            <input type="number" step="0.01" name="precio_compra" placeholder="Precio de Compra" value="<?php echo $producto['precio_compra']; ?>" required>
-            <input type="number" step="0.01" name="precio_venta" placeholder="Precio de Venta" value="<?php echo $producto['precio_venta']; ?>" required>
+            <input type="number" step="0.01" name="precio_compra" placeholder="Precio de Compra"
+                value="<?php echo $producto['precio_compra']; ?>" required>
+            <input type="number" step="0.01" name="precio_venta" placeholder="Precio de Venta"
+                value="<?php echo $producto['precio_venta']; ?>" required>
             <input type="number" step="0.01" name="IVA" placeholder="IVA" value="<?php echo $producto['IVA']; ?>" required>
             <select name="codigo_proveedor" required>
                 <option value="">Seleccione un proveedor</option>
                 <?php while ($proveedor = $proveedores->fetch_assoc()) { ?>
-                    <option value="<?php echo $proveedor['codigo']; ?>" <?php if ($proveedor['codigo'] == $producto['codigo_proveedor']) echo 'selected'; ?>>
+                    <option value="<?php echo $proveedor['codigo']; ?>" <?php if ($proveedor['codigo'] == $producto['codigo_proveedor'])
+                           echo 'selected'; ?>>
                         <?php echo $proveedor['codigo'] . " - " . $proveedor['nombre']; ?>
                     </option>
                 <?php } ?>
@@ -157,7 +164,7 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
                     echo "<option value='" . $almacen['codigo'] . "' " . ($almacen['codigo'] == $producto['codigo_almacen'] ? 'selected' : '') . ">" . $almacen['codigo'] . " - " . $almacen['nombre'] . "</option>";
                 }
                 ?>
-            <button type="submit">Actualizar</button>
+                <button type="submit">Actualizar</button>
         </form>
 
         <?php
@@ -183,7 +190,8 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
         ?>
 
         <h1>Lista de Productos</h1>
-        <a href="productos.php?accion=crear" class="menu-item" onclick="return verificarProveedoresYAlmacenes();">Agregar Producto</a>
+        <a href="productos.php?accion=crear" class="menu-item" onclick="return verificarProveedoresYAlmacenes();">Agregar
+            Producto</a>
         <table>
             <thead>
                 <tr>
@@ -223,4 +231,5 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
     }
     ?>
 </body>
+
 </html>
