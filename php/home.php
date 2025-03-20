@@ -50,6 +50,32 @@ $proveedores_count = $proveedores->fetch_assoc()['total'];
             }
             return true;
         }
+        function verificarEmpleados() {
+            var empleadosCount = <?php
+            $empleados = $conexion->query("SELECT COUNT(*) as total FROM empleados");
+            echo $empleados->fetch_assoc()['total'];
+            ?>;
+            if (empleadosCount == 0) {
+                if (confirm("No hay empleados registrados. Por favor, registre al menos un empleado antes de agregar facturas. ¿Desea ir a la página de empleados?")) {
+                    window.location.href = 'empleados.php?accion=crear';
+                }
+                return false;
+            }
+            return true;
+        }
+        function verificarProductos() {
+        var productosCount = <?php
+        $productos = $conexion->query("SELECT COUNT(*) as total FROM productos");
+        echo $productos->fetch_assoc()['total'];
+        ?>;
+        if (productosCount == 0) {
+            if (confirm("No hay productos registrados. Por favor, registre al menos un producto antes de agregar facturas. ¿Desea ir a la página de productos?")) {
+                window.location.href = 'productos.php?accion=crear';
+            }
+            return false;
+        }
+        return true;
+    }
     </script>
 </head>
 
@@ -61,9 +87,9 @@ $proveedores_count = $proveedores->fetch_assoc()['total'];
         <a href="clientes.php" class="menu-item">Clientes</a>
         <a href="proveedores.php" class="menu-item">Proveedores</a>
         <a href="empleados.php" class="menu-item">Empleados</a>
-        <a href="productos.php" class="menu-item" onclick="return verificarProveedores();">Productos</a>
-        <a href="almacenes.php" class="menu-item" onclick="return verificarAlmacenes();">Almacenes</a>
-        <a href="factura_compra.php" class="menu-item">Factura de Compra</a>
+        <a href="productos.php" class="menu-item" onclick="return verificarProveedores()&& verificarAlmacenes();">Productos</a>
+        <a href="almacenes.php" class="menu-item" >Almacenes</a>
+        <a href="factura_compra.php" class="menu-item" onclick ="return verificarProveedores()&& verificarAlmacenes()&& verificarProductos();">Factura de Compra</a>
         <a href="factura_venta.php" class="menu-item">Factura de Venta</a>
     </div>
     <footer>

@@ -67,7 +67,7 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
 
             // Usar prepared statements para prevenir SQL injection
             $stmt = $conexion->prepare("INSERT INTO productos (nombre, precio_compra, precio_venta, IVA, codigo_proveedor, codigo_almacen) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("sddii", $nombre, $precio_compra, $precio_venta, $iva, $codigo_proveedor, $codigo_almacen);
+            $stmt->bind_param("sddiii", $nombre, $precio_compra, $precio_venta, $iva, $codigo_proveedor, $codigo_almacen);
 
             // Ejecutar la consulta y verificar si fue exitosa
             if ($stmt->execute()) {
