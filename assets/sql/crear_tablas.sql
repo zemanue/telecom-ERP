@@ -54,7 +54,8 @@ CREATE TABLE `factura_compra` (
   `codigo_proveedor` INT(11) NOT NULL,
   `codigo_empleado` INT(11) NOT NULL,
   PRIMARY KEY (`codigo`),
-  FOREIGN KEY (`codigo_proveedor`) REFERENCES `proveedor`(`codigo`) ON DELETE CASCADE
+  FOREIGN KEY (`codigo_proveedor`) REFERENCES `proveedor`(`codigo`) ON DELETE CASCADE, 
+  FOREIGN KEY (`codigo_empleado`) REFERENCES `empleados`(`codigo`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `factura_venta` (
@@ -64,7 +65,8 @@ CREATE TABLE `factura_venta` (
   `codigo_cliente` INT(11) NOT NULL,
   `codigo_empleado` INT(11) NOT NULL,
   PRIMARY KEY (`codigo`),
-  FOREIGN KEY (`codigo_cliente`) REFERENCES `cliente`(`codigo`) ON DELETE CASCADE
+  FOREIGN KEY (`codigo_cliente`) REFERENCES `cliente`(`codigo`) ON DELETE CASCADE,
+  FOREIGN KEY (`codigo_empleado`) REFERENCES `empleados`(`codigo`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `almacen`(
