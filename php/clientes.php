@@ -1,5 +1,5 @@
 <?php
-include('conexion_be.php'); // Incluye la conexión a la base de datos
+include '../models/conexion_be.php'; // Incluye la conexión a la base de datos
 ?>
 
 <!DOCTYPE html>
