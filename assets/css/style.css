@@ -1,0 +1,98 @@
+/* Barra lateral */
+.sidebar {
+    height: 100vh;
+    width: 250px;
+    position: fixed;
+    background: #212529;
+    padding-top: 20px;
+    z-index: 100;
+    /* Asegura que esté por encima de otros elementos */
+}
+
+.sidebar a {
+    color: white;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: background 0.3s;
+    width: 100%;
+    /* Asegura que el enlace ocupe toda la anchura */
+}
+
+.sidebar a i {
+    margin-right: 10px;
+}
+
+.sidebar a:hover {
+    background-color: #707981;
+    /* Color de fondo en hover */
+    color: white;
+    /* El color de texto se mantiene blanco */
+}
+
+/* Barra lateral específica */
+.sidebar .sidebar-item a:hover {
+    background-color: #343a40;
+}
+
+/* Contenedor principal */
+.content {
+    margin-left: 260px;
+    padding: 20px;
+}
+
+/* Estilo del icono de perfil */
+.profile-dropdown {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1050;
+    /* Asegura que quede encima de todo */
+}
+
+.profile-dropdown img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    object-fit: cover;
+    /* No se estira la imagen */
+}
+
+/* Ocultar el formulario al inicio */
+#formularioCliente {
+    display: none;
+}
+
+/* Separación entre botones de acción (Editar y Eliminar) */
+.acciones {
+    display: flex;
+    gap: 10px;
+    /* Añade espacio entre los botones */
+}
+
+.acciones a {
+    width: 48%;
+    /* Los botones ocuparán casi la mitad del espacio */
+    text-align: center;
+    /* Centra el texto dentro de los botones */
+}
+
+/* Ajuste para el título */
+h1 {
+    font-size: 1.75rem;
+    /* Tamaño reducido */
+    font-weight: 600;
+    color: #0d6efd;
+    /* Color azul */
+    margin-bottom: 20px;
+    /* Separación del contenido */
+}
+
+/* Reducir tamaño de la fuente en la tabla */
+.table td,
+.table th {
+    font-size: 0.875rem;
+    /* Tamaño más pequeño */
+}

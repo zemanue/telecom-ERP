@@ -1,0 +1,51 @@
+.sidebar {
+    height: 100vh;
+    position: fixed;
+    width: 250px;
+    background: #212529;
+    padding-top: 20px;
+}
+
+.sidebar a {
+    color: white;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+.sidebar a i {
+    margin-right: 10px;
+}
+
+.sidebar a:hover {
+    background-color: #343a40;
+}
+
+.content {
+    margin-left: 260px;
+    padding: 20px;
+}
+
+.profile-icon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+    color: white;
+}
+
+.profile-icon:hover {
+    color: #0d6efd;
+}
+
+/* Estilo de la tabla */
+.table thead {
+    background-color: #0d6efd;
+    color: white;
+}
+
+.btn i {
+    margin-right: 5px;
+}
