@@ -1,6 +1,6 @@
 <?php
 session_start(); // Iniciar sesión
-include('conexion_be.php'); // Incluye la conexión a la base de datos
+include '..\config\conexion_be.php'; // Incluye la conexión a la base de datos
 
 if (!isset($_SESSION['usuario'])) {
     echo '<script>

@@ -1,5 +1,5 @@
 <?php
-include('conexion_be.php'); // Incluye la conexión a la base de datos
+include '..\config\conexion_be.php'; // Incluye la conexión a la base de datos
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +14,19 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
 
 <body>
     <a href="../index.html" class="logout-btn">Cerrar Sesión</a>
-    <a href="home.php" class="menu-item">Volver al Menú</a>
+    <div class="container">
+        <!-- Menu de botones -->
+        <div class="menu-container">
+            <a href="clientes.php" class="menu-item active">Clientes</a>
+            <a href="proveedores.php" class="menu-item">Proveedores</a>
+            <a href="empleados.php" class="menu-item">Empleados</a>
+            <a href="productos.php" class="menu-item" onclick="return verificarProveedores()&& verificarAlmacenes();">Productos</a>
+            <a href="almacenes.php" class="menu-item-active">Almacenes</a>
+            <a href="factura_compra.php" class="menu-item" onclick="return verificarProveedores()&& verificarAlmacenes()&& verificarProductos();">Factura de Compra</a>
+            <a href="factura_venta.php" class="menu-item">Factura de Venta</a>
+        </div>
+
+        <div class="content-container">
 
     <?php
     // Determinar la acción a realizar basada en el parámetro 'accion' de la URL
@@ -107,7 +119,7 @@ include('conexion_be.php'); // Incluye la conexión a la base de datos
         $resultado = mysqli_query($conexion, $sql);
 
         echo "<h1>Lista de Almacenes</h1>";
-        echo "<a href='almacenes.php?accion=crear' class='menu-item'>Agregar Almacén</a>";
+        echo "<a href='almacenes.php?accion=crear' class='btn_agregar_item'>+</a>";
         echo "<table border='1'>";
         echo "<tr>
             <th>Código</th>

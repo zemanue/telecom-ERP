@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'conexion_be.php';
+include  '..\config\conexion_be.php';
 
 $usuario = $_POST['usuario'];
 $contrasena = $_POST['contrasena'];
