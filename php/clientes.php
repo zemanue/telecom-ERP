@@ -88,24 +88,24 @@
 
                     while ($fila = mysqli_fetch_assoc($resultado)) {
                         echo "<tr>
-                            <td>{$fila['codigo']}</td>
-                            <td>{$fila['telefono']}</td>
-                            <td>{$fila['nif']}</td>
-                            <td>{$fila['nombre']}</td>
-                            <td>{$fila['direccion']}</td>
-                            <td>{$fila['poblacion']}</td>
-                            <td>{$fila['email']}</td>
-                            <td>{$fila['metodo_pago']}</td>
-                            <td class='acciones'>
-                                <a href='clientes.php?accion=editar&codigo={$fila['codigo']}' class='btn btn-warning btn-sm'>
-                                    <i class='fas fa-edit'></i> Editar
-                                </a>
-                                <a href='clientes.php?accion=eliminar&codigo={$fila['codigo']}' class='btn btn-danger btn-sm' 
-                                   onclick='return confirm(\"¿Eliminar este cliente?\");'>
-                                    <i class='fas fa-trash-alt'></i> Eliminar
-                                </a>
-                            </td>
-                          </tr>";
+                                <td>{$fila['codigo']}</td>
+                                <td>{$fila['telefono']}</td>
+                                <td>{$fila['nif']}</td>
+                                <td>{$fila['nombre']}</td>
+                                <td>{$fila['direccion']}</td>
+                                <td>{$fila['poblacion']}</td>
+                                <td>{$fila['email']}</td>
+                                <td>{$fila['metodo_pago']}</td>
+                                <td class='acciones'>
+                                    <a href='clientes.php?accion=editar&codigo={$fila['codigo']}' class='btn btn-warning btn-sm'>
+                                        <i class='fas fa-edit'></i> Editar
+                                    </a>
+                                    <a href='clientes.php?accion=eliminar&codigo={$fila['codigo']}' class='btn btn-danger btn-sm' 
+                                    onclick='return confirm(\"¿Eliminar este cliente?\");'>
+                                        <i class='fas fa-trash-alt'></i> Eliminar
+                                    </a>
+                                </td>
+                            </tr>";
                     }
                     ?>
                 </tbody>
