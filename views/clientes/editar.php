@@ -10,8 +10,12 @@ Este archivo contiene el formulario de editar clientes
             <h5 class="mb-0"><i class="fas fa-edit"></i> Editar Cliente</h5>
         </div>
         <div class="card-body">
+
             <!-- Definimos un formulario de método POST para enviar a ClienteController.php -->
             <form method="POST" action="../controllers/ClienteController.php?action=edit">
+
+                <!-- Campo oculto para la acción de edición -->
+                <input type="hidden" name="action" value="edit">
 
                 <!-- Campo oculto para el código del cliente -->
                 <input type="hidden" name="codigo" value="<?php echo $cliente['codigo']; ?>">

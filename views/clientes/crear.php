@@ -13,6 +13,10 @@ Este archivo contiene el formulario de crear clientes
 
             <!-- Definimos un formulario de método POST para enviar a ClienteController.php -->
             <form method="POST" action="../controllers/ClienteController.php?action=create">
+
+                <!-- Campo oculto para la acción de creación -->
+                <input type="hidden" name="action" value="create">
+
                 <div class="row">
 
                     <!-- Campos del formulario -->
