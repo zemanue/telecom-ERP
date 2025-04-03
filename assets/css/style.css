@@ -36,12 +36,6 @@
     background-color: #343a40;
 }
 
-/* Contenedor principal */
-.content {
-    margin-left: 260px;
-    padding: 20px;
-}
-
 /* Estilo del icono de perfil */
 .profile-dropdown {
     position: fixed;
@@ -58,6 +52,12 @@
     cursor: pointer;
     object-fit: cover;
     /* No se estira la imagen */
+}
+
+/* Contenedor principal */
+.content {
+    margin-left: 260px;
+    padding: 20px;
 }
 
 /* Ocultar el formulario al inicio */
