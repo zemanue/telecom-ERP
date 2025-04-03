@@ -18,7 +18,7 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
 
     <!-- 📌 TABLA de clientes -->
     <table class="table table-striped table-bordered" id="tablaClientes">
-        <!--  Encabezado -->
+        <!-- Encabezado -->
         <thead>
             <tr>
                 <th>Código</th>
@@ -33,9 +33,9 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
             </tr>
         </thead>
 
-        <!--  Cuerpo -->
+        <!-- Cuerpo -->
         <tbody>
-            <!-- Si el array tabla de clientes no está vacía... -->
+            <!-- Si el array tabla de clientes no está vacío... -->
             <?php if (!empty($clientes)): ?>
                 <!-- Se recorre el array $clientes (variable creada en ClienteController.php)
                     y genera una fila <tr> por cada cliente. -->
@@ -50,13 +50,22 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
                         <td><?php echo $cliente['email']; ?></td>
                         <td><?php echo $cliente['metodo_pago']; ?></td>
                         <!-- La última celda de la fila contiene los botones de "Editar" y "Eliminar" -->
-                        <!-- Estos botones apuntan a las secciones de actualizar y eliminar clientes de ClienteController.php  -->
-                        <td>
+                        <td class="acciones">
+                            <!-- Botón de Editar con ícono -->
                             <a href="../controllers/ClienteController.php?action=edit&codigo=<?php echo $cliente['codigo']; ?>"
-                                class="btn btn-warning btn-sm">Editar</a>
+                               class="btn btn-warning btn-sm" title="Editar">
+                                <i class="fas fa-pen"></i> <!-- Ícono de lápiz para editar -->
+                            </a>
+    
+                            <!-- Espacio entre los botones -->
+                            <span>&nbsp;&nbsp;</span>
+    
+                            <!-- Botón de Eliminar con ícono -->
                             <a href="../controllers/ClienteController.php?action=delete&codigo=<?php echo $cliente['codigo']; ?>"
-                                class="btn btn-danger btn-sm"
-                                onclick="return confirm('¿Estás seguro de que deseas eliminar este cliente?')">Eliminar</a>
+                               class="btn btn-danger btn-sm" title="Eliminar"
+                               onclick="return confirm('¿Estás seguro de que deseas eliminar este cliente?')">
+                                <i class="fas fa-trash"></i> <!-- Ícono de basurero para eliminar -->
+                            </a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

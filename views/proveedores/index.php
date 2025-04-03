@@ -17,7 +17,7 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
     </a>
 
     <!-- 📌 TABLA de proveedores -->
-    <table class="table table-striped table-bordered" id="tablaClientes">
+    <table class="table table-striped table-bordered" id="tablaProveedores">
         <!--  Encabezado -->
         <thead>
             <tr>

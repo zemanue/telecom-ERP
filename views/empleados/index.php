@@ -17,7 +17,7 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
     </a>
 
     <!-- 📌 TABLA de clientes -->
-    <table class="table table-striped table-bordered" id="tablaClientes">
+    <table class="table table-striped table-bordered" id="tablaEmpleados">
         <!--  Encabezado -->
         <thead>
             <tr>

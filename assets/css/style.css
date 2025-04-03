@@ -56,7 +56,6 @@
 
 /* Contenedor principal */
 .content {
-    margin-left: 260px;
     padding: 20px;
 }
 
@@ -95,4 +94,20 @@ h1 {
 .table th {
     font-size: 0.875rem;
     /* Tamaño más pequeño */
+}
+/* Asegurar que los botones en la celda estén centrados */
+td.acciones {
+    text-align: center; /* Centrar los botones dentro de la celda */
+}
+
+/* Hacer los botones más pequeños */
+.btn-sm {
+    font-size: 12px; /* Reducir el tamaño de los iconos y texto */
+    padding: 4px 4px; /* Ajustar el padding para hacerlo aún más pequeño */
+}
+
+/* Asegurar que los iconos sean pequeños y centrados */
+td.acciones .btn i {
+    font-size: 14px; /* Ajustar el tamaño de los íconos */
+    margin-right: 0; /* Eliminar espacio adicional entre los iconos y el borde */
 }
