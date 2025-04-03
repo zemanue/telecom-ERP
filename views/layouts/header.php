@@ -40,7 +40,7 @@ session_start(); // Iniciar sesión para acceder a las variables de sesión
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="../proveedor.php?action=list">
+                            <a class="nav-link text-white" href="../controllers/ProveedorController.php?action=list">
                                 <i class="fas fa-truck"></i> Proveedores
                             </a>
                         </li>
