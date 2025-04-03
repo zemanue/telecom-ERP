@@ -28,21 +28,38 @@
                 <form action="login.php" method="POST" class="formulario_login">
                     <h2>Inicia Sesión</h2>
                     <?php
-                        session_start();
-                        if (isset($_SESSION['error_login'])) {
-                            echo '<div class="alert alert-danger" role="alert">';
-                            echo $_SESSION['error_login'];
-                            echo '</div>';
-                            unset($_SESSION['error_login']); // Limpiar el mensaje de error después de mostrarlo
-                        }
+                    session_start();
+                    // Si el usuario intenta iniciar sesión y hay un error, se muestra el mensaje en un cuadro rojo
+                    if (isset($_SESSION['error_login'])) {
+                        echo '<div class="alert alert-danger" role="alert">';
+                        echo $_SESSION['error_login'];
+                        echo '</div>';
+                        unset($_SESSION['error_login']); // Limpiar el mensaje de error después de mostrarlo
+                    }
                     ?>
                     <input type="text" placeholder="Usuario" name="usuario" required>
                     <input type="password" placeholder="Contraseña" name="contrasena" required>
                     <button>Entrar</button>
                 </form>
 
-                <form action="php/registro_usuario_be.php" method="POST" class="formulario_register">
+                <form action="registro.php" method="POST" class="formulario_register">
                     <h2>Registrarse</h2>
+                    <?php
+                    // Si el usuario intenta registrarse y hay un error, se muestra el mensaje en un cuadro rojo
+                    if (isset($_SESSION['error_registro'])) {
+                        echo '<div class="alert alert-danger" role="alert">';
+                        echo $_SESSION['error_registro'];
+                        echo '</div>';
+                        unset($_SESSION['error_registro']); // Limpiar el mensaje de error
+                    }
+                    // Si el registro fue exitoso, se muestra un mensaje de éxito en un cuadro verde
+                    if (isset($_SESSION['registro_exitoso'])) {
+                        echo '<div class="alert alert-success" role="alert">';
+                        echo $_SESSION['registro_exitoso'];
+                        echo '</div>';
+                        unset($_SESSION['registro_exitoso']); // Limpiar el mensaje de éxito
+                    }
+                    ?>
                     <input type="text" placeholder="Nombre completo" name="nombre_completo" required>
                     <input type="text" placeholder="Correo electrónico" name="correo" required>
                     <input type="text" placeholder="Usuario" name="usuario" required>
