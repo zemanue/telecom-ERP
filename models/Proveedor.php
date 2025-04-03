@@ -34,7 +34,7 @@ class Proveedor {
     public function update($codigo, $telefono, $nif, $nombre, $direccion, $poblacion, $email, $deuda_existente) {
         $stmt = $this->db->prepare(
             "UPDATE proveedor 
-            SET telefono = ?, nif = ?, nombre = ?, direccion = ?, poblacion = ?, email = ?, deduda_existente = ? 
+            SET telefono = ?, nif = ?, nombre = ?, direccion = ?, poblacion = ?, email = ?, deuda_existente = ? 
             WHERE codigo = ?"
         );
         return $stmt->execute([$telefono, $nif, $nombre, $direccion, $poblacion, $email, $deuda_existente, $codigo]);
