@@ -55,7 +55,7 @@ session_start(); // Iniciar sesión para acceder a las variables de sesión
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="../almacen.php?action=list">
+                            <a class="nav-link text-white" href="../controllers/AlmacenController.php?action=list">
                                 <i class="fas fa-warehouse"></i> Almacenes
                             </a>
                         </li>
