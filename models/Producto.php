@@ -41,7 +41,7 @@ class Producto {
     }
 
     public function delete($codigo) {
-        $stmt = $this->db->prepare("DELETE FROM prodcutos WHERE codigo = ?");
+        $stmt = $this->db->prepare("DELETE FROM productos WHERE codigo = ?");
         return $stmt->execute([$codigo]);
     }
 

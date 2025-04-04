@@ -29,8 +29,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'create') {
     $codigo_proveedor = $_POST['codigo_proveedor'];
     $codigo_almacen = $_POST['codigo_almacen'];
 
-    // Con este if, se intenta crear un nuevo cliente.
-    // Utiliza el método create() del modelo Cliente.
+    // Con este if, se intenta crear un nuevo producto.
+    // Utiliza el método create() del modelo Producto.
     if ($productoModel->create($nombre, $precio_compra, $precio_venta, $iva, $codigo_proveedor, $codigo_almacen)) {	
         header('Location: ../controllers/ProductoController.php?action=list'); // Si se consigue, redirige de nuevo a la lista de productos
         exit(); // Importante: detener la ejecución del script después de la redirección
@@ -44,7 +44,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'create') {
 // Este bloque se ejecuta cuando se envía el formulario de edición
 // Recupera los datos del formulario enviados con el método POST
 if (isset($_POST['action']) && $_POST['action'] == 'edit') {
-    error_log("Entrando en el bloque de edición de cliente", 0); // Log para depuración
+    error_log("Entrando en el bloque de edición de producto", 0); // Log para depuración
     $nombre = $_POST['nombre'];
     $precio_compra = $_POST['precio_compra'];
     $precio_venta = $_POST['precio_venta'];
@@ -52,8 +52,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit') {
     $codigo_proveedor = $_POST['codigo_proveedor'];
     $codigo_almacen = $_POST['codigo_almacen'];
 
-    // Con este if, se intenta actualizar un proveedor.
-    // Utiliza el método update() del modelo Proveedor.
+    // Con este if, se intenta actualizar un producto.
+    // Utiliza el método update() del modelo producto.
     if ($productoModel->update($nombre, $precio_compra, $precio_venta, $iva, $codigo_proveedor, $codigo_almacen)) {
         header('Location: ../controllers/ProductoController.php?action=list'); // Si se consigue, redirige de nuevo a la lista de productos
         exit(); // Importante: detener la ejecución del script después de la redirección

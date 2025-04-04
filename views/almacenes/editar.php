@@ -24,12 +24,12 @@ Este archivo contiene el formulario de editar almacenes
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="nombre_almacen" class="form-label">Nombre:</label>
-                        <input type="text" class="form-control" id="nombre_almacen" name="nombre_almacen" required>
+                        <input type="text" class="form-control" id="nombre_almacen" name="nombre_almacen" 
                             value="<?php echo $almacen['nombre_almacen']; ?>" required>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="ubicacion" class="form-label">Ubicación:</label>
-                        <input type="text" class="form-control" id="ubicacion" name="ubicacion" required>
+                        <input type="text" class="form-control" id="ubicacion" name="ubicacion" 
                             value="<?php echo $almacen['ubicacion']; ?>" required>
                     </div>
                 </div>

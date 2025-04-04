@@ -14,12 +14,11 @@ Este archivo contiene el formulario de crear productos
             <!-- Definimos un formulario de método POST para enviar a ProductoController.php -->
             <form method="POST" action="../controllers/ProductoController.php?action=create">
 
-                <!-- Campo oculto para la acción de creación -->
+            <!-- Campo oculto para la acción de creación -->
                 <input type="hidden" name="action" value="create">
 
+                <!-- Campos del formulario -->
                 <div class="row">
-
-                    <!-- Campos del formulario -->
                     <div class="col-md-6 mb-3">
                         <label for="nombre" class="form-label">Nombre:</label>
                         <input type="text" class="form-control" id="nombre" name="nombre" required>
@@ -37,12 +36,37 @@ Este archivo contiene el formulario de crear productos
                         <input type="number" class="form-control" id="IVA" name="IVA" required>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="codigo_proveedor" class="form-label">Código Proveedor:</label>
-                        <input type="text" class="form-control" id="codigo_proveedor" name="codigo_proveedor" required>
+                        <label for="codigo_proveedor" class="form-label">Proveedor:</label>
+                        <select class="form-control" name="codigo_proveedor" id="codigo_proveedor" required>
+                            <option value="">Seleccione un proveedor</option>
+                            <?php
+                            include '../config/conexion_be.php'; // Incluir conexión a la BD
+                            $proveedores = $conexion->query("SELECT codigo, nombre FROM proveedor"); // Consulta SQL
+                            if ($proveedores->num_rows > 0) {
+                                while ($proveedor = $proveedores->fetch_assoc()) {
+                                    echo "<option value='{$proveedor['codigo']}'>{$proveedor['codigo']} - {$proveedor['nombre']}</option>";
+                                }
+                            } else {
+                                echo "<option value=''>No hay proveedores disponibles</option>";
+                            }
+                            ?>
+                        </select>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="codigo_almacen" class="form-label">Código Almacén:</label>
-                        <input type="text" class="form-control" id="codigo_almacen" name="codigo_almacen" required>
+                        <label for="codigo_almacen" class="form-label">Almacén:</label>
+                        <select class="form-control" name="codigo_almacen" id="codigo_almacen" required>
+                            <option value="">Seleccione un almacén</option>
+                            <?php
+                            $almacenes = $conexion->query("SELECT codigo, nombre_almacen FROM almacen"); // Consulta SQL
+                            if ($almacenes->num_rows > 0) {
+                                while ($almacen = $almacenes->fetch_assoc()) {
+                                    echo "<option value='{$almacen['codigo']}'>{$almacen['codigo']} - {$almacen['nombre_almacen']}</option>";
+                                }
+                            } else {
+                                echo "<option value=''>No hay almacenes disponibles</option>";
+                            }
+                            ?>
+                        </select>
                     </div>
                 </div>
 
