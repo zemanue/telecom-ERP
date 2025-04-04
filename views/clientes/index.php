@@ -53,7 +53,7 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
                         <td class="acciones">
                             <!-- Botón de Editar con ícono -->
                             <a href="../controllers/ClienteController.php?action=edit&codigo=<?php echo $cliente['codigo']; ?>"
-                               class="btn btn-warning btn-sm" title="Editar">
+                            class="btn btn-warning btn-sm" title="Editar">
                                 <i class="fas fa-pen"></i> <!-- Ícono de lápiz para editar -->
                             </a>
     
@@ -62,8 +62,8 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
     
                             <!-- Botón de Eliminar con ícono -->
                             <a href="../controllers/ClienteController.php?action=delete&codigo=<?php echo $cliente['codigo']; ?>"
-                               class="btn btn-danger btn-sm" title="Eliminar"
-                               onclick="return confirm('¿Estás seguro de que deseas eliminar este cliente?')">
+                            class="btn btn-danger btn-sm" title="Eliminar"
+                            onclick="return confirm('¿Estás seguro de que deseas eliminar este cliente?')">
                                 <i class="fas fa-trash"></i> <!-- Ícono de basurero para eliminar -->
                             </a>
                         </td>

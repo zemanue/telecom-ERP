@@ -50,13 +50,22 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
                         <td><?php echo $proveedor['email']; ?></td>
                         <td><?php echo $proveedor['deuda_existente']; ?></td>
                         <!-- La última celda de la fila contiene los botones de "Editar" y "Eliminar" -->
-                        <!-- Estos botones apuntan a las secciones de actualizar y eliminar proveedores de ProveedorController.php  -->
-                        <td>
+                        <td class="acciones">
+                            <!-- Botón de Editar con ícono -->
                             <a href="../controllers/ProveedorController.php?action=edit&codigo=<?php echo $proveedor['codigo']; ?>"
-                                class="btn btn-warning btn-sm">Editar</a>
+                            class="btn btn-warning btn-sm" title="Editar">
+                                <i class="fas fa-pen"></i> <!-- Ícono de lápiz para editar -->
+                            </a>
+    
+                            <!-- Espacio entre los botones -->
+                            <span>&nbsp;&nbsp;</span>
+    
+                            <!-- Botón de Eliminar con ícono -->
                             <a href="../controllers/ProveedorController.php?action=delete&codigo=<?php echo $proveedor['codigo']; ?>"
-                                class="btn btn-danger btn-sm"
-                                onclick="return confirm('¿Estás seguro de que deseas eliminar este proveedor?')">Eliminar</a>
+                            class="btn btn-danger btn-sm" title="Eliminar"
+                            onclick="return confirm('¿Estás seguro de que deseas eliminar este proveedor?')">
+                                <i class="fas fa-trash"></i> <!-- Ícono de basurero para eliminar -->
+                            </a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

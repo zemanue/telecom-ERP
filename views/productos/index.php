@@ -48,13 +48,22 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
                         <td><?php echo $producto['codigo_proveedor']; ?></td>
                         <td><?php echo $producto['codigo_almacen']; ?></td>
                         <!-- La última celda de la fila contiene los botones de "Editar" y "Eliminar" -->
-                        <!-- Estos botones apuntan a las secciones de actualizar y eliminar productos de ProductoController.php  -->
-                        <td>
-                            <a href="../controllers/ProductoController.php?action=edit&codigo=<?php echo $producto['codigo']; ?>"
-                                class="btn btn-warning btn-sm">Editar</a>
+                        <td class="acciones">
+                            <!-- Botón de Editar con ícono -->
+                            <a href="../controllers/ProdcutoController.php?action=edit&codigo=<?php echo $producto['codigo']; ?>"
+                            class="btn btn-warning btn-sm" title="Editar">
+                                <i class="fas fa-pen"></i> <!-- Ícono de lápiz para editar -->
+                            </a>
+    
+                            <!-- Espacio entre los botones -->
+                            <span>&nbsp;&nbsp;</span>
+    
+                            <!-- Botón de Eliminar con ícono -->
                             <a href="../controllers/ProductoController.php?action=delete&codigo=<?php echo $producto['codigo']; ?>"
-                                class="btn btn-danger btn-sm"
-                                onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?')">Eliminar</a>
+                            class="btn btn-danger btn-sm" title="Eliminar"
+                            onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?')">
+                                <i class="fas fa-trash"></i> <!-- Ícono de basurero para eliminar -->
+                            </a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
