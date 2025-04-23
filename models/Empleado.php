@@ -26,7 +26,7 @@ class Empleado {
     public function create($telefono, $nombre, $email) {
         $stmt = $this->db->prepare(
             "INSERT INTO empleados (telefono, nombre, email) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)"
+            VALUES (?, ?, ?)"
         );
         return $stmt->execute([$telefono, $nombre, $email]);
     }

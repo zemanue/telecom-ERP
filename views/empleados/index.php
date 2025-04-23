@@ -12,7 +12,7 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
     <h1>Empleados</h1>
 
     <!-- Botón para agregar cliente -->
-    <a href="../controllers/EmpleadosController.php?action=create" class="btn btn-success mb-3">
+    <a href="../controllers/EmpleadoController.php?action=create" class="btn btn-success mb-3">
         <i class="fas fa-plus"></i> Agregar Empleado
     </a>
 
