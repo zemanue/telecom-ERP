@@ -37,7 +37,7 @@ class Producto {
             SET nombre = ?, precio_compra = ?, precio_venta = ?, IVA = ?, codigo_proveedor = ?, codigo_almacen = ? 
             WHERE codigo = ?"
         );
-        return $stmt->execute([$nombre, $precio_compra, $precio_venta, $iva, $codigo_proveedor, $codigo_almacen]);
+        return $stmt->execute([$nombre, $precio_compra, $precio_venta, $iva, $codigo_proveedor, $codigo_almacen, $codigo]);
     }
 
     public function delete($codigo) {

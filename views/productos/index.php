@@ -36,7 +36,7 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
         <tbody>
             <!-- Si el array tabla de productos no está vacía... -->
             <?php if (!empty($productos)): ?>
-                <!-- Se recorre el array $productos (variable creada en ClienteController.php)
+                <!-- Se recorre el array $productos (variable creada en ProductoController.php)
                     y genera una fila <tr> por cada cliente. -->
                 <?php foreach ($productos as $producto): ?>
                     <tr>

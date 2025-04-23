@@ -45,6 +45,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'create') {
 // Recupera los datos del formulario enviados con el método POST
 if (isset($_POST['action']) && $_POST['action'] == 'edit') {
     error_log("Entrando en el bloque de edición de producto", 0); // Log para depuración
+    $codigo = $_POST['codigo'];
     $nombre = $_POST['nombre'];
     $precio_compra = $_POST['precio_compra'];
     $precio_venta = $_POST['precio_venta'];
@@ -54,15 +55,13 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit') {
 
     // Con este if, se intenta actualizar un producto.
     // Utiliza el método update() del modelo producto.
-    if ($productoModel->update($nombre, $precio_compra, $precio_venta, $iva, $codigo_proveedor, $codigo_almacen)) {
-        header('Location: ../controllers/ProductoController.php?action=list'); // Si se consigue, redirige de nuevo a la lista de productos
-        exit(); // Importante: detener la ejecución del script después de la redirección
-
+    if ($productoModel->update($codigo, $nombre, $precio_compra, $precio_venta, $iva, $codigo_proveedor, $codigo_almacen)) {
+        header('Location: ../controllers/ProductoController.php?action=list'); // Si se consigue, redirige a la lista de productos
+        exit();// Importante: detener la ejecución del script después de la redirección
     } else {
         echo "Error al actualizar el producto.";
     }
 }
-
 
 // Lógica para ELIMINAR UN PRODUCTO
 // Se ejecuta cuando se hace clic en el botón de eliminar
