@@ -31,7 +31,7 @@ class Almacen {
         return $stmt->execute([$nombre, $ubicacion]);
     }
 
-    public function update($nombre, $ubicacion) {
+    public function update($codigo, $nombre, $ubicacion) {
         $stmt = $this->db->prepare(
             "UPDATE almacen 
             SET nombre_almacen = ?, ubicacion = ?
