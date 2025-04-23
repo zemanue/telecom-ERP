@@ -47,7 +47,7 @@ Este archivo contiene el formulario de crear proveedores
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="codigo_empleado" class="form-label">Empleado:</label>
-                        <select class="form-control" name="codigo_empleadp" id="codigo_empleado" required>
+                        <select class="form-control" name="codigo_empleado" id="codigo_empleado" required>
                             <option value="">Seleccione un empleado</option>
                             <?php
                             $empleados = $conexion->query("SELECT codigo, nombre FROM empleados"); // Consulta SQL
@@ -61,9 +61,34 @@ Este archivo contiene el formulario de crear proveedores
                             ?>
                         </select>
                     </div>
-
-                    
                 </div>
+                <h5 class="mt-4">Productos incluidos</h5>
+<div id="producto-container">
+    <div class="producto-item row mb-2">
+        <div class="col-md-6">
+            <label>Producto</label>
+            <select name="productos[]" class="form-control" required>
+                <option value="">Seleccione un producto</option>
+                <?php
+                $productos = $conexion->query("SELECT codigo, nombre FROM productos");
+                while ($producto = $productos->fetch_assoc()) {
+                    echo "<option value='{$producto['codigo']}'>{$producto['nombre']}</option>";
+                }
+                ?>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label>Cantidad</label>
+            <input type="number" name="cantidades[]" class="form-control" required>
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+            <button type="button" class="btn btn-danger btn-remove">Quitar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Botón para añadir más productos -->
+<button type="button" id="add-producto" class="btn btn-success mt-2">+ Añadir otro producto</button>
 
                 <!-- Botones para guardar o cancelar -->
                 <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar Factura</button>
@@ -72,3 +97,28 @@ Este archivo contiene el formulario de crear proveedores
         </div>
     </div>
 </div>
+
+<script>
+document.getElementById('add-producto').addEventListener('click', function () {
+    const container = document.getElementById('producto-container');
+    const item = document.querySelector('.producto-item');
+    const clone = item.cloneNode(true);
+
+    // Limpiar valores del nuevo clon
+    clone.querySelector('select').selectedIndex = 0;
+    clone.querySelector('input').value = '';
+
+    container.appendChild(clone);
+});
+
+// Manejar botón "Quitar"
+document.addEventListener('click', function (e) {
+    if (e.target && e.target.classList.contains('btn-remove')) {
+        const item = e.target.closest('.producto-item');
+        const allItems = document.querySelectorAll('.producto-item');
+        if (allItems.length > 1) {
+            item.remove();
+        }
+    }
+});
+</script>

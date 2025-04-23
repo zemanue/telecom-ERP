@@ -9,11 +9,11 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
 -->
 
 <div class="content">
-    <h1>Proveedores</h1>
+    <h1>Factura Compra</h1>
 
     <!-- Botón para agregar proveedor -->
     <a href="../controllers/FacturaCompraController.php?action=create" class="btn btn-success mb-3">
-        <i class="fas fa-plus"></i> Agregar Proveedor
+        <i class="fas fa-plus"></i> Agregar Factura
     </a>
 
     <!-- 📌 TABLA de proveedores -->

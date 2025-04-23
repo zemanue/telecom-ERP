@@ -12,31 +12,40 @@ y luego seleccionan la vista que se debe mostrar al usuario.
 // Inclusión de archivos necesarios:
 require_once '../config/database.php';
 require_once '../models/FacturaCompra.php';
+require_once '../models/DetalleFacturaCompra.php';
+
+$detalleModel = new DetalleFacturaCompra($db);
 
 // Instancia del modelo Almacén, pasando la conexión a la base de datos
 $facturaCompraModel = new FacturaCompra($db);
 
-
 // Lógica para GUARDAR UN NUEVA FACTURA DE COMPRA
 // Se ejecuta cuando se envía el formulario de creación
 // Recupera los datos del formulario enviados con el método POST
+
 if (isset($_POST['action']) && $_POST['action'] == 'create') {
     error_log("Entrando en el bloque de creación de factura de compra");
+
     $fecha = $_POST['fecha'];
     $direccion = $_POST['direccion'];
     $codigo_proveedor = $_POST['codigo_proveedor'];
     $codigo_empleado = $_POST['codigo_empleado'];
-    
-    // Con este if, se intenta crear una factura de compra.
-    // Utiliza el método create() del modelo factura de compra.
+
     if ($facturaCompraModel->create($fecha, $direccion, $codigo_proveedor, $codigo_empleado)) {
-        header('Location: ../controllers/FacturaCompraController.php?action=list'); // Si se consigue, redirige de nuevo a la lista de clientes
-        exit(); // Importante: detener la ejecución del script después de la redirección
+        $codigo_factura = $db->lastInsertId(); // obtener ID de la nueva factura
+
+        // Insertar productos
+        foreach ($_POST['productos'] as $index => $producto_id) {
+            $cantidad = $_POST['cantidades'][$index];
+            $detalleModel->insertarDetalle($codigo_factura, $producto_id, $cantidad);
+        }
+
+        header('Location: ../controllers/FacturaCompraController.php?action=list');
+        exit();
     } else {
-        echo "Error al crear el almacén.";
+        echo "Error al crear la factura de compra.";
     }
 }
-
 
 // Lógica para ACTUALIZAR UN ALMACÉN
 // Este bloque se ejecuta cuando se envía el formulario de edición
@@ -52,9 +61,14 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit') {
     // Con este if, se intenta actualizar un almacén.
     // Utiliza el método update() del modelo Almacén.
     if ($facturaCompraModel->update($codigo, $fecha, $direccion, $codigo_proveedor, $codigo_empleado)) {
-        header('Location: ../controllers/FacturaCompraController.php?action=list'); // Si se consigue, redirige de nuevo a la lista de almacenes
-        exit(); // Importante: detener la ejecución del script después de la redirección
-
+        $detalleModel->eliminarDetallesPorFactura($codigo);
+        // Luego insertamos los nuevos
+        foreach ($_POST['productos'] as $index => $producto_id) {
+        $cantidad = $_POST['cantidades'][$index];
+        $detalleModel->insertarDetalle($codigo, $producto_id, $cantidad);
+        }
+        header('Location: ../controllers/FacturaCompraController.php?action=list');
+        exit();
     } else {
         echo "Error al actualizar la factura de compra.";
     }
@@ -102,6 +116,7 @@ elseif (isset($_GET['action']) && $_GET['action'] == 'create') {
 elseif (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['codigo'])) {
     $codigo = $_GET['codigo'];
     $factura = $facturaCompraModel->getById($codigo);
+    $productos_factura = $detalleModel->obtenerDetallesPorFactura($codigo); 
     include '../views/layouts/header.php';
     include '../views/facturaCompra/editar.php';
     include '../views/layouts/footer.php';

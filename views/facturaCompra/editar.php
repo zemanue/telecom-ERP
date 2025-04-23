@@ -44,11 +44,53 @@ Este archivo contiene el formulario de editar proveedores
                     </div>
                 </div>
 
+                <h5 class="mt-4">Productos incluidos</h5>
+                <div id="producto-container">
+                    <?php foreach ($productos_factura as $detalle): ?>
+                    <div class="producto-item row mb-2">
+                    <div class="col-md-6">
+                        <label>Producto</label>
+                        <select name="productos[]" class="form-control" required>
+                        <?php
+                        $productos = $conexion->query("SELECT codigo, nombre FROM productos");
+                        while ($producto = $productos->fetch_assoc()) {
+                            $selected = $producto['codigo'] == $detalle['codigo_producto'] ? 'selected' : '';
+                            echo "<option value='{$producto['codigo']}' $selected>{$producto['nombre']}</option>";
+                        }
+                        ?>
+                        </select>
+                    </div>
+                <div class="col-md-3">
+                    <label>Cantidad</label>
+                    <input type="number" name="cantidades[]" class="form-control" value="<?= $detalle['cantidad'] ?>" required>
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="button" class="btn btn-danger btn-remove">Quitar</button>
+                </div>
+                </div>
+            <?php endforeach; ?>
+            </div>
+            <button type="button" id="add-producto" class="btn btn-success mt-2">+ Añadir otro producto</button>
+            </form>
                 <!-- Botones para guardar o cancelar -->
                 <button type="submit" name="update" class="btn btn-primary"><i class="fas fa-save"></i> Guardar
                     Cambios</button>
                 <a href="../controllers/FacturaCompraController.php?action=list" class="btn btn-secondary"><i class="fas fa-times"></i> Cancelar</a>
-            </form>
         </div>
     </div>
 </div>
+
+<script>
+document.getElementById('add-producto').addEventListener('click', () => {
+    const container = document.getElementById('producto-container');
+    const newItem = container.firstElementChild.cloneNode(true);
+    newItem.querySelectorAll('input, select').forEach(el => el.value = '');
+    container.appendChild(newItem);
+});
+
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('btn-remove')) {
+        e.target.closest('.producto-item').remove();
+    }
+});
+</script>
