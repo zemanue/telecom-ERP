@@ -1,0 +1,74 @@
+
+<!--
+Este archivo contiene el formulario de crear proveedores
+-->
+
+<div class="container mt-4">
+    <h2>Agregar Factura de Compra</h2>
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="fas fa-user-plus"></i> Agregar Factura de Compra</h5>
+        </div>
+        <div class="card-body">
+
+            <!-- Definimos un formulario de método POST para enviar a ProveedorController.php -->
+            <form method="POST" action="../controllers/FacturaCompraController.php?action=create">
+
+                <!-- Campo oculto para la acción de creación -->
+                <input type="hidden" name="action" value="create">
+
+                <div class="row">
+
+                    <!-- Campos del formulario -->
+                    <div class="col-md-6 mb-3">
+                        <label for="fecha" class="form-label">Fecha:</label>
+                        <input type="text" class="form-control" id="fecha" name="fecha" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="direccion" class="form-label">Dirección:</label>
+                        <input type="text" class="form-control" id="direccion" name="direccion" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="codigo_proveedor" class="form-label">Proveedor:</label>
+                        <select class="form-control" name="codigo_proveedor" id="codigo_proveedor" required>
+                            <option value="">Seleccione un proveedor</option>
+                            <?php
+                            include '../config/conexion_be.php'; // Incluir conexión a la BD
+                            $proveedores = $conexion->query("SELECT codigo, nombre FROM proveedor"); // Consulta SQL
+                            if ($proveedores->num_rows > 0) {
+                                while ($proveedor = $proveedores->fetch_assoc()) {
+                                    echo "<option value='{$proveedor['codigo']}'>{$proveedor['codigo']} - {$proveedor['nombre']}</option>";
+                                }
+                            } else {
+                                echo "<option value=''>No hay proveedores disponibles</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="codigo_empleado" class="form-label">Empleado:</label>
+                        <select class="form-control" name="codigo_empleadp" id="codigo_empleado" required>
+                            <option value="">Seleccione un empleado</option>
+                            <?php
+                            $empleados = $conexion->query("SELECT codigo, nombre FROM empleados"); // Consulta SQL
+                            if ($empleados->num_rows > 0) {
+                                while ($empleado = $empleados->fetch_assoc()) {
+                                    echo "<option value='{$empleado['codigo']}'>{$empleado['codigo']} - {$empleado['nombre']}</option>";
+                                }
+                            } else {
+                                echo "<option value=''>No hay empleados disponibles</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    
+                </div>
+
+                <!-- Botones para guardar o cancelar -->
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar Factura</button>
+                <a href="../controllers/FacturaCompraController.php?action=list" class="btn btn-secondary"><i class="fas fa-times"></i> Cancelar</a>
+            </form>
+        </div>
+    </div>
+</div>
