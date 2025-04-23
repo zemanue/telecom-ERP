@@ -64,7 +64,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit') {
     }
 }
 
-
 // Lógica para ELIMINAR UN PRODUCTO
 // Se ejecuta cuando se hace clic en el botón de eliminar
 elseif (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['codigo'])) {

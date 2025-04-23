@@ -60,7 +60,7 @@ session_start(); // Iniciar sesión para acceder a las variables de sesión
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="../factura_compra.php?action=list">
+                            <a class="nav-link text-white" href="../controllers/FacturaCompraController.php?action=list">
                                 <i class="fas fa-file-invoice"></i> Factura de Compra
                             </a>
                         </li>

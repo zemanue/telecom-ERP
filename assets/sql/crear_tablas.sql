@@ -84,3 +84,12 @@ CREATE TABLE `usuarios` (
   PRIMARY KEY (`usuario`),
   UNIQUE (`correo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE detalle_factura_compra (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    codigo_factura INT NOT NULL,
+    codigo_producto INT NOT NULL,
+    cantidad INT NOT NULL,
+    FOREIGN KEY (codigo_factura) REFERENCES factura_compra(codigo) ON DELETE CASCADE,
+    FOREIGN KEY (codigo_producto) REFERENCES productos(codigo) ON DELETE CASCADE
+);
