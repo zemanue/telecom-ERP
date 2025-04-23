@@ -50,7 +50,7 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
                         <!-- La última celda de la fila contiene los botones de "Editar" y "Eliminar" -->
                         <td class="acciones">
                             <!-- Botón de Editar con ícono -->
-                            <a href="../controllers/ProdcutoController.php?action=edit&codigo=<?php echo $producto['codigo']; ?>"
+                            <a href="../controllers/ProductoController.php?action=edit&codigo=<?php echo $producto['codigo']; ?>"
                             class="btn btn-warning btn-sm" title="Editar">
                                 <i class="fas fa-pen"></i> <!-- Ícono de lápiz para editar -->
                             </a>

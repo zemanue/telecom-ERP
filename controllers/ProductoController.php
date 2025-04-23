@@ -45,6 +45,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'create') {
 // Recupera los datos del formulario enviados con el método POST
 if (isset($_POST['action']) && $_POST['action'] == 'edit') {
     error_log("Entrando en el bloque de edición de producto", 0); // Log para depuración
+    $codigo = $_POST['codigo'];
     $nombre = $_POST['nombre'];
     $precio_compra = $_POST['precio_compra'];
     $precio_venta = $_POST['precio_venta'];
@@ -54,7 +55,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit') {
 
     // Con este if, se intenta actualizar un producto.
     // Utiliza el método update() del modelo producto.
-    if ($productoModel->update($nombre, $precio_compra, $precio_venta, $iva, $codigo_proveedor, $codigo_almacen)) {
+    if ($productoModel->update($codigo, $nombre, $precio_compra, $precio_venta, $iva, $codigo_proveedor, $codigo_almacen)) {
         header('Location: ../controllers/ProductoController.php?action=list'); // Si se consigue, redirige de nuevo a la lista de productos
         exit(); // Importante: detener la ejecución del script después de la redirección
 
@@ -94,6 +95,16 @@ if (isset($_GET['action']) && $_GET['action'] == 'list') {
 // Lógica para mostrar el FORMULARIO DE CREAR PRODUCTOS
 // Se ejecuta cuando se hace clic en el botón de crear producto
 elseif (isset($_GET['action']) && $_GET['action'] == 'create') {
+    // Necesitamos los proveedores y almacenes para llenar los selects en el formulario de edición
+    // Proveedores
+    require_once '../models/Proveedor.php';
+    $proveedorModel = new Proveedor($db);
+    $proveedores = $proveedorModel->selectAll();
+    // Almacenes
+    require_once '../models/Almacen.php';
+    $almacenModel = new Almacen($db);
+    $almacenes = $almacenModel->selectAll();
+
     include '../views/layouts/header.php';
     include '../views/productos/crear.php';
     include '../views/layouts/footer.php';
@@ -105,6 +116,17 @@ elseif (isset($_GET['action']) && $_GET['action'] == 'create') {
 elseif (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['codigo'])) {
     $codigo = $_GET['codigo'];
     $producto = $productoModel->getById($codigo);
+
+    // Necesitamos los proveedores y almacenes para llenar los selects en el formulario de edición
+    // Proveedores
+    require_once '../models/Proveedor.php';
+    $proveedorModel = new Proveedor($db);
+    $proveedores = $proveedorModel->selectAll();
+    // Almacenes
+    require_once '../models/Almacen.php';
+    $almacenModel = new Almacen($db);
+    $almacenes = $almacenModel->selectAll();
+
     include '../views/layouts/header.php';
     include '../views/productos/editar.php';
     include '../views/layouts/footer.php';

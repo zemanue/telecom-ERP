@@ -27,30 +27,51 @@ Este archivo contiene el formulario de editar productos
                         <input type="text" class="form-control" id="nombre" name="nombre"  
                         value="<?php echo $producto['nombre']; ?>" required>
                     </div>
+
                     <div class="col-md-6 mb-3">
                         <label for="precio_compra" class="form-label">Precio Compra:</label>
                         <input type="number" class="form-control" id="precio_compra" name="precio_compra" 
                         value="<?php echo $producto['precio_compra']; ?>" required>    
                     </div>
+
                     <div class="col-md-6 mb-3">
                         <label for="precio_venta" class="form-label">Precio Venta:</label>
                         <input type="number" class="form-control" id="precio_venta" name="precio_venta" 
                         value="<?php echo $producto['precio_venta']; ?>" required>
                     </div>
+
                     <div class="col-md-6 mb-3">
                         <label for="IVA" class="form-label">IVA:</label>
                         <input type="number" class="form-control" id="IVA" name="IVA" 
                         value="<?php echo $producto['IVA']; ?>"required>
                     </div>
+
                     <div class="col-md-6 mb-3">
                         <label for="codigo_proveedor" class="form-label">Código Proveedor:</label>
-                        <input type="text" class="form-control" id="codigo_proveedor" name="codigo_proveedor" 
-                        value="<?php echo $producto['codigo_proveedor']; ?>" required>
+                        <select class="form-control" id="codigo_proveedor" name="codigo_proveedor" required>
+                            <!-- Se genera una opción del select por cada proveedor que hay en la base de datos -->
+                            <?php foreach ($proveedores as $proveedor): ?>
+                                <!-- El código de proveedor que coincide con el del producto se selecciona por defecto -->
+                                <!-- Gracias al atributo "selected" -->
+                                <option value="<?php echo $proveedor['codigo']; ?>" 
+                                    <?php echo $proveedor['codigo'] == $producto['codigo_proveedor'] ? 'selected' : ''; ?>> 
+                                    <?php echo $proveedor['nombre']; ?>
+                                </option> 
+                            <?php endforeach; ?>
+                        </select>
                     </div>
+
                     <div class="col-md-6 mb-3">
                         <label for="codigo_almacen" class="form-label">Código Almacén:</label>
-                        <input type="text" class="form-control" id="codigo_almacen" name="codigo_almacen" 
-                        value="<?php echo $producto['codigo_almacen']; ?>" required>
+                        <select class="form-control" id="codigo_almacen" name="codigo_almacen" required>
+                            <!-- Ocurre lo mismo que con los proveedores más arriba :) -->
+                            <?php foreach ($almacenes as $almacen): ?>
+                                <option value="<?php echo $almacen['codigo']; ?>" 
+                                    <?php echo $almacen['codigo'] == $producto['codigo_almacen'] ? 'selected' : ''; ?>> 
+                                    <?php echo $almacen['nombre_almacen']; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                 </div>
 
