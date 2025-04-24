@@ -1,11 +1,12 @@
 <!-- 
-Este archivo maneja la lógica para la sección de almacenes.
-Es el intermediario entre los archivos de la vista (views/almacenes) y el modelo (models/Almacen.php).
-Reciben las peticiones del usuario, interactúan con los modelos para obtener o modificar datos, 
-y luego seleccionan la vista que se debe mostrar al usuario.
-    - La lógica para listar, crear, modificar y eliminar almacenes utilizará
-    los métodos definidos en el modelo Almacen.php (selectAll(), create(), update() y delete()).
-    - Este controlador es el responsable de que se añadan a todas las páginas el header y el footer comunes.
+Este archivo maneja la lógica para la sección de facturas de compra.
+Es el intermediario entre los archivos de la vista (views/facturaCompra) y los modelos (models/FacturaCompra.php y models/DetalleFacturaCompra.php).
+Recibe las peticiones del usuario, interactúa con los modelos para obtener o modificar datos, 
+y luego selecciona la vista que se debe mostrar al usuario.
+    - La lógica para listar, crear, modificar y eliminar facturas de compra utiliza
+    los métodos definidos en los modelos FacturaCompra.php y DetalleFacturaCompra.php (selectAll(), create(), update(), delete(), etc.).
+    - Este controlador también gestiona la relación entre facturas y sus detalles (productos asociados).
+    - Además, es responsable de incluir el header y el footer comunes en todas las páginas.
 -->
 
 <?php
@@ -16,7 +17,7 @@ require_once '../models/DetalleFacturaCompra.php';
 
 $detalleModel = new DetalleFacturaCompra($db);
 
-// Instancia del modelo Almacén, pasando la conexión a la base de datos
+// Instancia del modelo FacturaCompra, pasando la conexión a la base de datos
 $facturaCompraModel = new FacturaCompra($db);
 
 // Lógica para GUARDAR UN NUEVA FACTURA DE COMPRA
@@ -47,20 +48,21 @@ if (isset($_POST['action']) && $_POST['action'] == 'create') {
     }
 }
 
-// Lógica para ACTUALIZAR UN ALMACÉN
+// Lógica para ACTUALIZAR UNA FACTURA DE COMPRA
 // Este bloque se ejecuta cuando se envía el formulario de edición
 // Recupera los datos del formulario enviados con el método POST
 if (isset($_POST['action']) && $_POST['action'] == 'edit') {
-    error_log("Entrando en el bloque de edición de almacén", 0); // Log para depuración
+    error_log("Entrando en el bloque de edición de factura de compra", 0); // Log para depuración
     $codigo = $_POST['codigo'];
     $fecha = $_POST['fecha'];
     $direccion = $_POST['direccion'];
     $codigo_proveedor = $_POST['codigo_proveedor'];
     $codigo_empleado = $_POST['codigo_empleado'];
 
-    // Con este if, se intenta actualizar un almacén.
-    // Utiliza el método update() del modelo Almacén.
+    // Con este if, se intenta actualizar una factura de compra.
+    // Utiliza el método update() del modelo FacturaCompra.
     if ($facturaCompraModel->update($codigo, $fecha, $direccion, $codigo_proveedor, $codigo_empleado)) {
+        // Primero eliminamos los detalles existentes
         $detalleModel->eliminarDetallesPorFactura($codigo);
         // Luego insertamos los nuevos
         foreach ($_POST['productos'] as $index => $producto_id) {
@@ -75,24 +77,24 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit') {
 }
 
 
-// Lógica para ELIMINAR UN ALMACÉN
+// Lógica para ELIMINAR UNA FACTURA
 // Se ejecuta cuando se hace clic en el botón de eliminar
 elseif (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['codigo'])) {
     $codigo = $_GET['codigo'];
 
-    // Con este if, se intenta eliminar un almacén.
-    // Utiliza el método delete() del modelo Almacén.
-    // Si se consigue, redirige de nuevo a la lista de almacenes
+    // Con este if, se intenta eliminar una factura.
+    // Utiliza el método delete() del modelo FacturaCompra.
+    // Si se consigue, redirige de nuevo a la lista de facturas de compra
     if ($facturaCompraModel->delete($codigo)) {
         header('Location: ../controllers/FacturaCompraController.php?action=list'); // Redirigir a la lista
         exit(); // Importante: detener la ejecución del script después de la redirección
     } else {
-        echo "Error al eliminar el almacén.";
+        echo "Error al eliminar la factura de compra.";
     }
 }
 
 
-// Lógica para LISTAR ALMACÉNES
+// Lógica para LISTAR FACTURAS DE COMPRA
 // Se ejecuta cuando se accede a la página
 if (isset($_GET['action']) && $_GET['action'] == 'list') {
     $facturas = $facturaCompraModel->selectAll();
@@ -102,8 +104,8 @@ if (isset($_GET['action']) && $_GET['action'] == 'list') {
 }
 
 
-// Lógica para mostrar el FORMULARIO DE CREAR ALMACÉN
-// Se ejecuta cuando se hace clic en el botón de crear almacén
+// Lógica para mostrar el FORMULARIO DE CREAR FACTURA DE COMPRA
+// Se ejecuta cuando se hace clic en el botón de agregar factura
 elseif (isset($_GET['action']) && $_GET['action'] == 'create') {
     
     // Necesitamos los proveedores, empleados y productos para llenar los selects en el formulario de creación
@@ -128,7 +130,7 @@ elseif (isset($_GET['action']) && $_GET['action'] == 'create') {
 }
 
 
-// Lógica para mostrar el FORMULARIO DE EDITAR ALMACÉN
+// Lógica para mostrar el FORMULARIO DE EDITAR FACTURA DE COMPRA
 // Se ejecuta cuando se hace clic en el botón de editar
 elseif (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['codigo'])) {
     $codigo = $_GET['codigo'];

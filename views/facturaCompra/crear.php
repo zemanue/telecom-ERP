@@ -21,7 +21,7 @@ Este archivo contiene el formulario de crear proveedores
                     <!-- Campos del formulario -->
                     <div class="col-md-6 mb-3">
                         <label for="fecha" class="form-label">Fecha:</label>
-                        <input type="text" class="form-control" id="fecha" name="fecha" required>
+                        <input type="date" class="form-control" id="fecha" name="fecha" required>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="direccion" class="form-label">Dirección:</label>
