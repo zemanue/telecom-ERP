@@ -47,26 +47,26 @@ CREATE TABLE `empleados` (
   PRIMARY KEY (`codigo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `factura_compra` (
+CREATE TABLE `facturas_compra` (
   `codigo` INT(11) NOT NULL AUTO_INCREMENT,
   `fecha` DATE NOT NULL,
   `direccion` VARCHAR(200) COLLATE utf8mb4_unicode_ci NOT NULL,
   `codigo_proveedor` INT(11) NOT NULL,
   `codigo_empleado` INT(11) NOT NULL,
   PRIMARY KEY (`codigo`),
-  FOREIGN KEY (`codigo_proveedor`) REFERENCES `proveedor`(`codigo`) ON DELETE CASCADE, 
-  FOREIGN KEY (`codigo_empleado`) REFERENCES `empleados`(`codigo`) ON DELETE CASCADE
+    FOREIGN KEY (`codigo_proveedor`) REFERENCES `proveedor`(`codigo`),
+    FOREIGN KEY (`codigo_empleado`) REFERENCES `empleados`(`codigo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `factura_venta` (
+CREATE TABLE `facturas_venta` (
   `codigo` INT(11) NOT NULL AUTO_INCREMENT,
   `fecha` DATE NOT NULL,
   `direccion` VARCHAR(200) COLLATE utf8mb4_unicode_ci NOT NULL,
   `codigo_cliente` INT(11) NOT NULL,
   `codigo_empleado` INT(11) NOT NULL,
   PRIMARY KEY (`codigo`),
-  FOREIGN KEY (`codigo_cliente`) REFERENCES `cliente`(`codigo`) ON DELETE CASCADE,
-  FOREIGN KEY (`codigo_empleado`) REFERENCES `empleados`(`codigo`) ON DELETE CASCADE
+  FOREIGN KEY (`codigo_cliente`) REFERENCES `cliente`(`codigo`),
+  FOREIGN KEY (`codigo_empleado`) REFERENCES `empleados`(`codigo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `almacen`(
@@ -85,11 +85,20 @@ CREATE TABLE `usuarios` (
   UNIQUE (`correo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE detalle_factura_compra (
+CREATE TABLE detalles_factura_compra (
     id INT AUTO_INCREMENT PRIMARY KEY,
     codigo_factura INT NOT NULL,
     codigo_producto INT NOT NULL,
     cantidad INT NOT NULL,
-    FOREIGN KEY (codigo_factura) REFERENCES factura_compra(codigo) ON DELETE CASCADE,
+    FOREIGN KEY (codigo_factura) REFERENCES facturas_compra(codigo) ON DELETE CASCADE,
+    FOREIGN KEY (codigo_producto) REFERENCES productos(codigo) ON DELETE CASCADE
+);
+
+CREATE TABLE detalles_factura_venta (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    codigo_factura INT NOT NULL,
+    codigo_producto INT NOT NULL,
+    cantidad INT NOT NULL,
+    FOREIGN KEY (codigo_factura) REFERENCES facturas_venta(codigo) ON DELETE CASCADE,
     FOREIGN KEY (codigo_producto) REFERENCES productos(codigo) ON DELETE CASCADE
 );

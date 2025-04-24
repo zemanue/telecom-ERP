@@ -18,14 +18,14 @@ class FacturaCompra {
     // MÉTODOS PARA LAS REALIZAR LAS OPERACIONES CRUD
     // Obtener todos los almacenes
     public function selectAll() {
-        $stmt = $this->db->query("SELECT * FROM factura_compra"); // Selecciona todos los almacenes
+        $stmt = $this->db->query("SELECT * FROM facturas_compra"); // Selecciona todos los almacenes
         return $stmt->fetchAll(PDO::FETCH_ASSOC); // Devuelve un array con todos los resultados
     }
 
     // Métodos para crear, actualizar y eliminar almacenes
     public function create($fecha, $direccion, $codigo_proveedor, $codigo_empleado) {
         $stmt = $this->db->prepare(
-            "INSERT INTO factura_compra (fecha, direccion, codigo_proveedor, codigo_empleado) 
+            "INSERT INTO facturas_compra (fecha, direccion, codigo_proveedor, codigo_empleado) 
             VALUES (?, ?, ?, ?)"
         );
         return $stmt->execute([$fecha, $direccion, $codigo_proveedor, $codigo_empleado]);
@@ -33,7 +33,7 @@ class FacturaCompra {
 
     public function update($codigo, $fecha, $direccion, $codigo_proveedor, $codigo_empleado) {
         $stmt = $this->db->prepare(
-            "UPDATE factura_compra
+            "UPDATE facturas_compra
             SET fecha = ?, direccion = ?, codigo_proveedor = ?, codigo_empleado = ?
             WHERE codigo = ?" 
         );
@@ -41,12 +41,12 @@ class FacturaCompra {
     }
 
     public function delete($codigo) {
-        $stmt = $this->db->prepare("DELETE FROM factura_compra WHERE codigo = ?");
+        $stmt = $this->db->prepare("DELETE FROM facturas_compra WHERE codigo = ?");
         return $stmt->execute([$codigo]);
     }
 
     public function getById($codigo) {
-        $stmt = $this->db->prepare("SELECT * FROM factura_compra WHERE codigo = ?");
+        $stmt = $this->db->prepare("SELECT * FROM facturas_compra WHERE codigo = ?");
         $stmt->execute([$codigo]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
