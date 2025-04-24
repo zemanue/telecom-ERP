@@ -31,7 +31,7 @@ class FacturaCompra {
         return $stmt->execute([$fecha, $direccion, $codigo_proveedor, $codigo_empleado]);
     }
 
-    public function update($fecha, $direccion, $codigo_proveedor, $codigo_empleado) {
+    public function update($codigo, $fecha, $direccion, $codigo_proveedor, $codigo_empleado) {
         $stmt = $this->db->prepare(
             "UPDATE factura_compra
             SET fecha = ?, direccion = ?, codigo_proveedor = ?, codigo_empleado = ?
