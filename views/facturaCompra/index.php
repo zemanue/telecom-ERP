@@ -1,10 +1,8 @@
 <!--
-Este archivo contiene el HTML para mostrar la información principal de la sección de proveedores.
-    - Incluye la tabla de proveedores, que se genera dinámicamente a partir de un array de proveedores.
-    - También incluye el botón "Agregar Proveedor", que al hacer clic muestra el formulario para crear un nuevo proveedor.
-    - El formulario de crear proveedor se encuentra en crear.php, que se incluye al hacer clic en el botón "Agregar proveedor".
-    - El formulario de editar proveedor se encuentra en editar.php, que se incluye al hacer clic en el botón "Editar" de la tabla.
-    - Aunque no se vea aquí, incluye el header y el footer (que contienen la barra lateral y el menú de perfil desplegable).
+Este archivo contiene el HTML para mostrar la información principal de la sección de Facturas de Compra.
+    - Incluye el botón "Agregar Factura", que al hacer clic muestra el formulario para crear una nueva factura.
+    - El formulario de editar proveedor se encuentra en editar.php, al que se va al hacer clic en el botón "Editar" de la tabla.
+    - FacturaCompraController es la que incluye el header + esta página + el footer.
 
 -->
 

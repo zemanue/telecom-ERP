@@ -105,6 +105,23 @@ if (isset($_GET['action']) && $_GET['action'] == 'list') {
 // Lógica para mostrar el FORMULARIO DE CREAR ALMACÉN
 // Se ejecuta cuando se hace clic en el botón de crear almacén
 elseif (isset($_GET['action']) && $_GET['action'] == 'create') {
+    
+    // Necesitamos los proveedores, empleados y productos para llenar los selects en el formulario de creación
+    // Proveedores
+    require_once '../models/Proveedor.php';
+    $proveedorModel = new Proveedor($db);
+    $proveedores = $proveedorModel->selectAll();
+
+    // Empleados
+    require_once '../models/Empleado.php';
+    $empleadoModel = new Empleado($db);
+    $empleados = $empleadoModel->selectAll();
+
+    // Productos
+    require_once '../models/Producto.php';
+    $productoModel = new Producto($db);
+    $productos = $productoModel->selectAll();
+
     include '../views/layouts/header.php';
     include '../views/facturaCompra/crear.php';
     include '../views/layouts/footer.php';
@@ -116,7 +133,24 @@ elseif (isset($_GET['action']) && $_GET['action'] == 'create') {
 elseif (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['codigo'])) {
     $codigo = $_GET['codigo'];
     $factura = $facturaCompraModel->getById($codigo);
-    $productos_factura = $detalleModel->obtenerDetallesPorFactura($codigo); 
+    $productos_factura = $detalleModel->obtenerDetallesPorFactura($codigo);
+
+    // Necesitamos los proveedores, empleados y productos para llenar los selects en el formulario de edición
+    // Proveedores
+    require_once '../models/Proveedor.php';
+    $proveedorModel = new Proveedor($db);
+    $proveedores = $proveedorModel->selectAll();
+
+    // Empleados
+    require_once '../models/Empleado.php';
+    $empleadoModel = new Empleado($db);
+    $empleados = $empleadoModel->selectAll();
+
+    // Productos
+    require_once '../models/Producto.php';
+    $productoModel = new Producto($db);
+    $productos = $productoModel->selectAll();
+
     include '../views/layouts/header.php';
     include '../views/facturaCompra/editar.php';
     include '../views/layouts/footer.php';

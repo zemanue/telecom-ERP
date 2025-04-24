@@ -1,4 +1,3 @@
-
 <!--
 Este archivo contiene el formulario de crear proveedores
 -->
@@ -32,93 +31,97 @@ Este archivo contiene el formulario de crear proveedores
                         <label for="codigo_proveedor" class="form-label">Proveedor:</label>
                         <select class="form-control" name="codigo_proveedor" id="codigo_proveedor" required>
                             <option value="">Seleccione un proveedor</option>
-                            <?php
-                            include '../config/conexion_be.php'; // Incluir conexión a la BD
-                            $proveedores = $conexion->query("SELECT codigo, nombre FROM proveedor"); // Consulta SQL
-                            if ($proveedores->num_rows > 0) {
-                                while ($proveedor = $proveedores->fetch_assoc()) {
-                                    echo "<option value='{$proveedor['codigo']}'>{$proveedor['codigo']} - {$proveedor['nombre']}</option>";
-                                }
-                            } else {
-                                echo "<option value=''>No hay proveedores disponibles</option>";
-                            }
-                            ?>
+                            <!-- Se generan las opciones del select por cada uno registrado en la base de datos -->
+                            <?php if (!empty($proveedores)): ?>
+                                <?php foreach ($proveedores as $proveedor): ?>
+                                    <option value="<?php echo $proveedor['codigo']; ?>">
+                                        <?php echo $proveedor['nombre']; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <option value="">No hay proveedores registrados, debes registrar uno primero</option>
+                            <?php endif; ?>
                         </select>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="codigo_empleado" class="form-label">Empleado:</label>
                         <select class="form-control" name="codigo_empleado" id="codigo_empleado" required>
                             <option value="">Seleccione un empleado</option>
-                            <?php
-                            $empleados = $conexion->query("SELECT codigo, nombre FROM empleados"); // Consulta SQL
-                            if ($empleados->num_rows > 0) {
-                                while ($empleado = $empleados->fetch_assoc()) {
-                                    echo "<option value='{$empleado['codigo']}'>{$empleado['codigo']} - {$empleado['nombre']}</option>";
-                                }
-                            } else {
-                                echo "<option value=''>No hay empleados disponibles</option>";
-                            }
-                            ?>
+                            <!-- Se generan las opciones del select por cada uno registrado en la base de datos -->
+                            <?php if (!empty($empleados)): ?>
+                                <?php foreach ($empleados as $empleado): ?>
+                                    <option value="<?php echo $empleado['codigo']; ?>">
+                                        <?php echo $empleado['nombre']; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <option value="">No hay empleados registrados, debes registrar uno primero</option>
+                            <?php endif; ?>
                         </select>
                     </div>
                 </div>
                 <h5 class="mt-4">Productos incluidos</h5>
-<div id="producto-container">
-    <div class="producto-item row mb-2">
-        <div class="col-md-6">
-            <label>Producto</label>
-            <select name="productos[]" class="form-control" required>
-                <option value="">Seleccione un producto</option>
-                <?php
-                $productos = $conexion->query("SELECT codigo, nombre FROM productos");
-                while ($producto = $productos->fetch_assoc()) {
-                    echo "<option value='{$producto['codigo']}'>{$producto['nombre']}</option>";
-                }
-                ?>
-            </select>
-        </div>
-        <div class="col-md-3">
-            <label>Cantidad</label>
-            <input type="number" name="cantidades[]" class="form-control" required>
-        </div>
-        <div class="col-md-3 d-flex align-items-end">
-            <button type="button" class="btn btn-danger btn-remove">Quitar</button>
-        </div>
-    </div>
-</div>
+                <div id="producto-container">
+                    <div class="producto-item row mb-2">
+                        <div class="col-md-6">
+                            <label>Producto</label>
+                            <select name="productos[]" class="form-control" required>
+                                <option value="">Seleccione un producto</option>
+                                <!-- Se generan las opciones del select por cada uno registrado en la base de datos -->
+                                <?php if (!empty($productos)): ?>
+                                <?php foreach ($productos as $producto): ?>
+                                    <option value="<?php echo $producto['codigo']; ?>">
+                                        <?php echo $producto['nombre']; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <option value="">No hay productos registrados, debes registrar uno primero</option>
+                            <?php endif; ?>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Cantidad</label>
+                            <input type="number" name="cantidades[]" class="form-control" required>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button type="button" class="btn btn-danger btn-remove">Quitar</button>
+                        </div>
+                    </div>
+                </div>
 
-<!-- Botón para añadir más productos -->
-<button type="button" id="add-producto" class="btn btn-success mt-2">+ Añadir otro producto</button>
+                <!-- Botón para añadir más productos -->
+                <button type="button" id="add-producto" class="btn btn-success mt-2">+ Añadir otro producto</button>
 
                 <!-- Botones para guardar o cancelar -->
                 <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar Factura</button>
-                <a href="../controllers/FacturaCompraController.php?action=list" class="btn btn-secondary"><i class="fas fa-times"></i> Cancelar</a>
+                <a href="../controllers/FacturaCompraController.php?action=list" class="btn btn-secondary"><i
+                        class="fas fa-times"></i> Cancelar</a>
             </form>
         </div>
     </div>
 </div>
 
 <script>
-document.getElementById('add-producto').addEventListener('click', function () {
-    const container = document.getElementById('producto-container');
-    const item = document.querySelector('.producto-item');
-    const clone = item.cloneNode(true);
+    document.getElementById('add-producto').addEventListener('click', function () {
+        const container = document.getElementById('producto-container');
+        const item = document.querySelector('.producto-item');
+        const clone = item.cloneNode(true);
 
-    // Limpiar valores del nuevo clon
-    clone.querySelector('select').selectedIndex = 0;
-    clone.querySelector('input').value = '';
+        // Limpiar valores del nuevo clon
+        clone.querySelector('select').selectedIndex = 0;
+        clone.querySelector('input').value = '';
 
-    container.appendChild(clone);
-});
+        container.appendChild(clone);
+    });
 
-// Manejar botón "Quitar"
-document.addEventListener('click', function (e) {
-    if (e.target && e.target.classList.contains('btn-remove')) {
-        const item = e.target.closest('.producto-item');
-        const allItems = document.querySelectorAll('.producto-item');
-        if (allItems.length > 1) {
-            item.remove();
+    // Manejar botón "Quitar"
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.classList.contains('btn-remove')) {
+            const item = e.target.closest('.producto-item');
+            const allItems = document.querySelectorAll('.producto-item');
+            if (allItems.length > 1) {
+                item.remove();
+            }
         }
-    }
-});
+    });
 </script>
