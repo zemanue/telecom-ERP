@@ -26,6 +26,13 @@ CREATE TABLE `proveedor` (
   PRIMARY KEY (`codigo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE `almacen`(
+  `codigo` INT(11) NOT NULL AUTO_INCREMENT,
+  `nombre_almacen` VARCHAR(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ubicacion` VARCHAR(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`codigo`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE `productos` (
   `codigo` INT(11) NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(100) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -69,12 +76,6 @@ CREATE TABLE `facturas_venta` (
   FOREIGN KEY (`codigo_empleado`) REFERENCES `empleados`(`codigo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `almacen`(
-  `codigo` INT(11) NOT NULL AUTO_INCREMENT,
-  `nombre_almacen` VARCHAR(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ubicacion` VARCHAR(200) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`codigo`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `usuarios` (
   `usuario` VARCHAR(50) COLLATE utf8mb4_unicode_ci NOT NULL,

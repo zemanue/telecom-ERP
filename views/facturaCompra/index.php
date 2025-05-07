@@ -3,9 +3,7 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
     - Incluye el botón "Agregar Factura", que al hacer clic muestra el formulario para crear una nueva factura.
     - El formulario de editar proveedor se encuentra en editar.php, al que se va al hacer clic en el botón "Editar" de la tabla.
     - FacturaCompraController es la que incluye el header + esta página + el footer.
-
--->
-
+!-->
 <div class="content">
     <h1>Factura Compra</h1>
 
@@ -41,23 +39,28 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
                         <td><?php echo $factura['direccion']; ?></td>
                         <td><?php echo $factura['codigo_proveedor']; ?></td>
                         <td><?php echo $factura['codigo_empleado']; ?></td>
-                        <!-- La última celda de la fila contiene los botones de "Editar" y "Eliminar" -->
                         <td class="acciones">
-                            <!-- Botón de Editar con ícono -->
-                            <a href="../controllers/FacturaCompraController.php?action=edit&codigo=<?php echo $factura['codigo']; ?>"
-                            class="btn btn-warning btn-sm" title="Editar">
-                                <i class="fas fa-pen"></i> <!-- Ícono de lápiz para editar -->
-                            </a>
-    
-                            <!-- Espacio entre los botones -->
-                            <span>&nbsp;&nbsp;</span>
-    
-                            <!-- Botón de Eliminar con ícono -->
-                            <a href="../controllers/FacturaCompraController.php?action=delete&codigo=<?php echo $factura['codigo']; ?>"
-                            class="btn btn-danger btn-sm" title="Eliminar"
-                            onclick="return confirm('¿Estás seguro de que deseas eliminar este proveedor?')">
-                                <i class="fas fa-trash"></i> <!-- Ícono de basurero para eliminar -->
-                            </a>
+                        <div class="d-flex justify-content-center align-items-center gap-1 h-100">
+                                <!-- Botón de Editar !-->
+                                <a href="../controllers/FacturaCompraController.php?action=edit&codigo=<?php echo $factura['codigo']; ?>"
+                                   class="btn btn-warning btn-sm" title="Editar">
+                                    <i class="fas fa-pen"></i>
+                                </a>
+
+                                <!-- Botón de Eliminar !-->
+                                <a href="../controllers/FacturaCompraController.php?action=delete&codigo=<?php echo $factura['codigo']; ?>"
+                                   class="btn btn-danger btn-sm" title="Eliminar"
+                                   onclick="return confirm('¿Estás seguro de que deseas eliminar esta factura?')">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+
+                                <!-- Botón de Descargar PDF -->
+<a href="descargar_factura_compra.php?codigo=<?php echo $factura['codigo']; ?>"
+   class="btn btn-primary btn-sm" title="Descargar PDF" target="_blank">
+    <i class="fas fa-download"></i>
+</a>
+
+                            </div>
                         </td>
                     </tr>
                 <?php endforeach; ?>
