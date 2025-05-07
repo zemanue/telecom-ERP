@@ -40,25 +40,25 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
                         <td><?php echo $factura['codigo_proveedor']; ?></td>
                         <td><?php echo $factura['codigo_empleado']; ?></td>
                         <td class="acciones">
-                        <div class="d-flex justify-content-center align-items-center gap-1 h-100">
+                            <div class="d-flex justify-content-center align-items-center gap-1 h-100">
                                 <!-- Botón de Editar !-->
                                 <a href="../controllers/FacturaCompraController.php?action=edit&codigo=<?php echo $factura['codigo']; ?>"
-                                   class="btn btn-warning btn-sm" title="Editar">
+                                    class="btn btn-warning btn-sm" title="Editar">
                                     <i class="fas fa-pen"></i>
                                 </a>
 
                                 <!-- Botón de Eliminar !-->
                                 <a href="../controllers/FacturaCompraController.php?action=delete&codigo=<?php echo $factura['codigo']; ?>"
-                                   class="btn btn-danger btn-sm" title="Eliminar"
-                                   onclick="return confirm('¿Estás seguro de que deseas eliminar esta factura?')">
+                                    class="btn btn-danger btn-sm" title="Eliminar"
+                                    onclick="return confirm('¿Estás seguro de que deseas eliminar esta factura?')">
                                     <i class="fas fa-trash"></i>
                                 </a>
 
                                 <!-- Botón de Descargar PDF -->
-<a href="descargar_factura_compra.php?codigo=<?php echo $factura['codigo']; ?>"
-   class="btn btn-primary btn-sm" title="Descargar PDF" target="_blank">
-    <i class="fas fa-download"></i>
-</a>
+                                <a href="descargar_factura_compra.php?codigo=<?php echo $factura['codigo']; ?>"
+                                    class="btn btn-primary btn-sm" title="Descargar PDF" target="_blank">
+                                    <i class="fas fa-download"></i>
+                                </a>
 
                             </div>
                         </td>

@@ -44,18 +44,24 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
                         <td class="acciones">
                             <!-- Botón de Editar con ícono -->
                             <a href="../controllers/FacturaVentaController.php?action=edit&codigo=<?php echo $factura['codigo']; ?>"
-                            class="btn btn-warning btn-sm" title="Editar">
+                                class="btn btn-warning btn-sm" title="Editar">
                                 <i class="fas fa-pen"></i> <!-- Ícono de lápiz para editar -->
                             </a>
-    
+
                             <!-- Espacio entre los botones -->
                             <span>&nbsp;&nbsp;</span>
-    
+
                             <!-- Botón de Eliminar con ícono -->
                             <a href="../controllers/FacturaVentaController.php?action=delete&codigo=<?php echo $factura['codigo']; ?>"
-                            class="btn btn-danger btn-sm" title="Eliminar"
-                            onclick="return confirm('¿Estás seguro de que deseas eliminar esta factura?')">
+                                class="btn btn-danger btn-sm" title="Eliminar"
+                                onclick="return confirm('¿Estás seguro de que deseas eliminar esta factura?')">
                                 <i class="fas fa-trash"></i> <!-- Ícono de basurero para eliminar -->
+                            </a>
+
+                            <!-- Botón de Descargar PDF -->
+                            <a href="descargar_factura_venta.php?codigo=<?php echo $factura['codigo']; ?>"
+                                class="btn btn-primary btn-sm" title="Descargar PDF" target="_blank">
+                                <i class="fas fa-download"></i>
                             </a>
                         </td>
                     </tr>
