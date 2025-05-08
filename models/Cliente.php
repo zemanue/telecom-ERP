@@ -16,38 +16,62 @@ class Cliente {
     }
 
     // MÉTODOS PARA LAS REALIZAR LAS OPERACIONES CRUD
+
     // Obtener todos los clientes
     public function selectAll() {
-        $stmt = $this->db->query("SELECT * FROM cliente"); // Selecciona todos los clientes
-        return $stmt->fetchAll(PDO::FETCH_ASSOC); // Devuelve un array con todos los resultados
+        // Ejecuta una consulta que selecciona todos los registros de la tabla cliente
+        $stmt = $this->db->query("SELECT * FROM cliente"); 
+        // Devuelve todos los resultados como un array asociativo
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Métodos para crear, actualizar y eliminar clientes
+    // Crear un nuevo cliente en la base de datos
     public function create($telefono, $nif, $nombre, $direccion, $poblacion, $email, $metodo_pago) {
+        // Preparamos la consulta con parámetros para evitar inyecciones SQL
         $stmt = $this->db->prepare(
             "INSERT INTO cliente (telefono, nif, nombre, direccion, poblacion, email, metodo_pago) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)"
+             VALUES (?, ?, ?, ?, ?, ?, ?)"
         );
+        // Ejecutamos la consulta con los valores proporcionados
         return $stmt->execute([$telefono, $nif, $nombre, $direccion, $poblacion, $email, $metodo_pago]);
     }
 
+    // Actualizar un cliente existente
     public function update($codigo, $telefono, $nif, $nombre, $direccion, $poblacion, $email, $metodo_pago) {
+        // Preparamos la consulta de actualización
         $stmt = $this->db->prepare(
             "UPDATE cliente 
-            SET telefono = ?, nif = ?, nombre = ?, direccion = ?, poblacion = ?, email = ?, metodo_pago = ? 
-            WHERE codigo = ?"
+             SET telefono = ?, nif = ?, nombre = ?, direccion = ?, poblacion = ?, email = ?, metodo_pago = ? 
+             WHERE codigo = ?"
         );
+        // Ejecutamos la consulta con los valores actualizados
         return $stmt->execute([$telefono, $nif, $nombre, $direccion, $poblacion, $email, $metodo_pago, $codigo]);
     }
 
+    // Eliminar un cliente (con control de errores si tiene facturas asociadas)
     public function delete($codigo) {
-        $stmt = $this->db->prepare("DELETE FROM cliente WHERE codigo = ?");
-        return $stmt->execute([$codigo]);
+        try {
+            // Preparamos la consulta de eliminación
+            $stmt = $this->db->prepare("DELETE FROM cliente WHERE codigo = ?");
+            // Ejecutamos la eliminación
+            return $stmt->execute([$codigo]);
+        } catch (PDOException $e) {
+            // Verificamos si el error es por clave foránea (cliente con facturas asociadas)
+            if ($e->getCode() == 23000) {
+                throw new Exception("No se puede eliminar el cliente porque tiene facturas asociadas.");
+            } else {
+                // Otro tipo de error
+                throw $e;
+            }
+        }
     }
 
+    // Obtener un cliente por su código
     public function getById($codigo) {
+        // Preparamos la consulta para buscar un cliente específico
         $stmt = $this->db->prepare("SELECT * FROM cliente WHERE codigo = ?");
         $stmt->execute([$codigo]);
+        // Retornamos un solo resultado como array asociativo
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
