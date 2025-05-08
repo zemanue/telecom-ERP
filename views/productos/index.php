@@ -26,6 +26,7 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
                 <th>Precio compra</th>
                 <th>Precio venta</th>
                 <th>IVA</th>
+                <th>Stock</th>
                 <th>Código Proveedor</th>
                 <th>Código Almacén</th>
                 <th>Acciones</th>
@@ -45,6 +46,7 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
                         <td><?php echo $producto['precio_compra']; ?></td>
                         <td><?php echo $producto['precio_venta']; ?></td>
                         <td><?php echo $producto['IVA']; ?></td>
+                        <td><?php echo $producto['stock']; ?></td>
                         <td><?php echo $producto['codigo_proveedor']; ?></td>
                         <td><?php echo $producto['codigo_almacen']; ?></td>
                         <!-- La última celda de la fila contiene los botones de "Editar" y "Eliminar" -->

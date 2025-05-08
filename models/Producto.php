@@ -23,21 +23,21 @@ class Producto {
     }
 
     // Métodos para crear, actualizar y eliminar productos
-    public function create($nombre, $precio_compra, $precio_venta, $iva, $codigo_proveedor, $codigo_almacen) {
+    public function create($nombre, $precio_compra, $precio_venta, $iva, $stock, $codigo_proveedor, $codigo_almacen) {
         $stmt = $this->db->prepare(
-            "INSERT INTO productos (nombre, precio_compra, precio_venta, IVA, codigo_proveedor, codigo_almacen) 
-            VALUES (?, ?, ?, ?, ?, ?)"
+            "INSERT INTO productos (nombre, precio_compra, precio_venta, IVA, stock, codigo_proveedor, codigo_almacen) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)"
         );
-        return $stmt->execute([$nombre, $precio_compra, $precio_venta, $iva, $codigo_proveedor, $codigo_almacen]);
+        return $stmt->execute([$nombre, $precio_compra, $precio_venta, $iva, $stock, $codigo_proveedor, $codigo_almacen]);
     }
 
-    public function update($codigo, $nombre, $precio_compra, $precio_venta, $iva, $codigo_proveedor, $codigo_almacen) {
+    public function update($codigo, $nombre, $precio_compra, $precio_venta, $iva, $stock, $codigo_proveedor, $codigo_almacen) {
         $stmt = $this->db->prepare(
             "UPDATE productos  
-            SET nombre = ?, precio_compra = ?, precio_venta = ?, IVA = ?, codigo_proveedor = ?, codigo_almacen = ? 
+            SET nombre = ?, precio_compra = ?, precio_venta = ?, IVA = ?, stock = ?, codigo_proveedor = ?, codigo_almacen = ? 
             WHERE codigo = ?"
         );
-        return $stmt->execute([$nombre, $precio_compra, $precio_venta, $iva, $codigo_proveedor, $codigo_almacen, $codigo]);
+        return $stmt->execute([$nombre, $precio_compra, $precio_venta, $iva, $stock, $codigo_proveedor, $codigo_almacen, $codigo]);
     }
 
     public function delete($codigo) {
