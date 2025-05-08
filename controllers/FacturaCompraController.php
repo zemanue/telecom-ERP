@@ -14,16 +14,15 @@ y luego selecciona la vista que se debe mostrar al usuario.
 require_once '../config/database.php';
 require_once '../models/FacturaCompra.php';
 require_once '../models/DetalleFacturaCompra.php';
+require_once '../models/Producto.php'; // para actualizar el stock
 
 $detalleModel = new DetalleFacturaCompra($db);
-
-// Instancia del modelo FacturaCompra, pasando la conexión a la base de datos
 $facturaCompraModel = new FacturaCompra($db);
+$productoModel = new Producto($db); // instanciamos el modelo Producto
 
 // Lógica para GUARDAR UN NUEVA FACTURA DE COMPRA
 // Se ejecuta cuando se envía el formulario de creación
 // Recupera los datos del formulario enviados con el método POST
-
 if (isset($_POST['action']) && $_POST['action'] == 'create') {
     error_log("Entrando en el bloque de creación de factura de compra");
 
@@ -32,19 +31,37 @@ if (isset($_POST['action']) && $_POST['action'] == 'create') {
     $codigo_proveedor = $_POST['codigo_proveedor'];
     $codigo_empleado = $_POST['codigo_empleado'];
 
-    if ($facturaCompraModel->create($fecha, $direccion, $codigo_proveedor, $codigo_empleado)) {
-        $codigo_factura = $db->lastInsertId(); // obtener ID de la nueva factura
+    try {
+        // Iniciar transacción
+        $db->beginTransaction();
 
-        // Insertar productos
-        foreach ($_POST['productos'] as $index => $producto_id) {
-            $cantidad = $_POST['cantidades'][$index];
-            $detalleModel->insertarDetalle($codigo_factura, $producto_id, $cantidad);
+        // Crear factura
+        if ($facturaCompraModel->create($fecha, $direccion, $codigo_proveedor, $codigo_empleado)) {
+            $codigo_factura = $db->lastInsertId(); // obtener ID de la nueva factura
+
+            // Insertar productos
+            foreach ($_POST['productos'] as $index => $producto_id) {
+                $cantidad = $_POST['cantidades'][$index];
+
+                // Insertar detalle
+                $detalleModel->insertarDetalle($codigo_factura, $producto_id, $cantidad);
+
+                // Sumar stock
+                $productoModel->aumentarStock($producto_id, $cantidad);
+            }
+
+            // Confirmar transacción
+            $db->commit();
+
+            header('Location: ../controllers/FacturaCompraController.php?action=list');
+            exit();
+        } else {
+            $db->rollBack();
+            echo "Error al crear la factura de compra.";
         }
-
-        header('Location: ../controllers/FacturaCompraController.php?action=list');
-        exit();
-    } else {
-        echo "Error al crear la factura de compra.";
+    } catch (Exception $e) {
+        $db->rollBack();
+        echo "Error al procesar la factura: " . $e->getMessage();
     }
 }
 
@@ -59,23 +76,34 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit') {
     $codigo_proveedor = $_POST['codigo_proveedor'];
     $codigo_empleado = $_POST['codigo_empleado'];
 
-    // Con este if, se intenta actualizar una factura de compra.
-    // Utiliza el método update() del modelo FacturaCompra.
-    if ($facturaCompraModel->update($codigo, $fecha, $direccion, $codigo_proveedor, $codigo_empleado)) {
-        // Primero eliminamos los detalles existentes
-        $detalleModel->eliminarDetallesPorFactura($codigo);
-        // Luego insertamos los nuevos
-        foreach ($_POST['productos'] as $index => $producto_id) {
-        $cantidad = $_POST['cantidades'][$index];
-        $detalleModel->insertarDetalle($codigo, $producto_id, $cantidad);
+    try {
+        $db->beginTransaction();
+
+        // Con este if, se intenta actualizar una factura de compra.
+        // Utiliza el método update() del modelo FacturaCompra.
+        if ($facturaCompraModel->update($codigo, $fecha, $direccion, $codigo_proveedor, $codigo_empleado)) {
+            // Eliminar los detalles existentes
+            $detalleModel->eliminarDetallesPorFactura($codigo);
+
+            // Insertar los nuevos detalles y actualizar stock
+            foreach ($_POST['productos'] as $index => $producto_id) {
+                $cantidad = $_POST['cantidades'][$index];
+                $detalleModel->insertarDetalle($codigo, $producto_id, $cantidad);
+                $productoModel->sumarStock($producto_id, $cantidad); // si se requiere
+            }
+
+            $db->commit();
+            header('Location: ../controllers/FacturaCompraController.php?action=list');
+            exit();
+        } else {
+            $db->rollBack();
+            echo "Error al actualizar la factura de compra.";
         }
-        header('Location: ../controllers/FacturaCompraController.php?action=list');
-        exit();
-    } else {
-        echo "Error al actualizar la factura de compra.";
+    } catch (Exception $e) {
+        $db->rollBack();
+        echo "Error al actualizar la factura: " . $e->getMessage();
     }
 }
-
 
 // Lógica para ELIMINAR UNA FACTURA
 // Se ejecuta cuando se hace clic en el botón de eliminar
@@ -93,7 +121,6 @@ elseif (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['co
     }
 }
 
-
 // Lógica para LISTAR FACTURAS DE COMPRA
 // Se ejecuta cuando se accede a la página
 if (isset($_GET['action']) && $_GET['action'] == 'list') {
@@ -103,11 +130,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'list') {
     include '../views/layouts/footer.php';
 }
 
-
 // Lógica para mostrar el FORMULARIO DE CREAR FACTURA DE COMPRA
 // Se ejecuta cuando se hace clic en el botón de agregar factura
 elseif (isset($_GET['action']) && $_GET['action'] == 'create') {
-    
+
     // Necesitamos los proveedores, empleados y productos para llenar los selects en el formulario de creación
     // Proveedores
     require_once '../models/Proveedor.php';
@@ -128,7 +154,6 @@ elseif (isset($_GET['action']) && $_GET['action'] == 'create') {
     include '../views/facturaCompra/crear.php';
     include '../views/layouts/footer.php';
 }
-
 
 // Lógica para mostrar el FORMULARIO DE EDITAR FACTURA DE COMPRA
 // Se ejecuta cuando se hace clic en el botón de editar
@@ -157,6 +182,4 @@ elseif (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['codi
     include '../views/facturaCompra/editar.php';
     include '../views/layouts/footer.php';
 }
-
-
 ?>

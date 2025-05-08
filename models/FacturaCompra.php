@@ -7,6 +7,7 @@
 -->
 
 <?php
+require_once 'Producto.php'; 
 class FacturaCompra {
     private $db;
 
@@ -23,13 +24,19 @@ class FacturaCompra {
     }
 
     // Métodos para crear, actualizar y eliminar almacenes
-    public function create($fecha, $direccion, $codigo_proveedor, $codigo_empleado) {
-        $stmt = $this->db->prepare(
-            "INSERT INTO facturas_compra (fecha, direccion, codigo_proveedor, codigo_empleado) 
-            VALUES (?, ?, ?, ?)"
-        );
-        return $stmt->execute([$fecha, $direccion, $codigo_proveedor, $codigo_empleado]);
+    public function create($fecha, $direccion, $codigo_proveedor, $codigo_empleado){
+    $sql = "INSERT INTO facturas_compra (fecha, direccion, codigo_proveedor, codigo_empleado)
+            VALUES (:fecha, :direccion, :codigo_proveedor, :codigo_empleado)";
+    
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam(':fecha', $fecha);
+    $stmt->bindParam(':direccion', $direccion);
+    $stmt->bindParam(':codigo_proveedor', $codigo_proveedor);
+    $stmt->bindParam(':codigo_empleado', $codigo_empleado);
+
+    return $stmt->execute();
     }
+
 
     public function update($codigo, $fecha, $direccion, $codigo_proveedor, $codigo_empleado) {
         $stmt = $this->db->prepare(
@@ -50,5 +57,7 @@ class FacturaCompra {
         $stmt->execute([$codigo]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+
 }
 ?>

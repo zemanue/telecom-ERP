@@ -32,7 +32,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'create') {
 
     // Con este if, se intenta crear un nuevo producto.
     // Utiliza el método create() del modelo Producto.
-    if ($productoModel->create($nombre, $precio_compra, $precio_venta, $iva, $codigo_proveedor, $codigo_almacen)) {	
+    if ($productoModel->create($nombre, $precio_compra, $precio_venta, $iva, $stock, $codigo_proveedor, $codigo_almacen)) {	
         header('Location: ../controllers/ProductoController.php?action=list'); // Si se consigue, redirige de nuevo a la lista de productos
         exit(); // Importante: detener la ejecución del script después de la redirección
     } else {
@@ -57,7 +57,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit') {
 
     // Con este if, se intenta actualizar un producto.
     // Utiliza el método update() del modelo producto.
-    if ($productoModel->update($codigo, $nombre, $precio_compra, $precio_venta, $iva, $codigo_proveedor, $codigo_almacen)) {
+    if ($productoModel->update($codigo, $nombre, $precio_compra, $precio_venta, $iva, $stock, $codigo_proveedor, $codigo_almacen)) {
         header('Location: ../controllers/ProductoController.php?action=list'); // Si se consigue, redirige de nuevo a la lista de productos
         exit(); // Importante: detener la ejecución del script después de la redirección
 

@@ -50,5 +50,23 @@ class Producto {
         $stmt->execute([$codigo]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    // Aumnetar stock (cuando se compra un producto)
+    public function aumentarStock($codigo, $cantidad) {
+        $stmt = $this->db->prepare("UPDATE productos SET stock = stock + ? WHERE codigo = ?");
+        return $stmt->execute([$cantidad, $codigo]);
+    }
+    
+    // Reducir stock (cuando se vende un producto)
+    public function reducirStock($codigo, $cantidad) {
+        // Validar que hay suficiente stock antes
+        $producto = $this->getById($codigo);
+        if ($producto && $producto['stock'] >= $cantidad) {
+            $stmt = $this->db->prepare("UPDATE productos SET stock = stock - ? WHERE codigo = ?");
+            return $stmt->execute([$cantidad, $codigo]);
+        } else {
+            return false; // No hay suficiente stock
+        }
+    }
 }
 ?>

@@ -3,16 +3,16 @@
 require_once '../config/database.php';
 require_once '../models/FacturaVenta.php';
 require_once '../models/DetalleFacturaVenta.php';
+require_once '../models/Producto.php'; // Asegúrate de incluir el modelo de Producto para reducir el stock
 
-$detalleModel = new DetalleFacturaVenta($db);
-
-// Instancia del modelo FacturaVenta, pasando la conexión a la base de datos
+// Instancia de los modelos necesarios, pasando la conexión a la base de datos
 $facturaVentaModel = new FacturaVenta($db);
+$detalleModel = new DetalleFacturaVenta($db);
+$productoModel = new Producto($db);
 
 // Lógica para GUARDAR UNA NUEVA FACTURA DE VENTA
 // Se ejecuta cuando se envía el formulario de creación
 // Recupera los datos del formulario enviados con el método POST
-
 if (isset($_POST['action']) && $_POST['action'] == 'create') {
     error_log("Entrando en el bloque de creación de factura de venta");
 
@@ -21,19 +21,23 @@ if (isset($_POST['action']) && $_POST['action'] == 'create') {
     $codigo_cliente = $_POST['codigo_cliente'];
     $codigo_empleado = $_POST['codigo_empleado'];
 
-    if ($facturaVentaModel->create($fecha, $direccion, $codigo_cliente, $codigo_empleado)) {
-        $codigo_factura = $db->lastInsertId(); // obtener ID de la nueva factura
+    // Preparamos los detalles de los productos (producto_id y cantidad)
+    $detalles = [];
+    foreach ($_POST['productos'] as $index => $producto_id) {
+        $detalles[] = [
+            'producto_id' => $producto_id,
+            'cantidad' => $_POST['cantidades'][$index]
+        ];
+    }
 
-        // Insertar productos
-        foreach ($_POST['productos'] as $index => $producto_id) {
-            $cantidad = $_POST['cantidades'][$index];
-            $detalleModel->insertarDetalle($codigo_factura, $producto_id, $cantidad);
-        }
-
+    // Crear la factura de venta (esto también inserta los detalles y reduce el stock)
+    if ($facturaVentaModel->create($fecha, $direccion, $codigo_cliente, $codigo_empleado, $detalles)) {
+        // Redirige a la lista de facturas si todo fue exitoso
         header('Location: ../controllers/FacturaVentaController.php?action=list');
         exit();
     } else {
-        echo "Error al crear la factura de venta.";
+        // Si hubo un error, se muestra el mensaje
+        echo "Error: La factura no se pudo crear correctamente.";
     }
 }
 
@@ -41,23 +45,31 @@ if (isset($_POST['action']) && $_POST['action'] == 'create') {
 // Este bloque se ejecuta cuando se envía el formulario de edición
 // Recupera los datos del formulario enviados con el método POST
 if (isset($_POST['action']) && $_POST['action'] == 'edit') {
-    error_log("Entrando en el bloque de edición de factura de venta", 0); // Log para depuración
+    error_log("Entrando en el bloque de edición de factura de venta", 0);
+
     $codigo = $_POST['codigo'];
     $fecha = $_POST['fecha'];
     $direccion = $_POST['direccion'];
     $codigo_cliente = $_POST['codigo_cliente'];
     $codigo_empleado = $_POST['codigo_empleado'];
 
-    // Con este if, se intenta actualizar una factura de venta.
-    // Utiliza el método update() del modelo FacturaVenta.
+    // Actualizamos la factura en la tabla principal
     if ($facturaVentaModel->update($codigo, $fecha, $direccion, $codigo_cliente, $codigo_empleado)) {
         // Primero eliminamos los detalles existentes
         $detalleModel->eliminarDetallesPorFactura($codigo);
-        // Luego insertamos los nuevos
+
+        // Insertamos los nuevos detalles y actualizamos stock
         foreach ($_POST['productos'] as $index => $producto_id) {
             $cantidad = $_POST['cantidades'][$index];
+
+            // Reducir el stock del producto
+            $productoModel->reducirStock($producto_id, $cantidad);
+
+            // Insertar nuevo detalle
             $detalleModel->insertarDetalle($codigo, $producto_id, $cantidad);
         }
+
+        // Redirigimos a la lista de facturas
         header('Location: ../controllers/FacturaVentaController.php?action=list');
         exit();
     } else {
@@ -70,21 +82,20 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit') {
 elseif (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['codigo'])) {
     $codigo = $_GET['codigo'];
 
-    // Con este if, se intenta eliminar una factura.
-    // Utiliza el método delete() del modelo FacturaVenta.
-    // Si se consigue, redirige de nuevo a la lista de facturas de venta
+    // Se intenta eliminar la factura con el método del modelo
     if ($facturaVentaModel->delete($codigo)) {
-        header('Location: ../controllers/FacturaVentaController.php?action=list'); // Redirigir a la lista
-        exit(); // Importante: detener la ejecución del script después de la redirección
+        header('Location: ../controllers/FacturaVentaController.php?action=list');
+        exit();
     } else {
         echo "Error al eliminar la factura de venta.";
     }
 }
 
 // Lógica para LISTAR FACTURAS DE VENTA
-// Se ejecuta cuando se accede a la página
+// Se ejecuta cuando se accede a la página principal de facturas
 if (isset($_GET['action']) && $_GET['action'] == 'list') {
     $facturas = $facturaVentaModel->selectAll();
+
     include '../views/layouts/header.php';
     include '../views/facturaVenta/index.php';
     include '../views/layouts/footer.php';
@@ -93,21 +104,17 @@ if (isset($_GET['action']) && $_GET['action'] == 'list') {
 // Lógica para mostrar el FORMULARIO DE CREAR FACTURA DE VENTA
 // Se ejecuta cuando se hace clic en el botón de agregar factura
 elseif (isset($_GET['action']) && $_GET['action'] == 'create') {
-    
-    // Necesitamos los clientes, empleados y productos para llenar los selects en el formulario de creación
-    // Clientes
+
+    // Cargamos los datos necesarios para los selects (clientes, empleados, productos)
     require_once '../models/Cliente.php';
+    require_once '../models/Empleado.php';
+
     $clienteModel = new Cliente($db);
     $clientes = $clienteModel->selectAll();
 
-    // Empleados
-    require_once '../models/Empleado.php';
     $empleadoModel = new Empleado($db);
     $empleados = $empleadoModel->selectAll();
 
-    // Productos
-    require_once '../models/Producto.php';
-    $productoModel = new Producto($db);
     $productos = $productoModel->selectAll();
 
     include '../views/layouts/header.php';
@@ -119,26 +126,25 @@ elseif (isset($_GET['action']) && $_GET['action'] == 'create') {
 // Se ejecuta cuando se hace clic en el botón de editar
 elseif (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['codigo'])) {
     $codigo = $_GET['codigo'];
+
+    // Obtener los datos actuales de la factura y sus productos
     $factura = $facturaVentaModel->getById($codigo);
     $productos_factura = $detalleModel->obtenerDetallesPorFactura($codigo);
 
-    // Necesitamos los clientes, empleados y productos para llenar los selects en el formulario de edición
-    // Clientes
+    // Cargamos los datos para los selects
     require_once '../models/Cliente.php';
+    require_once '../models/Empleado.php';
+
     $clienteModel = new Cliente($db);
     $clientes = $clienteModel->selectAll();
 
-    // Empleados
-    require_once '../models/Empleado.php';
     $empleadoModel = new Empleado($db);
     $empleados = $empleadoModel->selectAll();
 
-    // Productos
-    require_once '../models/Producto.php';
-    $productoModel = new Producto($db);
     $productos = $productoModel->selectAll();
 
     include '../views/layouts/header.php';
     include '../views/facturaVenta/editar.php';
     include '../views/layouts/footer.php';
 }
+?>
