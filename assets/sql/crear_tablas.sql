@@ -43,7 +43,9 @@ CREATE TABLE `productos` (
   `codigo_almacen` INT(11) NOT NULL,
   PRIMARY KEY (`codigo`),
   FOREIGN KEY (`codigo_proveedor`) REFERENCES `proveedor`(`codigo`) ON DELETE CASCADE,
-  FOREIGN KEY (`codigo_almacen`) REFERENCES `almacen`(`codigo`) ON DELETE CASCADE
+  FOREIGN KEY (`codigo_almacen`) REFERENCES `almacen`(`codigo`) ON DELETE CASCADE,
+  ALTER TABLE `productos`
+  ADD COLUMN `stock` INT(11) NOT NULL DEFAULT 0;
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `empleados` (
