@@ -64,14 +64,30 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit') {
 elseif (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['codigo'])) {
     $codigo = $_GET['codigo'];
 
-    // Con este if, se intenta eliminar un cliente.
-    // Utiliza el método delete() del modelo Cliente.
-    // Si se consigue, redirige de nuevo a la lista de clientes
-    if ($empleadoModel->delete($codigo)) {
-        header('Location: ../controllers/EmpleadoController.php?action=list'); // Redirigir a la lista
-        exit(); // Importante: detener la ejecución del script después de la redirección
-    } else {
-        echo "Error al eliminar el empleado.";
+    // Con este bloque try-catch, se intenta eliminar un empleado.
+    // Se captura la excepción si tiene si tiene facturas de compra o venta asociadas.
+    try {
+        if ($empleadoModel->delete($codigo)) {
+            header('Location: ../controllers/EmpleadoController.php?action=list'); // Redirigir a la lista
+            exit(); // Importante: detener la ejecución del script después de la redirección
+        } else {
+            throw new Exception("Error al eliminar el empleado.");
+        }
+    } catch (Exception $e) {
+        // Mostrar una alerta Bootstrap si no se puede eliminar el empleado
+        include '../views/layouts/header.php';
+        echo '
+            <div class="container mt-5">
+                <div class="alert alert-danger" role="alert">
+                    <h4 class="alert-heading">Error al eliminar</h4>
+                    <p>No se puede eliminar el empleado porque tiene facturas asociadas u otro error ha ocurrido.</p>
+                    <hr>
+                    <a href="javascript:history.back()" class="btn btn-outline-danger">Volver atrás</a>
+                </div>
+            </div>
+        ';
+        include '../views/layouts/footer.php';
+        exit();
     }
 }
 

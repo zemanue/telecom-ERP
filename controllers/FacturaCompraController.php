@@ -89,7 +89,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit') {
             foreach ($_POST['productos'] as $index => $producto_id) {
                 $cantidad = $_POST['cantidades'][$index];
                 $detalleModel->insertarDetalle($codigo, $producto_id, $cantidad);
-                $productoModel->sumarStock($producto_id, $cantidad); // si se requiere
+                $productoModel->aumentarStock($producto_id, $cantidad); // si se requiere
             }
 
             $db->commit();

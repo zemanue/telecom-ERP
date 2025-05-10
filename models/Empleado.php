@@ -41,8 +41,20 @@ class Empleado {
     }
 
     public function delete($codigo) {
-        $stmt = $this->db->prepare("DELETE FROM empleados WHERE codigo = ?");
-        return $stmt->execute([$codigo]);
+        try {
+            // Preparamos la consulta de eliminación
+            $stmt = $this->db->prepare("DELETE FROM empleados WHERE codigo = ?");
+            // Ejecutamos la eliminación
+            return $stmt->execute([$codigo]);
+        } catch (PDOException $e) {
+            // Verificamos si el error es por clave foránea (empleado con facturas asociadas)
+            if ($e->getCode() == 23000) {
+                throw new Exception("No se puede eliminar el empleado porque tiene facturas asociadas.");
+            } else {
+                // Otro tipo de error
+                throw $e;
+            }
+        }
     }
 
     public function getById($codigo) {
