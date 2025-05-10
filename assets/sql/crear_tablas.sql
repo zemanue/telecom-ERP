@@ -41,6 +41,7 @@ CREATE TABLE `productos` (
   `IVA` DECIMAL(5, 2) NOT NULL,
   `codigo_proveedor` INT(11) NOT NULL,
   `codigo_almacen` INT(11) NOT NULL,
+  `stock` INT(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`codigo`),
   FOREIGN KEY (`codigo_proveedor`) REFERENCES `proveedor`(`codigo`) ON DELETE CASCADE,
   FOREIGN KEY (`codigo_almacen`) REFERENCES `almacen`(`codigo`) ON DELETE CASCADE
@@ -60,9 +61,11 @@ CREATE TABLE `facturas_compra` (
   `direccion` VARCHAR(200) COLLATE utf8mb4_unicode_ci NOT NULL,
   `codigo_proveedor` INT(11) NOT NULL,
   `codigo_empleado` INT(11) NOT NULL,
+  `metodo_pago` VARCHAR(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `estado` ENUM('Borrador', 'Emitida', 'Pagada', 'Anulada') COLLATE utf8mb4_unicode_ci DEFAULT 'Borrador',
   PRIMARY KEY (`codigo`),
-    FOREIGN KEY (`codigo_proveedor`) REFERENCES `proveedor`(`codigo`),
-    FOREIGN KEY (`codigo_empleado`) REFERENCES `empleados`(`codigo`)
+  FOREIGN KEY (`codigo_proveedor`) REFERENCES `proveedor`(`codigo`),
+  FOREIGN KEY (`codigo_empleado`) REFERENCES `empleados`(`codigo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `facturas_venta` (
@@ -71,20 +74,13 @@ CREATE TABLE `facturas_venta` (
   `direccion` VARCHAR(200) COLLATE utf8mb4_unicode_ci NOT NULL,
   `codigo_cliente` INT(11) NOT NULL,
   `codigo_empleado` INT(11) NOT NULL,
+  `metodo_pago` VARCHAR(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `estado` ENUM('Borrador', 'Emitida', 'Pagada', 'Anulada') COLLATE utf8mb4_unicode_ci DEFAULT 'Borrador',
   PRIMARY KEY (`codigo`),
   FOREIGN KEY (`codigo_cliente`) REFERENCES `cliente`(`codigo`),
   FOREIGN KEY (`codigo_empleado`) REFERENCES `empleados`(`codigo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-
-CREATE TABLE `usuarios` (
-  `usuario` VARCHAR(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `contrasena` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nombre_completo` VARCHAR(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `correo` VARCHAR(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`usuario`),
-  UNIQUE (`correo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE detalles_factura_compra (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -104,5 +100,21 @@ CREATE TABLE detalles_factura_venta (
     FOREIGN KEY (codigo_producto) REFERENCES productos(codigo) ON DELETE CASCADE
 );
 
-ALTER TABLE `productos`
-  ADD COLUMN `stock` INT(11) NOT NULL DEFAULT 0;
+CREATE TABLE `usuarios` (
+  `usuario` VARCHAR(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `contrasena` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nombre_completo` VARCHAR(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `correo` VARCHAR(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`usuario`),
+  UNIQUE (`correo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- Eliminar cuando todos tengamos ya la tabla actualizada
+ALTER TABLE `facturas_compra`
+  ADD COLUMN `metodo_pago` VARCHAR(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  ADD COLUMN `estado` ENUM('Borrador', 'Emitida', 'Pagada', 'Anulada') COLLATE utf8mb4_unicode_ci DEFAULT 'Borrador';
+
+ALTER TABLE `facturas_venta`
+  ADD COLUMN `metodo_pago` VARCHAR(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  ADD COLUMN `estado` ENUM('Borrador', 'Emitida', 'Pagada', 'Anulada') COLLATE utf8mb4_unicode_ci DEFAULT 'Borrador';
