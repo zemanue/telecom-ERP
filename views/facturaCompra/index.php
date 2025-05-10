@@ -22,6 +22,8 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
                 <th>Dirección</th>
                 <th>Código proveedor</th>
                 <th>Código empleado</th>
+                <th>Método de pago</th>
+                <th>Estado</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -39,6 +41,8 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
                         <td><?php echo $factura['direccion']; ?></td>
                         <td><?php echo $factura['codigo_proveedor']; ?></td>
                         <td><?php echo $factura['codigo_empleado']; ?></td>
+                        <td><?php echo $factura['metodo_pago']; ?></td>
+                        <td><?php echo $factura['estado']; ?></td>
                         <td class="acciones">
                             <div class="d-flex justify-content-center align-items-center gap-1 h-100">
                                 <!-- Botón de Editar !-->

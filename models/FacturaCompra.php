@@ -24,27 +24,28 @@ class FacturaCompra {
     }
 
     // Métodos para crear, actualizar y eliminar almacenes
-    public function create($fecha, $direccion, $codigo_proveedor, $codigo_empleado){
-    $sql = "INSERT INTO facturas_compra (fecha, direccion, codigo_proveedor, codigo_empleado)
-            VALUES (:fecha, :direccion, :codigo_proveedor, :codigo_empleado)";
-    
-    $stmt = $this->db->prepare($sql);
-    $stmt->bindParam(':fecha', $fecha);
-    $stmt->bindParam(':direccion', $direccion);
-    $stmt->bindParam(':codigo_proveedor', $codigo_proveedor);
-    $stmt->bindParam(':codigo_empleado', $codigo_empleado);
+    public function create($fecha, $direccion, $codigo_proveedor, $codigo_empleado, $metodo_pago) {
+        $sql = "INSERT INTO facturas_compra (fecha, direccion, codigo_proveedor, codigo_empleado, metodo_pago)
+                VALUES (:fecha, :direccion, :codigo_proveedor, :codigo_empleado, :metodo_pago)";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':fecha', $fecha);
+        $stmt->bindParam(':direccion', $direccion);
+        $stmt->bindParam(':codigo_proveedor', $codigo_proveedor);
+        $stmt->bindParam(':codigo_empleado', $codigo_empleado);
+        $stmt->bindParam(':metodo_pago', $metodo_pago);
 
-    return $stmt->execute();
+        return $stmt->execute();
     }
 
 
-    public function update($codigo, $fecha, $direccion, $codigo_proveedor, $codigo_empleado) {
+    public function update($codigo, $fecha, $direccion, $codigo_proveedor, $codigo_empleado, $metodo_pago, $estado) {
         $stmt = $this->db->prepare(
             "UPDATE facturas_compra
-            SET fecha = ?, direccion = ?, codigo_proveedor = ?, codigo_empleado = ?
+            SET fecha = ?, direccion = ?, codigo_proveedor = ?, codigo_empleado = ?, metodo_pago = ?, estado = ?
             WHERE codigo = ?" 
         );
-        return $stmt->execute([$fecha, $direccion, $codigo_proveedor, $codigo_empleado, $codigo]);
+        return $stmt->execute([$fecha, $direccion, $codigo_proveedor, $codigo_empleado, $metodo_pago, $estado, $codigo]);
     }
 
     public function delete($codigo) {

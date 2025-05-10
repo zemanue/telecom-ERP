@@ -30,18 +30,21 @@ if (isset($_POST['action']) && $_POST['action'] == 'create') {
     $direccion = $_POST['direccion'];
     $codigo_proveedor = $_POST['codigo_proveedor'];
     $codigo_empleado = $_POST['codigo_empleado'];
+    $metodo_pago = $_POST['metodo_pago'];
+    $productos = $_POST['productos'];
+    $cantidades = $_POST['cantidades'];
 
     try {
         // Iniciar transacción
         $db->beginTransaction();
 
         // Crear factura
-        if ($facturaCompraModel->create($fecha, $direccion, $codigo_proveedor, $codigo_empleado)) {
+        if ($facturaCompraModel->create($fecha, $direccion, $codigo_proveedor, $codigo_empleado, $metodo_pago)) {
             $codigo_factura = $db->lastInsertId(); // obtener ID de la nueva factura
 
             // Insertar productos
-            foreach ($_POST['productos'] as $index => $producto_id) {
-                $cantidad = $_POST['cantidades'][$index];
+            foreach ($productos as $index => $producto_id) {
+                $cantidad = $cantidades[$index];
 
                 // Insertar detalle
                 $detalleModel->insertarDetalle($codigo_factura, $producto_id, $cantidad);
@@ -75,21 +78,39 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit') {
     $direccion = $_POST['direccion'];
     $codigo_proveedor = $_POST['codigo_proveedor'];
     $codigo_empleado = $_POST['codigo_empleado'];
+    $metodo_pago = $_POST['metodo_pago'];
+    $estado = $_POST['estado'];
+    $productos = $_POST['productos'];
+    $cantidades = $_POST['cantidades'];
 
     try {
         $db->beginTransaction();
 
         // Con este if, se intenta actualizar una factura de compra.
         // Utiliza el método update() del modelo FacturaCompra.
-        if ($facturaCompraModel->update($codigo, $fecha, $direccion, $codigo_proveedor, $codigo_empleado)) {
+        if ($facturaCompraModel->update($codigo, $fecha, $direccion, $codigo_proveedor, $codigo_empleado, $metodo_pago, $estado)) {
+            // Obtener los detalles existentes de la factura
+            $detallesAnteriores = $detalleModel->obtenerDetallesPorFactura($codigo);
+
             // Eliminar los detalles existentes
             $detalleModel->eliminarDetallesPorFactura($codigo);
 
             // Insertar los nuevos detalles y actualizar stock
-            foreach ($_POST['productos'] as $index => $producto_id) {
-                $cantidad = $_POST['cantidades'][$index];
-                $detalleModel->insertarDetalle($codigo, $producto_id, $cantidad);
-                $productoModel->aumentarStock($producto_id, $cantidad); // si se requiere
+            foreach ($productos as $index => $producto_id) {
+                $cantidadNueva = $cantidades[$index];
+                $detalleModel->insertarDetalle($codigo, $producto_id, $cantidadNueva);
+                // Buscar la cantidad anterior de cada producto en los detalles anteriores
+                $cantidadAnterior = 0;
+                foreach ($detallesAnteriores as $detalle) {
+                    if ($detalle['codigo_producto'] == $producto_id) {
+                        $cantidadAnterior = $detalle['cantidad'];
+                        break;
+                    }
+                }
+
+                // Calcular la diferencia y actualizar el stock
+                $diferencia = $cantidadNueva - $cantidadAnterior;                
+                $productoModel->aumentarStock($producto_id, $diferencia);
             }
 
             $db->commit();
