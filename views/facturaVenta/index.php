@@ -7,6 +7,7 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
 
 <!-- Incluir SweetAlert2 (CSS y JS) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<link rel="stylesheet" href="../assets/css/style.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <div class="content">
@@ -55,20 +56,17 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
                                 <i class="fas fa-pen"></i> <!-- Ícono de lápiz para editar -->
                             </a>
 
-                            <!-- Espacio entre los botones -->
-                            <span>&nbsp;&nbsp;</span>
-
                             <!-- Botón de Eliminar con SweetAlert2 -->
                             <a href="#"
-                               class="btn btn-danger btn-sm btn-eliminar"
-                               data-url="../controllers/FacturaVentaController.php?action=delete&codigo=<?php echo $factura['codigo']; ?>"
-                               title="Eliminar">
+                                class="btn btn-danger btn-sm btn-eliminar"
+                                data-url="../controllers/FacturaVentaController.php?action=delete&codigo=<?php echo $factura['codigo']; ?>"
+                                title="Eliminar">
                                 <i class="fas fa-trash"></i> <!-- Ícono de basurero para eliminar -->
                             </a>
 
                             <!-- Botón de Descargar PDF -->
                             <a href="descargar_factura_venta.php?codigo=<?php echo $factura['codigo']; ?>"
-                               class="btn btn-primary btn-sm" title="Descargar PDF" target="_blank">
+                                class="btn btn-primary btn-sm" title="Descargar PDF" target="_blank">
                                 <i class="fas fa-download"></i>
                             </a>
                         </td>

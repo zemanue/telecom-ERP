@@ -111,3 +111,10 @@ td.acciones .btn i {
     font-size: 14px; /* Ajustar el tamaño de los íconos */
     margin-right: 0; /* Eliminar espacio adicional entre los iconos y el borde */
 }
+
+.acciones a {
+    margin-right: 10px;
+}
+.acciones a:last-child {
+    margin-right: 0;
+}

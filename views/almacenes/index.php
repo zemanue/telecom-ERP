@@ -4,6 +4,7 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
 
 <!-- Incluir SweetAlert2 (CSS y JS) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<link rel="stylesheet" href="../assets/css/style.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <div class="content">
@@ -40,8 +41,6 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
                             class="btn btn-warning btn-sm" title="Editar">
                                 <i class="fas fa-pen"></i>
                             </a>
-
-                            <span>&nbsp;&nbsp;</span>
 
                             <!-- Botón de Eliminar (con SweetAlert2) -->
                             <a href="#" 
