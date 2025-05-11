@@ -3,7 +3,10 @@ Este archivo contiene la parte superior de todas las vistas de la aplicación,
 incluyendo la barra lateral de navegación y el menú de perfil desplegable.
 -->
 <?php
-session_start(); // Iniciar sesión para acceder a las variables de sesión
+// Verificamos si la sesión ya está activa antes de iniciar una nueva sesión
+if (session_status() == PHP_SESSION_NONE) {
+    session_start(); // Iniciar sesión solo si no hay ninguna sesión activa
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -24,12 +27,14 @@ session_start(); // Iniciar sesión para acceder a las variables de sesión
     <div class="container-fluid">
         <div class="row">
 
-            <!-- Barra lateral -->
+            <!-- Barra lateral (sidebar) -->
             <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar">
                 <div class="position-sticky pt-3">
                     <!--<h4 class="text-center text-white mb-4">TELECOM</h4>-->
+                    <!-- Logo de la aplicación -->
                     <img src="../assets/img/logo2.png" alt="Logo" class="img-fluid mb-4">
                     <ul class="nav flex-column">
+                        <!-- Enlaces de navegación -->
                         <li class="nav-item">
                             <a class="nav-link text-white" href="../views/home.php">
                                 <i class="fas fa-home"></i> Inicio
@@ -74,23 +79,23 @@ session_start(); // Iniciar sesión para acceder a las variables de sesión
                 </div>
             </nav>
 
+            <!-- Área principal de contenido -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                <div
-                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 
-                    <!-- Menú de perfil desplegable -->
+                    <!-- Menú desplegable de perfil -->
                     <div class="profile-dropdown">
                         <div class="dropdown">
-                            <button class="btn btn-light dropdown-toggle p-0" type="button" id="dropdownMenuButton"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="https://st3.depositphotos.com/3433891/33504/i/450/depositphotos_335048212-stock-photo-young-caucasian-woman-isolated-who.jpg"
-                                    alt="Perfil" style="width: 40px; height: 40px; border-radius: 50%;">
+                            <!-- Botón que muestra la imagen del perfil -->
+                            <button class="btn btn-light dropdown-toggle p-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="https://st3.depositphotos.com/3433891/33504/i/450/depositphotos_335048212-stock-photo-young-caucasian-woman-isolated-who.jpg" alt="Perfil" style="width: 40px; height: 40px; border-radius: 50%;">
                             </button>
+                            <!-- Menú desplegable con opciones -->
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <li><a class="dropdown-item" href="../perfil/ver_perfil.php"><i
-                                            class="fas fa-id-badge"></i> Ver Perfil</a></li>
-                                <li><a class="dropdown-item" href="../logout.php"><i class="fas fa-sign-out-alt"></i>
-                                        Cerrar Sesión</a></li>
+                                <!-- Enlace para ver el perfil -->
+                                <li><a class="dropdown-item" href="perfil/verPerfil.php"><i class="fas fa-id-badge"></i> Ver Perfil</a></li>
+                                <!-- Enlace para cerrar sesión -->
+                                <li><a class="dropdown-item" href="../logout.php"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
                             </ul>
                         </div>
                     </div>
