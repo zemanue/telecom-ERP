@@ -20,24 +20,38 @@ if (isset($_POST['action']) && $_POST['action'] == 'create') {
     $direccion = $_POST['direccion'];
     $codigo_cliente = $_POST['codigo_cliente'];
     $codigo_empleado = $_POST['codigo_empleado'];
+    $metodo_pago = $_POST['metodo_pago'];
+    $productos = $_POST['productos'];
+    $cantidades = $_POST['cantidades'];
 
-    // Preparamos los detalles de los productos (producto_id y cantidad)
-    $detalles = [];
-    foreach ($_POST['productos'] as $index => $producto_id) {
-        $detalles[] = [
-            'producto_id' => $producto_id,
-            'cantidad' => $_POST['cantidades'][$index]
-        ];
-    }
+    try {
+        $db->beginTransaction();
 
-    // Crear la factura de venta (esto también inserta los detalles y reduce el stock)
-    if ($facturaVentaModel->create($fecha, $direccion, $codigo_cliente, $codigo_empleado, $detalles)) {
-        // Redirige a la lista de facturas si todo fue exitoso
-        header('Location: ../controllers/FacturaVentaController.php?action=list');
-        exit();
-    } else {
-        // Si hubo un error, se muestra el mensaje
-        echo "Error: La factura no se pudo crear correctamente.";
+        // Crear factura de venta
+        $codigo_factura = $facturaVentaModel->create($fecha, $direccion, $codigo_cliente, $codigo_empleado, $metodo_pago);
+
+        if ($codigo_factura) {
+            // Insertar detalles y reducir stock
+            foreach ($productos as $index => $producto_id) {
+                $cantidad = $cantidades[$index];
+
+                // Insertar detalle de venta
+                $detalleModel->insertarDetalle($codigo_factura, $producto_id, $cantidad);
+
+                // Reducir stock
+                $productoModel->reducirStock($producto_id, $cantidad);
+            }
+
+            $db->commit();
+            header('Location: ../controllers/FacturaVentaController.php?action=list');
+            exit();
+        } else {
+            $db->rollBack();
+            echo "Error al crear la factura de venta.";
+        }
+    } catch (Exception $e) {
+        $db->rollBack();
+        echo "Error al procesar la factura de venta: " . $e->getMessage();
     }
 }
 
@@ -52,28 +66,50 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit') {
     $direccion = $_POST['direccion'];
     $codigo_cliente = $_POST['codigo_cliente'];
     $codigo_empleado = $_POST['codigo_empleado'];
+    $metodo_pago = $_POST['metodo_pago'];
+    $estado = $_POST['estado'];
+    $productos = $_POST['productos'];
+    $cantidades = $_POST['cantidades'];
 
-    // Actualizamos la factura en la tabla principal
-    if ($facturaVentaModel->update($codigo, $fecha, $direccion, $codigo_cliente, $codigo_empleado)) {
-        // Primero eliminamos los detalles existentes
-        $detalleModel->eliminarDetallesPorFactura($codigo);
+    try {
+        $db->beginTransaction();
 
-        // Insertamos los nuevos detalles y actualizamos stock
-        foreach ($_POST['productos'] as $index => $producto_id) {
-            $cantidad = $_POST['cantidades'][$index];
+        // Actualizamos la factura en la tabla principal
+        if ($facturaVentaModel->update($codigo, $fecha, $direccion, $codigo_cliente, $codigo_empleado, $metodo_pago, $estado)) {
+            // Primero obtener los detalles existentes de la factura
+            $detallesAnteriores = $detalleModel->obtenerDetallesPorFactura($codigo);
 
-            // Reducir el stock del producto
-            $productoModel->reducirStock($producto_id, $cantidad);
+            // Después eliminamos los detalles existentes
+            $detalleModel->eliminarDetallesPorFactura($codigo);
 
-            // Insertar nuevo detalle
-            $detalleModel->insertarDetalle($codigo, $producto_id, $cantidad);
+            // Insertar los nuevos detalles y actualizar stock
+            foreach ($productos as $index => $producto_id) {
+                $cantidadNueva = $cantidades[$index];
+                $detalleModel->insertarDetalle($codigo, $producto_id, $cantidadNueva);
+                // Buscar la cantidad anterior de cada producto en los detalles anteriores
+                $cantidadAnterior = 0;
+                foreach ($detallesAnteriores as $detalle) {
+                    if ($detalle['codigo_producto'] == $producto_id) {
+                        $cantidadAnterior = $detalle['cantidad'];
+                        break;
+                    }
+                }
+
+                // Calcular la diferencia y actualizar el stock
+                $diferencia = $cantidadNueva - $cantidadAnterior;                
+                $productoModel->reducirStock($producto_id, $diferencia);
+            }
+
+
+            // Redirigimos a la lista de facturas
+            header('Location: ../controllers/FacturaVentaController.php?action=list');
+            exit();
+        } else {
+            echo "Error al actualizar la factura de venta.";
         }
-
-        // Redirigimos a la lista de facturas
-        header('Location: ../controllers/FacturaVentaController.php?action=list');
-        exit();
-    } else {
-        echo "Error al actualizar la factura de venta.";
+    } catch (Exception $e) {
+        $db->rollBack();
+        echo "Error al actualizar la factura: " . $e->getMessage();
     }
 }
 

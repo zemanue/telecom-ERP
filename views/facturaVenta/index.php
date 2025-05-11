@@ -23,6 +23,8 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
                 <th>Dirección</th>
                 <th>Código Cliente</th>
                 <th>Código Empleado</th>
+                <th>Método de pago</th>
+                <th>Estado</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -40,6 +42,8 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
                         <td><?php echo $factura['direccion']; ?></td>
                         <td><?php echo $factura['codigo_cliente']; ?></td>
                         <td><?php echo $factura['codigo_empleado']; ?></td>
+                        <td><?php echo $factura['metodo_pago']; ?></td>
+                        <td><?php echo $factura['estado']; ?></td>
                         <!-- La última celda de la fila contiene los botones de "Editar" y "Eliminar" -->
                         <td class="acciones">
                             <!-- Botón de Editar con ícono -->

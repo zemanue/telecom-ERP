@@ -59,6 +59,15 @@ Este archivo contiene el formulario de crear facturas de ventas
                             <?php endif; ?>
                         </select>
                     </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="metodo_pago" class="form-label">Método de Pago:</label>
+                        <input list="metodos_pago" class="form-control" name="metodo_pago" id="metodo_pago" required>
+                        <datalist id="metodos_pago">
+                            <option value="Efectivo">
+                            <option value="Tarjeta">
+                            <option value="Transferencia">
+                        </datalist>
+                    </div>
                 </div>
                 <h5 class="mt-4">Productos incluidos</h5>
                 <div id="producto-container">
