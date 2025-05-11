@@ -40,7 +40,7 @@ public function create($fecha, $direccion, $codigo_cliente, $codigo_empleado, $m
         // Preparamos la consulta SQL para actualizar la factura
         $stmt = $this->db->prepare(
             "UPDATE facturas_venta
-            SET fecha = ?, direccion = ?, codigo_cliente = ?, codigo_empleado = ? , metodo_pago = ?, estado = ?
+            SET fecha = ?, direccion = ?, codigo_cliente = ?, codigo_empleado = ?, metodo_pago = ?, estado = ?
             WHERE codigo = ?"
         );
         // Ejecutamos la consulta y devolvemos si fue exitosa

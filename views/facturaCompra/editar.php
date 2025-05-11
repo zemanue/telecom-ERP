@@ -59,12 +59,12 @@ Este archivo contiene el formulario de editar proveedores
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="metodo_pago" class="form-label">Método de Pago:</label>
-                        <input list="metodos_pago" class="form-control" id="metodo_pago" name="metodo_pago" value="<?php echo $factura['metodo_pago']; ?>" required>
-                        <datalist id="metodos_pago">
-                            <option value="Efectivo">
-                            <option value="Tarjeta">
-                            <option value="Transferencia">
-                        </datalist>
+                        <select class="form-control" id="metodo_pago" name="metodo_pago" required>
+                            <!-- El método de pago actual se selecciona por defecto -->
+                            <option value="Efectivo" <?= $factura['metodo_pago'] == 'Efectivo' ? 'selected' : '' ?>>Efectivo</option>
+                            <option value="Tarjeta" <?= $factura['metodo_pago'] == 'Tarjeta' ? 'selected' : '' ?>>Tarjeta</option>
+                            <option value="Transferencia" <?= $factura['metodo_pago'] == 'Transferencia' ? 'selected' : '' ?>>Transferencia</option>
+                        </select>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="estado" class="form-label">Estado:</label>
