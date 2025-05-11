@@ -60,6 +60,7 @@ $pdf->Cell(100, 6, utf8_decode('NIF: ' . $factura['nif']), 0, 1);
 $pdf->Cell(100, 6, utf8_decode('Dirección: ' . $factura['direccion_cliente']), 0, 1);
 $pdf->Cell(100, 6, utf8_decode('Teléfono: ' . $factura['telefono']), 0, 1);
 $pdf->Cell(100, 6, utf8_decode('Empleado: ' . $factura['nombre_empleado']), 0, 1);
+$pdf->Cell(100, 6, utf8_decode('Método de Pago: ' . $factura['metodo_pago']), 0, 1); // Línea añadida
 $pdf->Ln(10);
 
 // Tabla de productos

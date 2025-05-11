@@ -9,7 +9,7 @@ if (!isset($_GET['codigo'])) {
 $codigoFactura = intval($_GET['codigo']);
 
 // Obtener datos de la factura
-$queryFactura = "SELECT fc.*, p.nombre AS nombre_proveedor, p.direccion AS direccion_proveedor, p.telefono, p.nif, e.nombre AS nombre_empleado 
+$queryFactura = "SELECT fc.*, p.nombre AS nombre_proveedor, p.direccion AS direccion_proveedor, p.telefono, p.nif, fc.metodo_pago, e.nombre AS nombre_empleado 
                 FROM facturas_compra fc
                 JOIN proveedor p ON fc.codigo_proveedor = p.codigo
                 JOIN empleados e ON fc.codigo_empleado = e.codigo
@@ -60,6 +60,10 @@ $pdf->Cell(100, 6, utf8_decode('NIF: ' . $factura['nif']), 0, 1);
 $pdf->Cell(100, 6, utf8_decode('Dirección: ' . $factura['direccion_proveedor']), 0, 1);
 $pdf->Cell(100, 6, utf8_decode('Teléfono: ' . $factura['telefono']), 0, 1);
 $pdf->Cell(100, 6, utf8_decode('Empleado: ' . $factura['nombre_empleado']), 0, 1);
+
+// Aquí agregas el método de pago
+$pdf->Cell(100, 6, utf8_decode('Método de pago: ' . $factura['metodo_pago']), 0, 1);  // Método de pago
+
 $pdf->Ln(10);
 
 // Tabla de productos
