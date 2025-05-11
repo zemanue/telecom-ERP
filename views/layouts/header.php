@@ -11,7 +11,7 @@ session_start(); // Iniciar sesión para acceder a las variables de sesión
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ERP Gestión</title>
+    <title>TELECOM</title>
     <!-- Bootstrap y FontAwesome -->
     <link href="../assets/css/style.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -27,7 +27,8 @@ session_start(); // Iniciar sesión para acceder a las variables de sesión
             <!-- Barra lateral -->
             <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar">
                 <div class="position-sticky pt-3">
-                    <h4 class="text-center text-white mb-4">ERP Gestión</h4>
+                    <!--<h4 class="text-center text-white mb-4">TELECOM</h4>-->
+                    <img src="../assets/img/logo2.png" alt="Logo" class="img-fluid mb-4">
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link text-white" href="../views/home.php">
