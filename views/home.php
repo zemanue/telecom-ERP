@@ -33,6 +33,28 @@ $nombre_completo = $_SESSION['nombre_completo']; // Obtener el nombre completo
     </ul>
     <hr>
     <h4>Breve Descipción de la página de Telecom:</h4>
+
+<p>Telecom ERP es una aplicación basada en web diseñada para gestionar varios aspectos de un negocio ficticio, incluyendo clientes, proveedores, empleados, productos y facturas.
+Proporciona una interfaz fácil de usar para realizar operaciones CRUD y gestionar flujos de trabajo empresariales de manera eficiente.</p>
+<h4>Desarrollado por:</h4>
+<p> [Avalob](https://github.com/Avalob). <br>[nattfer](https://github.com/nattfer). <br>[ATreCro](https://github.com/ATreCro).  <br>[@zemanue](https://github.com/zemanue).</p>
+
+<h4>Características</h4>
+<p>
+- Autenticación de usuario (inicio de sesión y registro).
+<br>- Gestión de clientes, proveedores, empleados, almacenes y productos.
+<br>- Creación, edición y eliminación de facturas para compras y ventas.
+<br>- Validación para garantizar la integridad de los datos (por ejemplo, no productos sin proveedores o almacenes).
+<br>- Diseño responsivo utilizando Bootstrap.
+<br>- Organizado siguiendo el patrón de diseño Modelo-Vista-Controlador.</p>
+
+<h4>Tecnologías empleadas</h4>
+<p>- **Backend**: PHP, JavaScript</p>
+<p>- **Frontend**: HTML, CSS, JavaScript, Bootstrap</p>
+<p>- **Base de datos**: MySQL</p>
+<p>- **Otras herramientas**: XAMPP (para la configuración del servidor local)</p>
+
+
 </div>
 
 <?php
