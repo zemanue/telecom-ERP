@@ -32,7 +32,7 @@ if (session_status() == PHP_SESSION_NONE) {
                 <div class="position-sticky pt-3">
                     <!--<h4 class="text-center text-white mb-4">TELECOM</h4>-->
                     <!-- Logo de la aplicación -->
-                    <img src="../assets/img/logo2.png" alt="Logo" class="img-fluid mb-4">
+                    <img src="../assets/img/logo.png" alt="Logo" class="img-fluid mb-3" style="margin-top: -50px;">
                     <ul class="nav flex-column">
                         <!-- Enlaces de navegación -->
                         <li class="nav-item">

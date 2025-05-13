@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 require_once '../../config/database.php';
@@ -39,15 +40,36 @@ try {
 include '../layouts/header.php';
 ?>
 
-<!-- Contenido de perfil -->
 <div class="container mt-5">
-    <h2 class="mb-4">Perfil de Usuario</h2>
-    <div class="card p-4">
-        <p><strong>Nombre completo:</strong> <?= htmlspecialchars($nombreCompleto) ?></p>
-        <p><strong>Nombre de usuario:</strong> <?= htmlspecialchars($nombreUsuario) ?></p>
-        <p><strong>Correo electrónico:</strong> <?= htmlspecialchars($correo) ?></p>
-        <p><strong>Teléfono:</strong> <?= htmlspecialchars($telefono) ?></p>
-        <a href="../home.php" class="btn btn-secondary mt-3">Volver al inicio</a>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3>Perfil de Usuario</h3>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h5><strong>Nombre completo:</strong></h5>
+                        <p><?= htmlspecialchars($nombreCompleto) ?></p>
+                    </div>
+                    <div class="mb-3">
+                        <h5><strong>Nombre de usuario:</strong></h5>
+                        <p><?= htmlspecialchars($nombreUsuario) ?></p>
+                    </div>
+                    <div class="mb-3">
+                        <h5><strong>Correo electrónico:</strong></h5>
+                        <p><?= htmlspecialchars($correo) ?></p>
+                    </div>
+                    <div class="mb-3">
+                        <h5><strong>Teléfono:</strong></h5>
+                        <p><?= htmlspecialchars($telefono) ?></p>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="../home.php" class="btn btn-secondary">Volver al inicio</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
