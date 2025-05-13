@@ -31,8 +31,8 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
                 <th>Precio venta</th>
                 <th>IVA</th>
                 <th>Stock</th>
-                <th>Código Proveedor</th>
-                <th>Código Almacén</th>
+                <th>Proveedor</th>
+                <th>Almacén</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -51,8 +51,8 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
                         <td><?php echo $producto['precio_venta']; ?></td>
                         <td><?php echo $producto['IVA']; ?></td>
                         <td><?php echo $producto['stock']; ?></td>
-                        <td><?php echo $producto['codigo_proveedor']; ?></td>
-                        <td><?php echo $producto['codigo_almacen']; ?></td>
+                        <td><?php echo $producto['nombre_proveedor']; ?></td>
+                        <td><?php echo $producto['nombre_almacen']; ?></td>
                         <td class="acciones">
                             <!-- Botón de Editar con ícono -->
                             <a href="../controllers/ProductoController.php?action=edit&codigo=<?php echo $producto['codigo']; ?>"

@@ -86,7 +86,7 @@ elseif (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['co
 // Lógica para LISTAR PRODUCTOS
 // Se ejecuta cuando se accede a la página
 if (isset($_GET['action']) && $_GET['action'] == 'list') {
-    $productos = $productoModel->selectAll();
+    $productos = $productoModel->selectAllWithDetails();
     include '../views/layouts/header.php';
     include '../views/productos/index.php';
     include '../views/layouts/footer.php';

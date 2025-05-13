@@ -22,6 +22,31 @@ class Producto {
         return $stmt->fetchAll(PDO::FETCH_ASSOC); // Devuelve un array con todos los resultados
     }
 
+    // Nuevo método para obtener todos los detalles de los productos + los nombres de proveedores y almacenes
+    public function selectAllWithDetails() {
+        $sql = "SELECT
+                    prod.codigo,
+                    prod.nombre,
+                    prod.precio_compra,
+                    prod.precio_venta,
+                    prod.IVA,
+                    prod.codigo_proveedor,
+                    prov.nombre AS nombre_proveedor,
+                    prod.codigo_almacen,
+                    alm.nombre_almacen AS nombre_almacen,
+                    prod.stock
+                FROM
+                    productos prod
+                JOIN
+                    proveedor prov ON prod.codigo_proveedor = prov.codigo
+                JOIN
+                    almacen alm ON prod.codigo_almacen = alm.codigo";
+
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
     // Métodos para crear, actualizar y eliminar productos
     public function create($nombre, $precio_compra, $precio_venta, $iva, $stock, $codigo_proveedor, $codigo_almacen) {
         $stmt = $this->db->prepare(
