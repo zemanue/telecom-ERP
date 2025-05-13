@@ -21,14 +21,14 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
     </a>
 
     <!-- 📌 TABLA de proveedores -->
-    <table class="table table-striped table-bordered" id="tablaProveedores">
+    <table class="table table-striped table-bordered" id="tablaProveedores" data-table-id="tablaProveedores">
         <!-- Encabezado -->
         <thead>
             <tr>
                 <th>Código</th>
-                <th>Teléfono</th>
-                <th>NIF</th>
                 <th>Nombre</th>
+                <th>NIF</th>
+                <th>Teléfono</th>
                 <th>Dirección</th>
                 <th>Población</th>
                 <th>Email</th>
@@ -46,9 +46,9 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
                 <?php foreach ($proveedores as $proveedor): ?>
                     <tr>
                         <td><?php echo $proveedor['codigo']; ?></td>
-                        <td><?php echo $proveedor['telefono']; ?></td>
-                        <td><?php echo $proveedor['nif']; ?></td>
                         <td><?php echo $proveedor['nombre']; ?></td>
+                        <td><?php echo $proveedor['nif']; ?></td>
+                        <td><?php echo $proveedor['telefono']; ?></td>
                         <td><?php echo $proveedor['direccion']; ?></td>
                         <td><?php echo $proveedor['poblacion']; ?></td>
                         <td><?php echo $proveedor['email']; ?></td>
@@ -119,29 +119,5 @@ document.addEventListener('DOMContentLoaded', function () {
 <!-- Agregar JS de DataTables -->
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
-<script>
-    $(document).ready(function() {
-        // Inicializar DataTables en la tabla con el ID 'tablaAlumnos'
-        $('#tablaProveedores').DataTable({
-            "order": [[1, 'asc']], // Ordena por la columna "Nombre" por defecto (columna 1)
-            "paging": true, // Habilita la paginación
-            "searching": true, // Habilita la búsqueda en la tabla
-            "lengthChange": true, // Habilita cambiar la cantidad de filas mostradas por página
-            "language": { // Traducción al español
-                "sProcessing": "Procesando...",
-                "sLengthMenu": "Mostrar _MENU_ registros",
-                "sZeroRecords": "No se encontraron resultados",
-                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                "sSearch": "Buscar:",
-                "oPaginate": {
-                    "sFirst": "Primero",
-                    "sPrevious": "Anterior",
-                    "sNext": "Siguiente",
-                    "sLast": "Último"
-                },
-            }
-        });
-    });
-</script>
+<!-- Inicializar DataTables -->
+<script src="../assets/js/dataTables_init.js"></script>

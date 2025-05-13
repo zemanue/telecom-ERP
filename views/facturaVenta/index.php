@@ -19,7 +19,7 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
     </a>
 
     <!-- 📌 TABLA de facturas -->
-    <table class="table table-striped table-bordered" id="tablaFacturasVenta">
+    <table class="table table-striped table-bordered" id="tablaFacturasVenta" data-table-id="tablaFacturasVenta">
         <!-- Encabezado -->
         <thead>
             <tr>
@@ -119,29 +119,5 @@ document.addEventListener('DOMContentLoaded', function () {
 <!-- Agregar JS de DataTables -->
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
-<script>
-    $(document).ready(function() {
-        // Inicializar DataTables en la tabla con el ID 'tablaAlumnos'
-        $('#tablaFacturasVenta').DataTable({
-            "order": [[1, 'asc']], // Ordena por la columna "Nombre" por defecto (columna 1)
-            "paging": true, // Habilita la paginación
-            "searching": true, // Habilita la búsqueda en la tabla
-            "lengthChange": true, // Habilita cambiar la cantidad de filas mostradas por página
-            "language": { // Traducción al español
-                "sProcessing": "Procesando...",
-                "sLengthMenu": "Mostrar _MENU_ registros",
-                "sZeroRecords": "No se encontraron resultados",
-                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                "sSearch": "Buscar:",
-                "oPaginate": {
-                    "sFirst": "Primero",
-                    "sPrevious": "Anterior",
-                    "sNext": "Siguiente",
-                    "sLast": "Último"
-                },
-            }
-        });
-    });
-</script>
+<!-- Inicializar DataTables -->
+<script src="../assets/js/dataTables_init.js"></script>
