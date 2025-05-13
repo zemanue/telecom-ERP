@@ -96,16 +96,17 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit') {
                 }
 
                 // Calcular la diferencia y actualizar el stock
-                $diferencia = $cantidadNueva - $cantidadAnterior;                
+                $diferencia = $cantidadNueva - $cantidadAnterior;
                 $productoModel->reducirStock($producto_id, $diferencia);
             }
 
-
+            $db->commit();
             // Redirigimos a la lista de facturas
             header('Location: ../controllers/FacturaVentaController.php?action=list');
             exit();
         } else {
-            echo "Error al actualizar la factura de venta.";
+            $db->rollBack();
+            echo "Error al intentar actualizar la factura de venta.";
         }
     } catch (Exception $e) {
         $db->rollBack();
