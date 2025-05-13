@@ -25,9 +25,9 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
             <tr>
                 <th>Código</th>
                 <th>Fecha</th>
+                <th>Proveedor</th>
                 <th>Dirección</th>
-                <th>Código proveedor</th>
-                <th>Código empleado</th>
+                <th>Empleado</th>
                 <th>Método de pago</th>
                 <th>Estado</th>
                 <th>Acciones</th>
@@ -41,9 +41,9 @@ Este archivo contiene el HTML para mostrar la información principal de la secci
                     <tr>
                         <td><?php echo $factura['codigo']; ?></td>
                         <td><?php echo $factura['fecha']; ?></td>
+                        <td><?php echo $factura['nombre_proveedor']; ?></td>
                         <td><?php echo $factura['direccion']; ?></td>
-                        <td><?php echo $factura['codigo_proveedor']; ?></td>
-                        <td><?php echo $factura['codigo_empleado']; ?></td>
+                        <td><?php echo $factura['nombre_empleado']; ?></td>
                         <td><?php echo $factura['metodo_pago']; ?></td>
                         <td><?php echo $factura['estado']; ?></td>
                         <td class="acciones">

@@ -23,6 +23,29 @@ class FacturaCompra {
         return $stmt->fetchAll(PDO::FETCH_ASSOC); // Devuelve un array con todos los resultados
     }
 
+    // Nuevo método para obtener todas los detalles de las facturas + los nombres de proveedores y empleados
+    public function selectAllWithDetails() {
+        $sql = "SELECT
+                    fc.codigo,
+                    fc.fecha,
+                    fc.direccion,
+                    fc.codigo_proveedor,
+                    p.nombre AS nombre_proveedor,
+                    fc.codigo_empleado,
+                    e.nombre AS nombre_empleado,
+                    fc.metodo_pago,
+                    fc.estado
+                FROM
+                    facturas_compra fc
+                JOIN
+                    proveedor p ON fc.codigo_proveedor = p.codigo
+                JOIN
+                    empleados e ON fc.codigo_empleado = e.codigo";
+
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     // Métodos para crear, actualizar y eliminar almacenes
     public function create($fecha, $direccion, $codigo_proveedor, $codigo_empleado, $metodo_pago) {
         $sql = "INSERT INTO facturas_compra (fecha, direccion, codigo_proveedor, codigo_empleado, metodo_pago)

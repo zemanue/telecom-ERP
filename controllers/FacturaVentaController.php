@@ -131,7 +131,7 @@ elseif (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['co
 // Lógica para LISTAR FACTURAS DE VENTA
 // Se ejecuta cuando se accede a la página principal de facturas
 if (isset($_GET['action']) && $_GET['action'] == 'list') {
-    $facturas = $facturaVentaModel->selectAll();
+    $facturas = $facturaVentaModel->selectAllWithDetails();
 
     include '../views/layouts/header.php';
     include '../views/facturaVenta/index.php';

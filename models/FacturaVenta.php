@@ -20,6 +20,30 @@ class FacturaVenta {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // Nuevo método para obtener todas los detalles de las facturas + los nombres de clientes y empleados
+    public function selectAllWithDetails() {
+        $sql = "SELECT
+                    fv.codigo,
+                    fv.fecha,
+                    fv.direccion,
+                    fv.codigo_cliente,
+                    c.nombre AS nombre_cliente,
+                    fv.codigo_empleado,
+                    e.nombre AS nombre_empleado,
+                    fv.metodo_pago,
+                    fv.estado
+                FROM
+                    facturas_venta fv
+                JOIN
+                    cliente c ON fv.codigo_cliente = c.codigo
+                JOIN
+                    empleados e ON fv.codigo_empleado = e.codigo";
+
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
     // MÉTODO PARA CREAR UNA NUEVA FACTURA DE VENTA
 public function create($fecha, $direccion, $codigo_cliente, $codigo_empleado, $metodo_pago) {
     $stmt = $this->db->prepare(

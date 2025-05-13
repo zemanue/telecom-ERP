@@ -145,7 +145,8 @@ elseif (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['co
 // Lógica para LISTAR FACTURAS DE COMPRA
 // Se ejecuta cuando se accede a la página
 if (isset($_GET['action']) && $_GET['action'] == 'list') {
-    $facturas = $facturaCompraModel->selectAll();
+    $facturas = $facturaCompraModel->selectAllWithDetails();
+
     include '../views/layouts/header.php';
     include '../views/facturaCompra/index.php';
     include '../views/layouts/footer.php';
