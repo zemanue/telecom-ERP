@@ -38,7 +38,7 @@ $pdf = new FPDF();
 $pdf->AddPage();
 
 // Logo
-$pdf->Image('../assets/img/logo2.png', 10, 10, 30); // Ajusta la ruta y tamaño
+$pdf->Image('../assets/img/logo.png', 15, 2, 28); // Ajusta la ruta y tamaño
 $pdf->SetFont('Arial', 'B', 16);
 $pdf->Cell(0, 10, 'Telecom', 0, 1, 'C');
 $pdf->SetFont('Arial', '', 12);
