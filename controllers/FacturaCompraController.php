@@ -18,11 +18,10 @@ require_once '../models/Producto.php'; // para actualizar el stock
 
 $detalleModel = new DetalleFacturaCompra($db);
 $facturaCompraModel = new FacturaCompra($db);
-$productoModel = new Producto($db); // instanciamos el modelo Producto
+$productoModel = new Producto($db);
 
 // Lógica para GUARDAR UN NUEVA FACTURA DE COMPRA
 // Se ejecuta cuando se envía el formulario de creación
-// Recupera los datos del formulario enviados con el método POST
 if (isset($_POST['action']) && $_POST['action'] == 'create') {
     error_log("Entrando en el bloque de creación de factura de compra");
 
@@ -70,10 +69,31 @@ if (isset($_POST['action']) && $_POST['action'] == 'create') {
 
 // Lógica para ACTUALIZAR UNA FACTURA DE COMPRA
 // Este bloque se ejecuta cuando se envía el formulario de edición
-// Recupera los datos del formulario enviados con el método POST
 if (isset($_POST['action']) && $_POST['action'] == 'edit') {
     error_log("Entrando en el bloque de edición de factura de compra", 0); // Log para depuración
+
     $codigo = $_POST['codigo'];
+
+    // Verificar si la factura existe y su estado, para impedir la edición si no está en "Borrador"
+    $facturaExistente = $facturaCompraModel->getById($codigo);
+    if ($facturaExistente && $facturaExistente['estado'] !== 'Borrador') {
+        include '../views/layouts/header.php';
+        echo '
+        <div class="container mt-5">
+            <div class="alert alert-danger" role="alert">
+                <h4 class="alert-heading">Factura no editable</h4>
+                <p>No se puede editar la factura porque tiene un estado distinto a "Borrador".</p>
+                <p>Estado actual: ' . $facturaExistente['estado'] . '</p>
+                <p>Prueba a cambiar el estado a "Borrador" y vuelve a intentarlo.</p>
+                <hr>
+                <a href="javascript:history.back()" class="btn btn-outline-danger">Volver atrás</a>
+            </div>
+        </div>
+        ';
+        include '../views/layouts/footer.php';
+        exit();
+    }
+    
     $fecha = $_POST['fecha'];
     $direccion = $_POST['direccion'];
     $codigo_proveedor = $_POST['codigo_proveedor'];
@@ -126,10 +146,47 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit') {
     }
 }
 
+// Lógica para CAMBIAR EL ESTADO DE UNA FACTURA
+// Se ejecuta cuando se envía el formulario de cambiar estado
+elseif (isset($_POST['action']) && $_POST['action'] == 'change_status') {
+    $codigo = $_POST['codigo'];
+    $estado = $_POST['estado'];
+
+    // Con este if, se intenta cambiar el estado de una factura.
+    // Utiliza el método changeStatus() del modelo FacturaCompra.
+    if ($facturaCompraModel->changeStatus($codigo, $estado)) {
+        header('Location: ../controllers/FacturaCompraController.php?action=list'); // Redirigir a la lista
+        exit(); // Importante: detener la ejecución del script después de la redirección
+    } else {
+        echo "Error al cambiar el estado de la factura de compra.";
+    }
+}
+
 // Lógica para ELIMINAR UNA FACTURA
 // Se ejecuta cuando se hace clic en el botón de eliminar
 elseif (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['codigo'])) {
+    
+    // Verificar si la factura existe y su estado, para impedir la eliminación si no está en "Borrador"
     $codigo = $_GET['codigo'];
+    $facturaExistente = $facturaCompraModel->getById($codigo);
+    if ($facturaExistente && $facturaExistente['estado'] !== 'Borrador') {
+        include '../views/layouts/header.php';
+        echo '
+        <div class="container mt-5">
+            <div class="alert alert-danger" role="alert">
+                <h4 class="alert-heading">Factura no eliminable</h4>
+                <p>No se puede eliminar la factura porque tiene un estado distinto a "Borrador".</p>
+                <p>Estado actual: ' . $facturaExistente['estado'] . '</p>
+                <p>Prueba a cambiar el estado a "Borrador" y vuelve a intentarlo.</p>
+                <hr>
+                <a href="javascript:history.back()" class="btn btn-outline-danger">Volver atrás</a>
+            </div>
+        </div>
+        ';
+        include '../views/layouts/footer.php';
+        exit();
+    }
+    
 
     // Con este if, se intenta eliminar una factura.
     // Utiliza el método delete() del modelo FacturaCompra.

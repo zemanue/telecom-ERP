@@ -71,6 +71,12 @@ class FacturaCompra {
         return $stmt->execute([$fecha, $direccion, $codigo_proveedor, $codigo_empleado, $metodo_pago, $estado, $codigo]);
     }
 
+    // Método para CAMBIAR EL ESTADO DE UNA FACTURA
+    public function changeStatus($codigo, $estado) {
+        $stmt = $this->db->prepare("UPDATE facturas_compra SET estado = ? WHERE codigo = ?");
+        return $stmt->execute([$estado, $codigo]);
+    }
+
     public function delete($codigo) {
         $stmt = $this->db->prepare("DELETE FROM facturas_compra WHERE codigo = ?");
         return $stmt->execute([$codigo]);

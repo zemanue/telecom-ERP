@@ -71,6 +71,12 @@ public function create($fecha, $direccion, $codigo_cliente, $codigo_empleado, $m
         return $stmt->execute([$fecha, $direccion, $codigo_cliente, $codigo_empleado, $metodo_pago, $estado, $codigo]);
     }
 
+    // Método para CAMBIAR EL ESTADO DE UNA FACTURA
+    public function changeStatus($codigo, $estado) {
+        $stmt = $this->db->prepare("UPDATE facturas_venta SET estado = ? WHERE codigo = ?");
+        return $stmt->execute([$estado, $codigo]);
+    }
+
     // MÉTODO PARA ELIMINAR UNA FACTURA DE VENTA
     public function delete($codigo) {
         // Preparamos la consulta para eliminar la factura

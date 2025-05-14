@@ -24,16 +24,19 @@ Este archivo contiene el formulario de editar proveedores
                     <div class="col-md-6 mb-3">
                         <label for="fecha" class="form-label">Fecha:</label>
                         <input type="date" class="form-control" id="fecha" name="fecha"
-                            value="<?php echo $factura['fecha']; ?>" required>
+                            value="<?php echo $factura['fecha']; ?>" required
+                            <?php if ($factura['estado'] !== 'Borrador') echo 'disabled'; ?>>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="direccion" class="form-label">Dirección:</label>
                         <input type="text" class="form-control" id="direccion" name="direccion"
-                            value="<?php echo $factura['direccion']; ?>" required>
+                            value="<?php echo $factura['direccion']; ?>" required
+                            <?php if ($factura['estado'] !== 'Borrador') echo 'disabled'; ?>>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="codigo_proveedor" class="form-label">Código Proveedor:</label>
-                        <select class="form-control" id="codigo_proveedor" name="codigo_proveedor" required>
+                        <select class="form-control" id="codigo_proveedor" name="codigo_proveedor" required
+                        <?php if ($factura['estado'] !== 'Borrador') echo 'disabled'; ?>>
                             <!-- Se genera una opción del select por cada proveedor que hay en la base de datos -->
                             <?php foreach ($proveedores as $proveedor): ?>
                                 <!-- El código de proveedor que coincide con el del producto se selecciona por defecto -->
@@ -46,12 +49,12 @@ Este archivo contiene el formulario de editar proveedores
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="codigo_empleado" class="form-label">Código Empleado:</label>
-                        <select class="form-control" id="codigo_empleado" name="codigo_empleado" required>
-                            <!-- Se genera una opción del select por cada proveedor que hay en la base de datos -->
+                        <select class="form-control" id="codigo_empleado" name="codigo_empleado" required
+                            <?php if ($factura['estado'] !== 'Borrador') echo 'disabled'; ?>>
+                            <!-- Misma lógica que el select de proveedores -->
                             <?php foreach ($empleados as $empleado): ?>
-                                <!-- El código de proveedor que coincide con el del producto se selecciona por defecto -->
-                                <!-- Gracias al atributo "selected" -->
-                                <option value="<?php echo $empleado['codigo']; ?>" <?php echo $empleado['codigo'] == $factura['codigo_empleado'] ? 'selected' : ''; ?>>
+                                <option value="<?php echo $empleado['codigo']; ?>"
+                                    <?php echo $empleado['codigo'] == $factura['codigo_empleado'] ? 'selected' : ''; ?>>
                                     <?php echo $empleado['nombre']; ?>
                                 </option>
                             <?php endforeach; ?>
@@ -59,8 +62,8 @@ Este archivo contiene el formulario de editar proveedores
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="metodo_pago" class="form-label">Método de Pago:</label>
-                        <select class="form-control" id="metodo_pago" name="metodo_pago" required>
-                            <!-- El método de pago actual se selecciona por defecto -->
+                        <select class="form-control" id="metodo_pago" name="metodo_pago" required
+                            <?php if ($factura['estado'] !== 'Borrador') echo 'disabled'; ?>>
                             <option value="Efectivo" <?= $factura['metodo_pago'] == 'Efectivo' ? 'selected' : '' ?>>Efectivo</option>
                             <option value="Tarjeta" <?= $factura['metodo_pago'] == 'Tarjeta' ? 'selected' : '' ?>>Tarjeta</option>
                             <option value="Transferencia" <?= $factura['metodo_pago'] == 'Transferencia' ? 'selected' : '' ?>>Transferencia</option>
@@ -68,13 +71,14 @@ Este archivo contiene el formulario de editar proveedores
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="estado" class="form-label">Estado:</label>
-                        <select class="form-control" id="estado" name="estado" required>
+                        <select class="form-control" id="estado" name="estado" required
+                        <?php if ($factura['estado'] !== 'Borrador') echo 'disabled'; ?>>
                             <option value="Borrador" <?= $factura['estado'] == 'Borrador' ? 'selected' : '' ?>>Borrador</option>
                             <option value="Emitida" <?= $factura['estado'] == 'Emitida' ? 'selected' : '' ?>>Emitida</option>
                             <option value="Pagada" <?= $factura['estado'] == 'Pagada' ? 'selected' : '' ?>>Pagada</option>
                             <option value="Anulada" <?= $factura['estado'] == 'Anulada' ? 'selected' : '' ?>>Anulada</option>
                         </select>
-                    </div>                
+                    </div>
                 </div>
 
                 <h5 class="mt-4">Productos incluidos</h5>
@@ -83,10 +87,11 @@ Este archivo contiene el formulario de editar proveedores
                         <div class="producto-item row mb-2">
                             <div class="col-md-6">
                                 <label>Producto</label>
-                                <select name="productos[]" class="form-control" required>
-                                    <!-- Se genera una opción del select por cada producto que hay en la base de datos -->
+                                <select name="productos[]" class="form-control" required
+                                    <?php if ($factura['estado'] !== 'Borrador') echo 'disabled'; ?>>
                                     <?php foreach ($productos as $producto): ?>
-                                        <option value="<?php echo $producto['codigo']; ?>" <?php echo $producto['codigo'] == $detalle['codigo_producto'] ? 'selected' : ''; ?>>
+                                        <option value="<?php echo $producto['codigo']; ?>"
+                                            <?php echo $producto['codigo'] == $detalle['codigo_producto'] ? 'selected' : ''; ?>>
                                             <?php echo $producto['nombre']; ?>
                                         </option>
                                     <?php endforeach; ?>
@@ -95,19 +100,24 @@ Este archivo contiene el formulario de editar proveedores
                             <div class="col-md-3">
                                 <label>Cantidad</label>
                                 <input type="number" name="cantidades[]" class="form-control"
-                                    value="<?= $detalle['cantidad'] ?>" required>
+                                    value="<?= $detalle['cantidad'] ?>" required
+                                    <?php if ($factura['estado'] !== 'Borrador') echo 'disabled'; ?>>
                             </div>
                             <div class="col-md-3 d-flex align-items-end">
-                                <button type="button" class="btn btn-danger btn-remove">Quitar</button>
+                                <button type="button" class="btn btn-danger btn-remove"
+                                    <?php if ($factura['estado'] !== 'Borrador') echo 'disabled'; ?>>Quitar</button>
                             </div>
                         </div>
                     <?php endforeach; ?>
                 </div>
-                <button type="button" id="add-producto" class="btn btn-success mt-2">+ Añadir otro producto</button>
-                <!-- Botones para guardar o cancelar -->
-                <button type="submit" name="update" class="btn btn-primary"><i class="fas fa-save"></i> Guardar
-                    Cambios</button>
+                <button type="button" id="add-producto" class="btn btn-success mt-2"
+                    <?php if ($factura['estado'] !== 'Borrador') echo 'disabled'; ?>>+ Añadir otro producto</button>
+                <button type="submit" name="update" class="btn btn-primary"
+                    <?php if ($factura['estado'] !== 'Borrador') echo 'style="display:none;"'; ?>>
+                    <i class="fas fa-save"></i> Guardar Cambios
+                </button>            
             </form>
+
             <a href="../controllers/FacturaCompraController.php?action=list" class="btn btn-secondary"><i
                     class="fas fa-times"></i> Cancelar</a>
         </div>
