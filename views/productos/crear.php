@@ -35,10 +35,6 @@ Este archivo contiene el formulario de crear productos
                         <input type="number" class="form-control" id="IVA" name="IVA" required>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="stock" class="form-label">Stock:</label>
-                        <input type="number" class="form-control" id="stock" name="stock" required>
-                    </div>
-                    <div class="col-md-6 mb-3">
                         <label for="codigo_proveedor" class="form-label">Proveedor:</label>
                         <select class="form-control" name="codigo_proveedor" id="codigo_proveedor" required>
                             <option value="">Seleccione un proveedor</option>

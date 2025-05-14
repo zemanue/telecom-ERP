@@ -20,7 +20,7 @@ $detalleModel = new DetalleFacturaCompra($db);
 $facturaCompraModel = new FacturaCompra($db);
 $productoModel = new Producto($db);
 
-// Lógica para GUARDAR UN NUEVA FACTURA DE COMPRA
+// Lógica para GUARDAR UNA NUEVA FACTURA DE COMPRA
 // Se ejecuta cuando se envía el formulario de creación
 if (isset($_POST['action']) && $_POST['action'] == 'create') {
     error_log("Entrando en el bloque de creación de factura de compra");
@@ -32,29 +32,25 @@ if (isset($_POST['action']) && $_POST['action'] == 'create') {
     $metodo_pago = $_POST['metodo_pago'];
     $productos = $_POST['productos'];
     $cantidades = $_POST['cantidades'];
+    $estado = $_POST['estado'] ?? 'Borrador'; // NUEVO: Estado por defecto
 
     try {
-        // Iniciar transacción
         $db->beginTransaction();
 
-        // Crear factura
-        if ($facturaCompraModel->create($fecha, $direccion, $codigo_proveedor, $codigo_empleado, $metodo_pago)) {
-            $codigo_factura = $db->lastInsertId(); // obtener ID de la nueva factura
+        if ($facturaCompraModel->create($fecha, $direccion, $codigo_proveedor, $codigo_empleado, $metodo_pago, $estado)) {
+            $codigo_factura = $db->lastInsertId();
 
-            // Insertar productos
             foreach ($productos as $index => $producto_id) {
                 $cantidad = $cantidades[$index];
-
-                // Insertar detalle
                 $detalleModel->insertarDetalle($codigo_factura, $producto_id, $cantidad);
 
-                // Sumar stock
-                $productoModel->aumentarStock($producto_id, $cantidad);
+                // NUEVO: Solo actualizar stock si no está en borrador
+                if ($estado !== 'Borrador') {
+                    $productoModel->aumentarStock($producto_id, $cantidad);
+                }
             }
 
-            // Confirmar transacción
             $db->commit();
-
             header('Location: ../controllers/FacturaCompraController.php?action=list');
             exit();
         } else {
@@ -70,11 +66,10 @@ if (isset($_POST['action']) && $_POST['action'] == 'create') {
 // Lógica para ACTUALIZAR UNA FACTURA DE COMPRA
 // Este bloque se ejecuta cuando se envía el formulario de edición
 if (isset($_POST['action']) && $_POST['action'] == 'edit') {
-    error_log("Entrando en el bloque de edición de factura de compra", 0); // Log para depuración
+    error_log("Entrando en el bloque de edición de factura de compra", 0);
 
     $codigo = $_POST['codigo'];
 
-    // Verificar si la factura existe y su estado, para impedir la edición si no está en "Borrador"
     $facturaExistente = $facturaCompraModel->getById($codigo);
     if ($facturaExistente && $facturaExistente['estado'] !== 'Borrador') {
         include '../views/layouts/header.php';
@@ -93,7 +88,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit') {
         include '../views/layouts/footer.php';
         exit();
     }
-    
+
     $fecha = $_POST['fecha'];
     $direccion = $_POST['direccion'];
     $codigo_proveedor = $_POST['codigo_proveedor'];
@@ -106,20 +101,14 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit') {
     try {
         $db->beginTransaction();
 
-        // Con este if, se intenta actualizar una factura de compra.
-        // Utiliza el método update() del modelo FacturaCompra.
         if ($facturaCompraModel->update($codigo, $fecha, $direccion, $codigo_proveedor, $codigo_empleado, $metodo_pago, $estado)) {
-            // Obtener los detalles existentes de la factura
             $detallesAnteriores = $detalleModel->obtenerDetallesPorFactura($codigo);
-
-            // Eliminar los detalles existentes
             $detalleModel->eliminarDetallesPorFactura($codigo);
 
-            // Insertar los nuevos detalles y actualizar stock
             foreach ($productos as $index => $producto_id) {
                 $cantidadNueva = $cantidades[$index];
                 $detalleModel->insertarDetalle($codigo, $producto_id, $cantidadNueva);
-                // Buscar la cantidad anterior de cada producto en los detalles anteriores
+
                 $cantidadAnterior = 0;
                 foreach ($detallesAnteriores as $detalle) {
                     if ($detalle['codigo_producto'] == $producto_id) {
@@ -128,9 +117,12 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit') {
                     }
                 }
 
-                // Calcular la diferencia y actualizar el stock
-                $diferencia = $cantidadNueva - $cantidadAnterior;                
-                $productoModel->aumentarStock($producto_id, $diferencia);
+                $diferencia = $cantidadNueva - $cantidadAnterior;
+
+                // NUEVO: Solo actualizar stock si no está en Borrador
+                if ($estado !== 'Borrador') {
+                    $productoModel->aumentarStock($producto_id, $diferencia);
+                }
             }
 
             $db->commit();
@@ -150,23 +142,42 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit') {
 // Se ejecuta cuando se envía el formulario de cambiar estado
 elseif (isset($_POST['action']) && $_POST['action'] == 'change_status') {
     $codigo = $_POST['codigo'];
-    $estado = $_POST['estado'];
+    $estadoNuevo = $_POST['estado'];
 
-    // Con este if, se intenta cambiar el estado de una factura.
-    // Utiliza el método changeStatus() del modelo FacturaCompra.
-    if ($facturaCompraModel->changeStatus($codigo, $estado)) {
-        header('Location: ../controllers/FacturaCompraController.php?action=list'); // Redirigir a la lista
-        exit(); // Importante: detener la ejecución del script después de la redirección
+    $factura = $facturaCompraModel->getById($codigo);
+    $detalles = $detalleModel->obtenerDetallesPorFactura($codigo);
+
+    if ($factura) {
+        $estadoAnterior = $factura['estado'];
+
+        // Si pasa de Borrador a Emitida, actualizar stock
+        if ($estadoAnterior === 'Borrador' && $estadoNuevo === 'Emitida') {
+            foreach ($detalles as $detalle) {
+                $productoModel->aumentarStock($detalle['codigo_producto'], $detalle['cantidad']);
+            }
+        }
+
+        // Si pasa a Anulada, devolver stock (restar)
+        elseif ($estadoNuevo === 'Anulada') {
+            foreach ($detalles as $detalle) {
+                $productoModel->aumentarStock($detalle['codigo_producto'], -1 * $detalle['cantidad']);
+            }
+        }
+
+        if ($facturaCompraModel->changeStatus($codigo, $estadoNuevo)) {
+            header('Location: ../controllers/FacturaCompraController.php?action=list');
+            exit();
+        } else {
+            echo "Error al cambiar el estado de la factura de compra.";
+        }
     } else {
-        echo "Error al cambiar el estado de la factura de compra.";
+        echo "Factura no encontrada.";
     }
 }
 
 // Lógica para ELIMINAR UNA FACTURA
 // Se ejecuta cuando se hace clic en el botón de eliminar
 elseif (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['codigo'])) {
-    
-    // Verificar si la factura existe y su estado, para impedir la eliminación si no está en "Borrador"
     $codigo = $_GET['codigo'];
     $facturaExistente = $facturaCompraModel->getById($codigo);
     if ($facturaExistente && $facturaExistente['estado'] !== 'Borrador') {
@@ -186,14 +197,10 @@ elseif (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['co
         include '../views/layouts/footer.php';
         exit();
     }
-    
 
-    // Con este if, se intenta eliminar una factura.
-    // Utiliza el método delete() del modelo FacturaCompra.
-    // Si se consigue, redirige de nuevo a la lista de facturas de compra
     if ($facturaCompraModel->delete($codigo)) {
-        header('Location: ../controllers/FacturaCompraController.php?action=list'); // Redirigir a la lista
-        exit(); // Importante: detener la ejecución del script después de la redirección
+        header('Location: ../controllers/FacturaCompraController.php?action=list');
+        exit();
     } else {
         echo "Error al eliminar la factura de compra.";
     }
@@ -212,19 +219,14 @@ if (isset($_GET['action']) && $_GET['action'] == 'list') {
 // Lógica para mostrar el FORMULARIO DE CREAR FACTURA DE COMPRA
 // Se ejecuta cuando se hace clic en el botón de agregar factura
 elseif (isset($_GET['action']) && $_GET['action'] == 'create') {
-
-    // Necesitamos los proveedores, empleados y productos para llenar los selects en el formulario de creación
-    // Proveedores
     require_once '../models/Proveedor.php';
     $proveedorModel = new Proveedor($db);
     $proveedores = $proveedorModel->selectAll();
 
-    // Empleados
     require_once '../models/Empleado.php';
     $empleadoModel = new Empleado($db);
     $empleados = $empleadoModel->selectAll();
 
-    // Productos
     require_once '../models/Producto.php';
     $productoModel = new Producto($db);
     $productos = $productoModel->selectAll();
@@ -236,23 +238,19 @@ elseif (isset($_GET['action']) && $_GET['action'] == 'create') {
 
 // Lógica para mostrar el FORMULARIO DE EDITAR FACTURA DE COMPRA
 // Se ejecuta cuando se hace clic en el botón de editar
-elseif (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['codigo'])) {
+elseif (isset($_GET['action']) && isset($_GET['codigo']) && $_GET['action'] == 'edit') {
     $codigo = $_GET['codigo'];
     $factura = $facturaCompraModel->getById($codigo);
     $productos_factura = $detalleModel->obtenerDetallesPorFactura($codigo);
 
-    // Necesitamos los proveedores, empleados y productos para llenar los selects en el formulario de edición
-    // Proveedores
     require_once '../models/Proveedor.php';
     $proveedorModel = new Proveedor($db);
     $proveedores = $proveedorModel->selectAll();
 
-    // Empleados
     require_once '../models/Empleado.php';
     $empleadoModel = new Empleado($db);
     $empleados = $empleadoModel->selectAll();
 
-    // Productos
     require_once '../models/Producto.php';
     $productoModel = new Producto($db);
     $productos = $productoModel->selectAll();

@@ -26,7 +26,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'create') {
     $precio_compra = $_POST['precio_compra'];
     $precio_venta = $_POST['precio_venta'];
     $iva = $_POST['IVA'];
-    $stock = $_POST['stock'];
+    $stock = 0;
     $codigo_proveedor = $_POST['codigo_proveedor'];
     $codigo_almacen = $_POST['codigo_almacen'];
 

@@ -37,8 +37,10 @@ if (isset($_POST['action']) && $_POST['action'] == 'create') {
                 // Insertar detalle de venta
                 $detalleModel->insertarDetalle($codigo_factura, $producto_id, $cantidad);
 
-                // Reducir stock
-                $productoModel->reducirStock($producto_id, $cantidad);
+                // Reducir stock solo si la factura es "Emitida"
+                if ($_POST['estado'] == 'Emitida') {
+                    $productoModel->reducirStock($producto_id, $cantidad);
+                }
             }
 
             $db->commit();
@@ -105,6 +107,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit') {
             foreach ($productos as $index => $producto_id) {
                 $cantidadNueva = $cantidades[$index];
                 $detalleModel->insertarDetalle($codigo, $producto_id, $cantidadNueva);
+
                 // Buscar la cantidad anterior de cada producto en los detalles anteriores
                 $cantidadAnterior = 0;
                 foreach ($detallesAnteriores as $detalle) {
@@ -116,7 +119,9 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit') {
 
                 // Calcular la diferencia y actualizar el stock
                 $diferencia = $cantidadNueva - $cantidadAnterior;
-                $productoModel->reducirStock($producto_id, $diferencia);
+                if ($_POST['estado'] == 'Emitida') {
+                    $productoModel->reducirStock($producto_id, $diferencia);
+                }
             }
 
             $db->commit();
@@ -137,18 +142,40 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit') {
 // Se ejecuta cuando se envía el formulario de cambiar estado
 elseif (isset($_POST['action']) && $_POST['action'] == 'change_status') {
     $codigo = $_POST['codigo'];
-    $estado = $_POST['estado'];
+    $estadoNuevo = $_POST['estado'];
 
-    // Con este if, se intenta cambiar el estado de una factura.
-    // Utiliza el método changeStatus() del modelo FacturaCompra.
-    if ($facturaVentaModel->changeStatus($codigo, $estado)) {
-        header('Location: ../controllers/FacturaVentaController.php?action=list'); // Redirigir a la lista
-        exit(); // Importante: detener la ejecución del script después de la redirección
+    // Obtener estado anterior ANTES de actualizar
+    $factura = $facturaVentaModel->getById($codigo);
+    $estadoAnterior = $factura['estado'];
+
+    // Obtener los detalles de la factura
+    $detalles = $detalleModel->obtenerDetallesPorFactura($codigo);
+
+    // Intentamos cambiar el estado de la factura
+    if ($facturaVentaModel->changeStatus($codigo, $estadoNuevo)) {
+
+        // Si pasa de Emitida a Anulada → reponer stock
+        if ($estadoAnterior === 'Emitida' && $estadoNuevo === 'Anulada') {
+            foreach ($detalles as $detalle) {
+                $productoModel->aumentarStock($detalle['codigo_producto'], $detalle['cantidad']);
+            }
+        }
+
+        // Si pasa de Borrador a Emitida → descontar stock
+        elseif ($estadoAnterior === 'Borrador' && $estadoNuevo === 'Emitida') {
+            foreach ($detalles as $detalle) {
+                $productoModel->reducirStock($detalle['codigo_producto'], $detalle['cantidad']);
+            }
+        }
+
+        // Redirigir a la lista
+        header('Location: ../controllers/FacturaVentaController.php?action=list');
+        exit();
+
     } else {
         echo "Error al cambiar el estado de la factura de venta.";
     }
 }
-
 
 // Lógica para ELIMINAR UNA FACTURA
 // Se ejecuta cuando se hace clic en el botón de eliminar
