@@ -10,7 +10,46 @@ Este archivo contiene el formulario de editar proveedores
         </div>
         <div class="card-body">
 
-            <!-- Definimos un formulario de método POST para enviar a ProveedorController.php -->
+            <!-- Formulario POST para cambiar el estado de la factura -->
+            <!-- Independiente del formulario principal para poder cambiar el estado de la factura si no se puede editar -->
+            <form method="POST" action="../controllers/FacturaCompraController.php">
+                <input type="hidden" name="action" value="change_status">
+                <input type="hidden" name="codigo" value="<?php echo $factura['codigo']; ?>">
+                <div class="mb-3 mt-3">
+                    <h5 class="mt-4">
+                        <label for="estado" class="form-label">Cambiar estado de la factura</label>
+                    </h5>
+                    <select class="form-control" id="estado" name="estado" required>
+                        <option value="Borrador" <?= $factura['estado'] == 'Borrador' ? 'selected' : '' ?>>Borrador</option>
+                        <option value="Emitida" <?= $factura['estado'] == 'Emitida' ? 'selected' : '' ?>>Emitida</option>
+                        <option value="Pagada" <?= $factura['estado'] == 'Pagada' ? 'selected' : '' ?>>Pagada</option>
+                        <option value="Anulada" <?= $factura['estado'] == 'Anulada' ? 'selected' : '' ?>>Anulada</option>
+                    </select>
+                    
+                </div>
+                <button type="submit" class="btn btn-info">
+                    <i class="fas fa-sync-alt"></i> Cambiar Estado
+                </button>
+            </form>
+            <hr>
+
+            <?php if ($factura['estado'] !== 'Borrador'): ?>
+                <div class="container mt-5">
+                    <div class="alert alert-danger" role="alert">
+                        <h4 class="alert-heading">Factura no editable</h4>
+                        <p>No se puede editar la factura porque tiene un estado distinto a "Borrador".</p>
+                        <p>Estado actual: <?php echo $factura['estado']; ?></p>
+                        <p>Prueba a cambiar el estado a "Borrador" y vuelve a intentarlo.</p>
+                        <hr>
+                        <a href="javascript:history.back()" class="btn btn-outline-danger">Volver atrás</a>
+                    </div>
+                </div>
+            <?php endif; ?>
+            
+            <!-- Formulario POST para editar la factura -->
+            <!-- Este formulario tendrá los campos desactivados si la factura no está en estado "Borrador" -->
+            <!-- Se utiliza la línea "if ($factura['estado'] !== 'Borrador') echo 'disabled';" para desactivar cada campo -->
+            <h5 class="mt-4">Detalles de la factura</h5>
             <form method="POST" action="../controllers/FacturaCompraController.php?action=edit">
 
                 <!-- Campo oculto para la acción de edición -->
