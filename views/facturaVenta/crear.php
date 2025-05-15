@@ -69,39 +69,46 @@ Este archivo contiene el formulario de crear facturas de ventas
                         </datalist>
                     </div>
                 </div>
+
                 <h5 class="mt-4">Productos incluidos</h5>
                 <div id="producto-container">
-                    <div class="producto-item row mb-2">
-                        <div class="col-md-6">
+                    <div class="producto-item row mb-2 align-items-center">
+                        <div class="col-md-5">
                             <label>Producto</label>
-                            <select name="productos[]" class="form-control" required>
+                            <select name="productos[]" class="form-control producto-select" required>
                                 <option value="">Seleccione un producto</option>
-                                <!-- Se generan las opciones del select por cada uno registrado en la base de datos -->
                                 <?php if (!empty($productos)): ?>
                                 <?php foreach ($productos as $producto): ?>
-                                    <option value="<?php echo $producto['codigo']; ?>">
+                                    <option value="<?php echo $producto['codigo']; ?>" data-precio-venta="<?php echo $producto['precio_venta']; ?>">
                                         <?php echo $producto['nombre']; ?>
                                     </option>
                                 <?php endforeach; ?>
-                            <?php else: ?>
-                                <option value="">No hay productos registrados, debes registrar uno primero</option>
-                            <?php endif; ?>
+                                <?php else: ?>
+                                    <option value="">No hay productos registrados, debes registrar uno primero</option>
+                                <?php endif; ?>
                             </select>
                         </div>
                         <div class="col-md-3">
                             <label>Cantidad</label>
-                            <input type="number" name="cantidades[]" class="form-control" required>
+                            <input type="number" name="cantidades[]" class="form-control cantidad-input" value="1" min="1" required>
                         </div>
-                        <div class="col-md-3 d-flex align-items-end">
-                            <button type="button" class="btn btn-danger btn-remove">Quitar</button>
+                        <div class="col-md-2 text-end">
+                            <span class="precio-linea">0.00 €</span>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="button" class="btn btn-danger btn-sm btn-remove">Quitar</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Botón para añadir más productos -->
-                <button type="button" id="add-producto" class="btn btn-success mt-2">+ Añadir otro producto</button>
+                <div class="mb-3">
+                    <button type="button" id="add-producto" class="btn btn-success mt-2">+ Añadir otro producto</button>
+                </div>
 
-                <!-- Botones para guardar o cancelar -->
+                <div class="text-end me-5">
+                    <h4>Precio Total: <span id="precio-total">0.00 €</span></h4>
+                </div>
+
                 <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar Factura</button>
                 <a href="../controllers/FacturaVentaController.php?action=list" class="btn btn-secondary"><i
                         class="fas fa-times"></i> Cancelar</a>
@@ -110,27 +117,5 @@ Este archivo contiene el formulario de crear facturas de ventas
     </div>
 </div>
 
-<script>
-    document.getElementById('add-producto').addEventListener('click', function () {
-        const container = document.getElementById('producto-container');
-        const item = document.querySelector('.producto-item');
-        const clone = item.cloneNode(true);
-
-        // Limpiar valores del nuevo clon
-        clone.querySelector('select').selectedIndex = 0;
-        clone.querySelector('input').value = '';
-
-        container.appendChild(clone);
-    });
-
-    // Manejar botón "Quitar"
-    document.addEventListener('click', function (e) {
-        if (e.target && e.target.classList.contains('btn-remove')) {
-            const item = e.target.closest('.producto-item');
-            const allItems = document.querySelectorAll('.producto-item');
-            if (allItems.length > 1) {
-                item.remove();
-            }
-        }
-    });
-</script>
+<!-- Script para calcular el precio de venta de los productos -->
+<script src="../assets/js/factura_venta.js"></script>
