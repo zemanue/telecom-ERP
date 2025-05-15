@@ -122,60 +122,60 @@ Este archivo contiene el formulario de editar facturas de ventas
                     </div>                
                 </div>
 
-                <h5 class="mt-4">Productos incluidos</h5>
-                <div id="producto-container">
-                    <?php foreach ($productos_factura as $detalle): ?>
-                        <div class="producto-item row mb-2">
-                            <div class="col-md-6">
-                                <label>Producto</label>
-                                <select name="productos[]" class="form-control" required
-                                <?php if ($factura['estado'] !== 'Borrador') echo 'disabled'; ?>>
-                                    <!-- Se genera una opción del select por cada producto que hay en la base de datos -->
-                                    <?php foreach ($productos as $producto): ?>
-                                        <option value="<?php echo $producto['codigo']; ?>" <?php echo $producto['codigo'] == $detalle['codigo_producto'] ? 'selected' : ''; ?>>
-                                            <?php echo $producto['nombre']; ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
+                    <h5 class="mt-4">Productos incluidos</h5>
+                    <div id="producto-container">
+                        <?php foreach ($productos_factura as $detalle): ?>
+                            <div class="producto-item row mb-2 align-items-center">
+                                <div class="col-md-5">
+                                    <label>Producto</label>
+                                    <select name="productos[]" class="form-control producto-select" required
+                                        <?php if ($factura['estado'] !== 'Borrador') echo 'disabled'; ?>>
+                                        <option value="">Seleccione un producto</option>
+                                        <?php foreach ($productos as $producto): ?>
+                                            <option value="<?php echo $producto['codigo']; ?>"
+                                                data-precio-venta="<?php echo $producto['precio_venta']; ?>"
+                                                <?php echo $producto['codigo'] == $detalle['codigo_producto'] ? 'selected' : ''; ?>>
+                                                <?php echo $producto['nombre']; ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Cantidad</label>
+                                    <input type="number" name="cantidades[]" class="form-control cantidad-input"
+                                        value="<?= $detalle['cantidad'] ?>" min="1" required
+                                        <?php if ($factura['estado'] !== 'Borrador') echo 'disabled'; ?>>
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    <span class="precio-linea">0.00 €</span>
+                                </div>
+                                <div class="col-md-2 d-flex align-items-end">
+                                    <button type="button" class="btn btn-danger btn-sm btn-remove"
+                                        <?php if ($factura['estado'] !== 'Borrador') echo 'disabled'; ?>>Quitar</button>
+                                </div>
                             </div>
-                            <div class="col-md-3">
-                                <label>Cantidad</label>
-                                <input type="number" name="cantidades[]" class="form-control"
-                                    value="<?= $detalle['cantidad'] ?>" required
-                                    <?php if ($factura['estado'] !== 'Borrador') echo 'disabled'; ?>>
-                            </div>
-                            <div class="col-md-3 d-flex align-items-end">
-                                <button type="button" class="btn btn-danger btn-remove"
-                                    <?php if ($factura['estado'] !== 'Borrador') echo 'disabled'; ?>>Quitar</button>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-                <button type="button" id="add-producto" class="btn btn-success mt-2"
-                    <?php if ($factura['estado'] !== 'Borrador') echo 'disabled'; ?>>+ Añadir otro producto</button>
-                <!-- Botones para guardar o cancelar -->
-                <button type="submit" name="update" class="btn btn-primary"
-                    <?php if ($factura['estado'] !== 'Borrador') echo 'disabled'; ?>>
-                    <i class="fas fa-save"></i> Guardar Cambios
-                </button>
-            </form>
-            <a href="../controllers/FacturaVentaController.php?action=list" class="btn btn-secondary"><i
-                    class="fas fa-times"></i> Cancelar</a>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <div class="mb-3">
+                        <button type="button" id="add-producto" class="btn btn-success mt-2"
+                            <?php if ($factura['estado'] !== 'Borrador') echo 'disabled'; ?>>+ Añadir otro producto</button>
+                    </div>
+
+                    <div class="text-end me-5">
+                        <h4>Precio Total: <span id="precio-total">0.00 €</span></h4>
+                    </div>
+
+                    <button type="submit" name="update" class="btn btn-primary"
+                        <?php if ($factura['estado'] !== 'Borrador') echo 'disabled'; ?>>
+                        <i class="fas fa-save"></i> Guardar Cambios
+                    </button>
+                </form>
+                <a href="../controllers/FacturaVentaController.php?action=list" class="btn btn-secondary"><i
+                        class="fas fa-times"></i> Cancelar</a>
         </div>
     </div>
 </div>
 
-<script>
-    document.getElementById('add-producto').addEventListener('click', () => {
-        const container = document.getElementById('producto-container');
-        const newItem = container.firstElementChild.cloneNode(true);
-        newItem.querySelectorAll('input, select').forEach(el => el.value = '');
-        container.appendChild(newItem);
-    });
-
-    document.addEventListener('click', function (e) {
-        if (e.target.classList.contains('btn-remove')) {
-            e.target.closest('.producto-item').remove();
-        }
-    });
-</script>
+<!-- Script para calcular el precio de venta de los productos -->
+<script src="../assets/js/factura_venta.js"></script>

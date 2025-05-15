@@ -146,7 +146,7 @@ Este archivo contiene el formulario de editar proveedores
                             </div>
                             <div class="col-md-2 text-end">
                                 <span class="precio-linea">0.00 €</span>
-                                </div>
+                            </div>
                             <div class="col-md-2 d-flex align-items-end">
                                 <button type="button" class="btn btn-danger btn-sm btn-remove"
                                     <?php if ($factura['estado'] !== 'Borrador') echo 'disabled'; ?>>Quitar</button>
@@ -176,4 +176,5 @@ Este archivo contiene el formulario de editar proveedores
     </div>
 </div>
 
+<!-- Script para calcular el precio de venta de los productos -->
 <script src="../assets/js/factura_compra.js"></script>
