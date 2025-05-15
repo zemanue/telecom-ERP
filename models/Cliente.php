@@ -30,7 +30,7 @@ class Cliente {
         // Preparamos la consulta con parámetros para evitar inyecciones SQL
         $stmt = $this->db->prepare(
             "INSERT INTO cliente (telefono, nif, nombre, direccion, poblacion, email, metodo_pago) 
-             VALUES (?, ?, ?, ?, ?, ?, ?)"
+            VALUES (?, ?, ?, ?, ?, ?, ?)"
         );
         // Ejecutamos la consulta con los valores proporcionados
         return $stmt->execute([$telefono, $nif, $nombre, $direccion, $poblacion, $email, $metodo_pago]);
@@ -41,8 +41,8 @@ class Cliente {
         // Preparamos la consulta de actualización
         $stmt = $this->db->prepare(
             "UPDATE cliente 
-             SET telefono = ?, nif = ?, nombre = ?, direccion = ?, poblacion = ?, email = ?, metodo_pago = ? 
-             WHERE codigo = ?"
+            SET telefono = ?, nif = ?, nombre = ?, direccion = ?, poblacion = ?, email = ?, metodo_pago = ? 
+            WHERE codigo = ?"
         );
         // Ejecutamos la consulta con los valores actualizados
         return $stmt->execute([$telefono, $nif, $nombre, $direccion, $poblacion, $email, $metodo_pago, $codigo]);

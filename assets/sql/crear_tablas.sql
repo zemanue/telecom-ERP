@@ -88,7 +88,7 @@ CREATE TABLE detalles_factura_compra (
     codigo_producto INT NOT NULL,
     cantidad INT NOT NULL,
     FOREIGN KEY (codigo_factura) REFERENCES facturas_compra(codigo) ON DELETE CASCADE,
-    FOREIGN KEY (codigo_producto) REFERENCES productos(codigo) ON DELETE CASCADE
+    FOREIGN KEY (codigo_producto) REFERENCES productos(codigo)
 );
 
 CREATE TABLE detalles_factura_venta (
@@ -97,7 +97,7 @@ CREATE TABLE detalles_factura_venta (
     codigo_producto INT NOT NULL,
     cantidad INT NOT NULL,
     FOREIGN KEY (codigo_factura) REFERENCES facturas_venta(codigo) ON DELETE CASCADE,
-    FOREIGN KEY (codigo_producto) REFERENCES productos(codigo) ON DELETE CASCADE
+    FOREIGN KEY (codigo_producto) REFERENCES productos(codigo)
 );
 
 CREATE TABLE `usuarios` (
@@ -118,3 +118,18 @@ ALTER TABLE `facturas_compra`
 ALTER TABLE `facturas_venta`
   ADD COLUMN `metodo_pago` VARCHAR(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   ADD COLUMN `estado` ENUM('Borrador', 'Emitida', 'Pagada', 'Anulada') COLLATE utf8mb4_unicode_ci DEFAULT 'Borrador';
+
+-- ACTUALIZAR PARA QUE NO SE PUEDAN ELIMINAR LOS PRODUCTOS SI TIENEN FACTURAS ASOCIADAS
+ALTER TABLE detalles_factura_compra
+DROP FOREIGN KEY detalles_factura_compra_ibfk_2;
+
+ALTER TABLE detalles_factura_compra
+ADD CONSTRAINT detalles_factura_compra_ibfk_2
+FOREIGN KEY (codigo_producto) REFERENCES productos(codigo);
+
+ALTER TABLE detalles_factura_venta
+DROP FOREIGN KEY detalles_factura_venta_ibfk_2;
+
+ALTER TABLE detalles_factura_venta
+ADD CONSTRAINT detalles_factura_venta_ibfk_2
+FOREIGN KEY (codigo_producto) REFERENCES productos(codigo);

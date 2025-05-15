@@ -70,15 +70,30 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit') {
 // Se ejecuta cuando se hace clic en el botón de eliminar
 elseif (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['codigo'])) {
     $codigo = $_GET['codigo'];
-
-    // Con este if, se intenta eliminar un producto.
-    // Utiliza el método delete() del modelo Producto.
-    // Si se consigue, redirige de nuevo a la lista de clientes
-    if ($productoModel->delete($codigo)) {
-        header('Location: ../controllers/ProductoController.php?action=list'); // Redirigir a la lista
-        exit(); // Importante: detener la ejecución del script después de la redirección
-    } else {
-        echo "Error al eliminar el producto.";
+    // Con este bloque try-catch, se intenta eliminar un producto.
+    // Si ocurre una excepción, se muestra un mensaje de error al usuario.
+    try {
+        if ($productoModel->delete($codigo)) {
+            header('Location: ../controllers/ProductoController.php?action=list'); // Redirigir a la lista
+            exit(); // Importante: detener la ejecución del script después de la redirección
+        } else {
+            throw new Exception("Error al eliminar el producto.");
+        }
+    } catch (Exception $e) {
+        // Mostrar una alerta Bootstrap si no se puede eliminar el producto
+        include '../views/layouts/header.php';
+        echo '
+            <div class="container mt-5">
+                <div class="alert alert-danger" role="alert">
+                    <h4 class="alert-heading">Error al eliminar</h4>
+                    <p>No se puede eliminar el producto porque tiene dependencias asociadas u otro error ha ocurrido.</p>
+                    <hr>
+                    <a href="javascript:history.back()" class="btn btn-outline-danger">Volver atrás</a>
+                </div>
+            </div>
+        ';
+        include '../views/layouts/footer.php';
+        exit();
     }
 }
 

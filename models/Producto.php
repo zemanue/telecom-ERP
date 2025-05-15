@@ -66,8 +66,20 @@ class Producto {
     }
 
     public function delete($codigo) {
-        $stmt = $this->db->prepare("DELETE FROM productos WHERE codigo = ?");
-        return $stmt->execute([$codigo]);
+        try {
+            // Preparamos la consulta de eliminación
+            $stmt = $this->db->prepare("DELETE FROM productos WHERE codigo = ?");
+            // Ejecutamos la eliminación
+            return $stmt->execute([$codigo]);
+        } catch (PDOException $e) {
+            // Verificamos si el error es por clave foránea (producto asociado a otras tablas)
+            if ($e->getCode() == 23000) {
+                throw new Exception("No se puede eliminar el producto porque está asociado a otras entidades.");
+            } else {
+                // Otro tipo de error
+                throw $e;
+            }
+        }
     }
 
     public function getById($codigo) {

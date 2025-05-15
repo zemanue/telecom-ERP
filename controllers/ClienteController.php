@@ -19,7 +19,6 @@ $clienteModel = new Cliente($db);
 
 // Lógica para GUARDAR UN NUEVO CLIENTE
 // Se ejecuta cuando se envía el formulario de creación
-// Recupera los datos del formulario enviados con el método POST
 if (isset($_POST['action']) && $_POST['action'] == 'create') {
     error_log("Entrando en el bloque de creación de cliente");
     $telefono = $_POST['telefono'];
@@ -43,7 +42,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'create') {
 
 // Lógica para ACTUALIZAR UN CLIENTE
 // Este bloque se ejecuta cuando se envía el formulario de edición
-// Recupera los datos del formulario enviados con el método POST
 if (isset($_POST['action']) && $_POST['action'] == 'edit') {
     error_log("Entrando en el bloque de edición de cliente", 0); // Log para depuración
     $codigo = $_POST['codigo'];
