@@ -8,14 +8,6 @@ La página a la que se llega después del login
 <?php
     include 'layouts/header.php';
 
-if (!isset($_SESSION['usuario'])) {
-    echo '<script>
-        alert("Debes iniciar sesión primero.");
-        window.location="../index.php";
-    </script>';
-    exit();
-}
-
 $nombre_completo = $_SESSION['nombre_completo']; // Obtener el nombre completo
 ?>
 

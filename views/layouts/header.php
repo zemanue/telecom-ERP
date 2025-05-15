@@ -7,6 +7,14 @@ incluyendo la barra lateral de navegación y el menú de perfil desplegable.
 if (session_status() == PHP_SESSION_NONE) {
     session_start(); // Iniciar sesión solo si no hay ninguna sesión activa
 }
+
+if (!isset($_SESSION['usuario'])) {
+    echo '<script>
+        alert("Debes iniciar sesión primero.");
+        window.location="../index.php";
+    </script>';
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -93,7 +101,7 @@ if (session_status() == PHP_SESSION_NONE) {
                             <!-- Menú desplegable con opciones -->
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <!-- Enlace para ver el perfil -->
-                                <li><a class="dropdown-item" href="perfil/verPerfil.php"><i class="fas fa-id-badge"></i> Ver Perfil</a></li>
+                                <li><a class="dropdown-item" href="../views/perfil/verPerfil.php"><i class="fas fa-id-badge"></i> Ver Perfil</a></li>
                                 <!-- Enlace para cerrar sesión -->
                                 <li><a class="dropdown-item" href="../logout.php"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
                             </ul>
