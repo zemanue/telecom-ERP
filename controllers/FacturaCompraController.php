@@ -32,22 +32,17 @@ if (isset($_POST['action']) && $_POST['action'] == 'create') {
     $metodo_pago = $_POST['metodo_pago'];
     $productos = $_POST['productos'];
     $cantidades = $_POST['cantidades'];
-    $estado = $_POST['estado'] ?? 'Borrador'; // NUEVO: Estado por defecto
+    $estado = 'Borrador';
 
     try {
         $db->beginTransaction();
 
-        if ($facturaCompraModel->create($fecha, $direccion, $codigo_proveedor, $codigo_empleado, $metodo_pago, $estado)) {
+        if ($facturaCompraModel->create($fecha, $direccion, $codigo_proveedor, $codigo_empleado, $metodo_pago)) {
             $codigo_factura = $db->lastInsertId();
 
             foreach ($productos as $index => $producto_id) {
                 $cantidad = $cantidades[$index];
                 $detalleModel->insertarDetalle($codigo_factura, $producto_id, $cantidad);
-
-                // NUEVO: Solo actualizar stock si no está en borrador
-                if ($estado !== 'Borrador') {
-                    $productoModel->aumentarStock($producto_id, $cantidad);
-                }
             }
 
             $db->commit();
